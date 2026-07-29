@@ -68,7 +68,8 @@ def _publish_entry(account, entry, base_url):
         cover_path = entry.get("cover")
         cover_url = _media_url(base_url, cover_path) if cover_path else None
         return account.publish_reel(
-            urls[0], caption, cover=cover_url, share_to_feed=entry.get("share_to_feed", True)
+            urls[0], caption, cover=cover_url, share_to_feed=entry.get("share_to_feed", True),
+            trial=entry.get("trial", False), graduation_strategy=entry.get("graduation_strategy", "MANUAL")
         )
     if entry_type == "story":
         return account.publish_story(urls[0], media_type=_guess_story_media_type(entry["media"][0]))

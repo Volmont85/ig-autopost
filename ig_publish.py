@@ -1,4 +1,5 @@
 """Публикация фото, каруселей, роликов и историй в Instagram через Graph API."""
+import json
 import os
 import sys
 import time
@@ -69,7 +70,8 @@ class Account:
         self._wait_until_ready(creation_id, timeout=60, interval=2)
         return self._publish(creation_id)
 
-    def publish_reel(self, video_url, caption="", cover=None, share_to_feed=True):
+    def publish_reel(self, video_url, caption="", cover=None, share_to_feed=True,
+                      trial=False, graduation_strategy="MANUAL"):
         params = {
             "media_type": "REELS",
             "video_url": video_url,
@@ -78,6 +80,8 @@ class Account:
         }
         if cover:
             params["cover_url"] = cover
+        if trial:
+            params["trial_params"] = json.dumps({"graduation_strategy": graduation_strategy})
         creation_id = self._create_container(**params)
         self._wait_until_ready(creation_id)
         return self._publish(creation_id)

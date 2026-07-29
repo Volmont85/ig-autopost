@@ -1,15 +1,13 @@
 [
   {
-    "id": "test-workflow-story",
-    "account": "personal",
-    "type": "story",
+    "id": "test-trial-reel",
+    "account": "goszakupki",
+    "type": "reel",
     "publish_at": "2026-07-29T00:00:00+00:00",
-    "caption": "",
-    "media": [
-      "media/personal/test-2.jpg"
-    ],
-    "status": "done",
-    "published_at": "2026-07-29T08:47:50.897900+00:00",
-    "media_id": "18132638692616473"
+    "caption": "Есть один ритуал, который я не пропускаю: пройти пешком хотя бы 20 минут в одиночестве. Работает лучше любого тайм-менеджмента.\n\nА у тебя есть свой ежедневный ритуал, который спасает от хаоса?\n\nОставайся здесь, дальше интереснее.\n\n#ежедневныйритуал #заботаосебе #простыепривычки #прогулкапомоскве #мысливслух",
+    "media": ["media/goszakupki/test-reel-1.mp4"],
+    "trial": true,
+    "graduation_strategy": "MANUAL",
+    "status": "pending"
   }
 ]
