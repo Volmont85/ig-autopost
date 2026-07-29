@@ -1,1 +1,11 @@
-[]
+[
+  {
+    "id": "test-workflow-story",
+    "account": "personal",
+    "type": "story",
+    "publish_at": "2026-07-29T00:00:00+00:00",
+    "caption": "",
+    "media": ["media/personal/test-2.jpg"],
+    "status": "pending"
+  }
+]
