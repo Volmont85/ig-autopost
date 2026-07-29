@@ -29,7 +29,12 @@ def _save_queue(queue):
 
 
 def _is_due(entry, now_utc):
-    publish_at = datetime.fromisoformat(entry["publish_at"])
+    publish_at_raw = entry.get("publish_at")
+    if not publish_at_raw:
+        # Нет publish_at -> публиковать как можно скорее (как только запись
+        # дойдёт до GitHub и это заметит push-триггер/расписание).
+        return True
+    publish_at = datetime.fromisoformat(publish_at_raw)
     if publish_at.tzinfo is None:
         publish_at = publish_at.replace(tzinfo=timezone.utc)
     return publish_at.astimezone(timezone.utc) <= now_utc
