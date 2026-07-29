@@ -13,5 +13,14 @@
     "status": "done",
     "published_at": "2026-07-29T10:48:39.574790+00:00",
     "media_id": "18097083398360697"
+  },
+  {
+    "id": "autopush-watcher-test",
+    "account": "personal",
+    "type": "photo",
+    "publish_at": "2026-08-01T09:00:00+03:00",
+    "caption": "тестовая запись для проверки автопуша, не публиковать",
+    "media": ["media/personal/test-1.jpg"],
+    "status": "draft"
   }
 ]
