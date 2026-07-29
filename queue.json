@@ -56,5 +56,17 @@
     "status": "done",
     "published_at": "2026-07-29T17:17:01.592418+00:00",
     "media_id": "18228638695321291"
+  },
+  {
+    "id": "viskont-teaser-shot1-v2",
+    "account": "personal",
+    "type": "reel",
+    "caption": "Забудьте про будильник — у нас теперь пушистый будитель. Переговоров не ведёт.\n\n4:50 утра — и этот взгляд уже смотрит на тебя.\n\nЗнакомьтесь: Виконт. Мейн-кун и глава утреннего протокола — расписание устанавливает только он.\n\nЧто будет дальше — скоро здесь.\n\n#мейнкун #коты #cats #catsoftiktok #смешныекоты",
+    "media": [
+      "media/personal/viskont-teaser-shot1-v2.mp4"
+    ],
+    "trial": true,
+    "graduation_strategy": "MANUAL",
+    "status": "pending"
   }
 ]
