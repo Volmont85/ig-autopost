@@ -2,6 +2,7 @@
 import json
 import os
 import sys
+import time
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -38,12 +39,21 @@ def _media_url(base_url, media_path):
     return f"{base_url.rstrip('/')}/{media_path.lstrip('/')}"
 
 
-def _check_url(url):
-    try:
-        response = requests.head(url, timeout=15, allow_redirects=True)
-        return response.status_code < 400
-    except requests.RequestException:
-        return False
+def _check_url(url, attempts=8, delay=15):
+    # GitHub Pages нужно время на билд/деплой после push (обычно 30-90 сек).
+    # Особенно актуально при триггере publish.yml по push — он срабатывает
+    # быстрее, чем Pages успевает выложить новый файл, поэтому одна попытка
+    # HEAD-запроса без повторов даёт ложный "недоступен" на свежих файлах.
+    for attempt in range(attempts):
+        try:
+            response = requests.head(url, timeout=15, allow_redirects=True)
+            if response.status_code < 400:
+                return True
+        except requests.RequestException:
+            pass
+        if attempt < attempts - 1:
+            time.sleep(delay)
+    return False
 
 
 def _guess_story_media_type(media_path):
