@@ -52,7 +52,6 @@
       "media/goszakupki/intro-slide3.jpg",
       "media/goszakupki/intro-slide4.jpg"
     ],
-    "status": "failed",
-    "error": "Медиафайл недоступен: https://volmont85.github.io/ig-autopost/media/goszakupki/intro-slide1.jpg"
+    "status": "pending"
   }
 ]
