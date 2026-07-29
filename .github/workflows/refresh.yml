@@ -1,0 +1,38 @@
+name: Refresh Instagram tokens
+
+on:
+  schedule:
+    - cron: "0 3 * * 1"
+  workflow_dispatch:
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - run: pip install -r requirements.txt
+
+      - name: Refresh personal token
+        env:
+          IG_PERSONAL_TOKEN: ${{ secrets.IG_PERSONAL_TOKEN }}
+          GH_TOKEN: ${{ secrets.GH_PAT }}
+        run: |
+          NEW_TOKEN=$(python refresh_token.py personal)
+          if [ -n "$NEW_TOKEN" ]; then
+            gh secret set IG_PERSONAL_TOKEN --body "$NEW_TOKEN"
+          fi
+
+      - name: Refresh goszakupki token
+        env:
+          IG_GOSZAKUPKI_TOKEN: ${{ secrets.IG_GOSZAKUPKI_TOKEN }}
+          GH_TOKEN: ${{ secrets.GH_PAT }}
+        run: |
+          NEW_TOKEN=$(python refresh_token.py goszakupki)
+          if [ -n "$NEW_TOKEN" ]; then
+            gh secret set IG_GOSZAKUPKI_TOKEN --body "$NEW_TOKEN"
+          fi

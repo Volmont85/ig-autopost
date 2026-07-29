@@ -1,0 +1,49 @@
+name: Publish queue
+
+on:
+  schedule:
+    - cron: "*/30 * * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - run: pip install -r requirements.txt
+
+      - name: Run queue
+        id: run_queue
+        env:
+          IG_PERSONAL_ID: ${{ secrets.IG_PERSONAL_ID }}
+          IG_PERSONAL_TOKEN: ${{ secrets.IG_PERSONAL_TOKEN }}
+          IG_GOSZAKUPKI_ID: ${{ secrets.IG_GOSZAKUPKI_ID }}
+          IG_GOSZAKUPKI_TOKEN: ${{ secrets.IG_GOSZAKUPKI_TOKEN }}
+          PAGES_BASE_URL: ${{ vars.PAGES_BASE_URL }}
+        run: |
+          python run_queue.py | tee run_queue.log
+          IDS=$(grep -oP '(?<=\[)[^]]+(?=\] опубликовано)' run_queue.log | paste -sd, -)
+          echo "ids=$IDS" >> "$GITHUB_OUTPUT"
+
+      - name: Commit updated queue.json
+        run: |
+          if ! git diff --quiet -- queue.json; then
+            git config user.name "github-actions[bot]"
+            git config user.email "github-actions[bot]@users.noreply.github.com"
+            git add queue.json
+            IDS="${{ steps.run_queue.outputs.ids }}"
+            if [ -z "$IDS" ]; then
+              git commit -m "queue: updated"
+            else
+              git commit -m "queue: published $IDS"
+            fi
+            git push
+          fi
