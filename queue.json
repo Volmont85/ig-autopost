@@ -8,6 +8,8 @@
     "media": [
       "media/personal/test-2.jpg"
     ],
-    "status": "pending"
+    "status": "done",
+    "published_at": "2026-07-29T08:47:50.897900+00:00",
+    "media_id": "18132638692616473"
   }
 ]
