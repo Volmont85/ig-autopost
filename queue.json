@@ -8,7 +8,6 @@
     "media": [
       "media/personal/test-2.jpg"
     ],
-    "status": "failed",
-    "error": "Media ID is not available"
+    "status": "pending"
   }
 ]

@@ -56,6 +56,7 @@ class Account:
 
     def publish_photo(self, image_url, caption=""):
         creation_id = self._create_container(image_url=image_url, caption=caption)
+        self._wait_until_ready(creation_id, timeout=60, interval=2)
         return self._publish(creation_id)
 
     def publish_carousel(self, image_urls, caption=""):
@@ -65,6 +66,7 @@ class Account:
         creation_id = self._create_container(
             media_type="CAROUSEL", children=",".join(children), caption=caption
         )
+        self._wait_until_ready(creation_id, timeout=60, interval=2)
         return self._publish(creation_id)
 
     def publish_reel(self, video_url, caption="", cover=None, share_to_feed=True):
@@ -87,8 +89,8 @@ class Account:
         else:
             params["image_url"] = media_url
         creation_id = self._create_container(**params)
-        if media_type == "video":
-            self._wait_until_ready(creation_id)
+        timeout = 300 if media_type == "video" else 60
+        self._wait_until_ready(creation_id, timeout=timeout, interval=2)
         return self._publish(creation_id)
 
     def quota(self):
