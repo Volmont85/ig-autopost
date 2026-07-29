@@ -39,12 +39,9 @@
     "media": [
       "media/personal/medkolledzh-put-k-belomu-halatu.mp4"
     ],
-<<<<<<< HEAD
     "status": "done",
     "published_at": "2026-07-29T17:03:28.434068+00:00",
     "media_id": "17872833843554741"
-=======
-    "status": "pending"
   },
   {
     "id": "viskont-teaser-shot1",
@@ -57,6 +54,5 @@
     "trial": true,
     "graduation_strategy": "MANUAL",
     "status": "pending"
->>>>>>> 0994c50 (content: auto-update 2026-07-29T17:05:57Z)
   }
 ]
