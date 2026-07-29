@@ -67,6 +67,8 @@
     ],
     "trial": true,
     "graduation_strategy": "MANUAL",
-    "status": "pending"
+    "status": "done",
+    "published_at": "2026-07-29T17:30:51.441257+00:00",
+    "media_id": "18127439083669857"
   }
 ]
