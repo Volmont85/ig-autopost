@@ -9,5 +9,7 @@
   ],
   "status": "done",
   "published_at": "2026-07-29T17:03:28.434068+00:00",
-  "media_id": "17872833843554741"
+  "media_id": "17872833843554741",
+  "media_deleted": true,
+  "media_deleted_at": "2026-07-30T19:15:36.702265+00:00"
 }
