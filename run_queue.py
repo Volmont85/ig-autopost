@@ -1,4 +1,10 @@
-"""Исполнитель очереди публикаций: читает queue.json и публикует записи, время которых наступило."""
+"""Исполнитель очереди публикаций: читает queue/*.json и публикует записи, время которых наступило.
+
+Каждая запись хранится в отдельном файле queue/<id>.json, а не в одном общем
+массиве queue.json — это устраняет git-конфликты, когда GitHub Actions
+обновляет статус одной записи одновременно с тем, как локальный автопуш
+добавляет или меняет другую: разные записи теперь физически разные файлы.
+"""
 import json
 import os
 import sys
@@ -10,21 +16,25 @@ import requests
 
 from ig_publish import Account, IGPublishError
 
-QUEUE_PATH = Path(__file__).resolve().parent / "queue.json"
+QUEUE_DIR = Path(__file__).resolve().parent / "queue"
 
 
 def _log(message):
     print(message, flush=True)
 
 
-def _load_queue():
-    with open(QUEUE_PATH, "r", encoding="utf-8") as f:
-        return json.load(f)
+def _load_entries():
+    entries = []
+    for path in sorted(QUEUE_DIR.glob("*.json")):
+        with open(path, "r", encoding="utf-8") as f:
+            entry = json.load(f)
+        entries.append((path, entry))
+    return entries
 
 
-def _save_queue(queue):
-    with open(QUEUE_PATH, "w", encoding="utf-8") as f:
-        json.dump(queue, f, indent=2, ensure_ascii=False)
+def _save_entry(path, entry):
+    with open(path, "w", encoding="utf-8") as f:
+        json.dump(entry, f, indent=2, ensure_ascii=False)
         f.write("\n")
 
 
@@ -32,7 +42,7 @@ def _is_due(entry, now_utc):
     publish_at_raw = entry.get("publish_at")
     if not publish_at_raw:
         # Нет publish_at -> публиковать как можно скорее (как только запись
-        # дойдёт до GitHub и это заметит push-триггер/расписание).
+        # дойдёт до GitHub) — это и есть протокол "опубликуй сейчас".
         return True
     publish_at = datetime.fromisoformat(publish_at_raw)
     if publish_at.tzinfo is None:
@@ -98,19 +108,21 @@ def main():
         _log("Ошибка: не задана переменная окружения PAGES_BASE_URL")
         sys.exit(1)
 
-    queue = _load_queue()
+    QUEUE_DIR.mkdir(exist_ok=True)
+    entries = _load_entries()
     now_utc = datetime.now(timezone.utc)
 
     accounts = {}
     quota_exhausted = {}
-    changed = False
+    processed = 0
 
-    for entry in queue:
+    for path, entry in entries:
         if entry.get("status") != "pending" or not _is_due(entry, now_utc):
             continue
 
         account_name = entry["account"]
-        entry_id = entry.get("id", "?")
+        entry_id = entry.get("id", path.stem)
+        processed += 1
 
         try:
             if account_name not in accounts:
@@ -133,19 +145,16 @@ def main():
             entry["status"] = "done"
             entry["published_at"] = now_utc.isoformat()
             entry["media_id"] = media_id
-            changed = True
+            _save_entry(path, entry)
             _log(f"[{entry_id}] опубликовано, media_id={media_id}")
 
         except Exception as exc:
             entry["status"] = "failed"
             entry["error"] = str(exc)
-            changed = True
+            _save_entry(path, entry)
             _log(f"[{entry_id}] ошибка: {exc}")
 
-    if changed:
-        _save_queue(queue)
-        _log("queue.json обновлён")
-    else:
+    if processed == 0:
         _log("Нет записей для публикации")
 
 
