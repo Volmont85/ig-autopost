@@ -76,7 +76,9 @@
     ],
     "trial": true,
     "graduation_strategy": "MANUAL",
-    "status": "pending"
+    "status": "done",
+    "published_at": "2026-07-30T08:05:50.322027+00:00",
+    "media_id": "18603582178007369"
   },
   {
     "id": "goszakupki-tema1-otbor",
@@ -90,7 +92,9 @@
       "media/goszakupki/tema1-slide4.jpg",
       "media/goszakupki/tema1-slide5.jpg"
     ],
-    "status": "pending"
+    "status": "done",
+    "published_at": "2026-07-30T08:05:50.322027+00:00",
+    "media_id": "17938051035480180"
   },
   {
     "id": "dozhd-moskva-trial-reel",
@@ -102,6 +106,8 @@
     ],
     "trial": true,
     "graduation_strategy": "MANUAL",
-    "status": "pending"
+    "status": "done",
+    "published_at": "2026-07-30T08:05:50.322027+00:00",
+    "media_id": "18186557233395974"
   }
 ]
