@@ -61,14 +61,47 @@
     "id": "viskont-teaser-shot1-v2",
     "account": "personal",
     "type": "reel",
+    "trial": true,
+    "graduation_strategy": "MANUAL",
+    "status": "done",
+    "media_id": "18127439083669857"
+  },
+  {
+    "id": "viskont-teaser-shot1-v3",
+    "account": "personal",
+    "type": "reel",
     "caption": "Забудьте про будильник — у нас теперь пушистый будитель. Переговоров не ведёт.\n\n4:50 утра — и этот взгляд уже смотрит на тебя.\n\nЗнакомьтесь: Виконт. Мейн-кун и глава утреннего протокола — расписание устанавливает только он.\n\nЧто будет дальше — скоро здесь.\n\n#мейнкун #коты #cats #catsoftiktok #смешныекоты",
     "media": [
       "media/personal/viskont-teaser-shot1-v2.mp4"
     ],
     "trial": true,
     "graduation_strategy": "MANUAL",
-    "status": "done",
-    "published_at": "2026-07-29T17:30:51.441257+00:00",
-    "media_id": "18127439083669857"
+    "status": "pending"
+  },
+  {
+    "id": "goszakupki-tema1-otbor",
+    "account": "goszakupki",
+    "type": "carousel",
+    "caption": "95% времени поставщики тратят на заявки, где всё было ясно за 10 минут. Не каждый тендер стоит того, чтобы в него ввязываться: иногда логичнее закрыть карточку закупки, чем неделю собирать документы под заявку без реальных шансов.\n\nВ карусели — три признака, что тендер не для вас. Хотите, разберу вашу закупку: напишите слово ОТБОР. Пришлю чек-лист «5 критериев: стоит ли подавать заявку на этот тендер».\n\n#госзакупки #тендеры #44фз #малыйбизнес #предприниматель",
+    "media": [
+      "media/goszakupki/tema1-slide1.jpg",
+      "media/goszakupki/tema1-slide2.jpg",
+      "media/goszakupki/tema1-slide3.jpg",
+      "media/goszakupki/tema1-slide4.jpg",
+      "media/goszakupki/tema1-slide5.jpg"
+    ],
+    "status": "pending"
+  },
+  {
+    "id": "dozhd-moskva-trial-reel",
+    "account": "personal",
+    "type": "reel",
+    "caption": "Дождь в Москве идёт уже полдня. А настроение всё равно моё, не его.\n\nХорошее утро выбираешь ты, а не погода за окном.\n\nА у тебя как: погода управляет настроением или наоборот?\n\nОставайся здесь, дальше интереснее.\n\n#дождьвмоскве #хорошеенастроение #философияжизни #москва #атмосферныйрилс",
+    "media": [
+      "media/personal/dozhd-moskva-trial-reel.mp4"
+    ],
+    "trial": true,
+    "graduation_strategy": "MANUAL",
+    "status": "pending"
   }
 ]
