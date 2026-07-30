@@ -102,6 +102,12 @@ class Account:
         items = data.get("data", [])
         return items[0] if items else {}
 
+    def delete_media(self, media_id):
+        # Не подтверждено официальной документацией, что DELETE работает в
+        # потоке "Instagram API with Instagram Login" (не Facebook Login) —
+        # проверяется эмпирически реальным вызовом.
+        return self._request("DELETE", media_id)
+
 
 def _main():
     if len(sys.argv) < 3:

@@ -1,0 +1,43 @@
+name: Delete media (manual, one-off tool)
+
+on:
+  workflow_dispatch:
+    inputs:
+      account:
+        description: "Аккаунт (personal или goszakupki)"
+        required: true
+        type: choice
+        options:
+          - personal
+          - goszakupki
+      media_id:
+        description: "ID медиа для удаления (необратимо!)"
+        required: true
+        type: string
+
+jobs:
+  delete:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - run: pip install -r requirements.txt
+
+      - name: Delete media
+        env:
+          IG_PERSONAL_ID: ${{ secrets.IG_PERSONAL_ID }}
+          IG_PERSONAL_TOKEN: ${{ secrets.IG_PERSONAL_TOKEN }}
+          IG_GOSZAKUPKI_ID: ${{ secrets.IG_GOSZAKUPKI_ID }}
+          IG_GOSZAKUPKI_TOKEN: ${{ secrets.IG_GOSZAKUPKI_TOKEN }}
+        run: |
+          python -c "
+          import os
+          from ig_publish import Account
+          account = Account.from_env('${{ inputs.account }}')
+          result = account.delete_media('${{ inputs.media_id }}')
+          print('DELETE result:', result)
+          "
