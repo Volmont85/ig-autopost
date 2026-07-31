@@ -4,8 +4,12 @@
   "type": "reel",
   "publish_at": "2026-07-31T13:00:00+03:00",
   "caption": "Что делает учитель в одиннадцать вечера?\n\nНе отдыхает. Проверяет тетради и готовится к завтрашнему дню — к уроку, который для него сотый, а для кого-то в классе первый в жизни.\n\nРади вот этой поднятой руки. Оно того стоит.\n\n#никтоневидит #учитель #уважениектруду #профессия #школа",
-  "media": ["media/personal/reel-31jul-uchitel-hook-b.mp4"],
+  "media": [
+    "media/personal/reel-31jul-uchitel-hook-b.mp4"
+  ],
   "trial": true,
   "graduation_strategy": "MANUAL",
-  "status": "pending"
+  "status": "done",
+  "published_at": "2026-07-31T10:25:42.771828+00:00",
+  "media_id": "18100863130951204"
 }

@@ -4,6 +4,10 @@
   "type": "story",
   "publish_at": "2026-07-31T13:00:00+03:00",
   "caption": "",
-  "media": ["media/personal/story-31jul-ne-otkladyvay.jpg"],
-  "status": "pending"
+  "media": [
+    "media/personal/story-31jul-ne-otkladyvay.jpg"
+  ],
+  "status": "done",
+  "published_at": "2026-07-31T10:25:42.771828+00:00",
+  "media_id": "18076527053335371"
 }
