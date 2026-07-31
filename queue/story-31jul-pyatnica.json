@@ -4,6 +4,10 @@
   "type": "story",
   "publish_at": "2026-07-31T20:00:00+03:00",
   "caption": "",
-  "media": ["media/personal/story-31jul-pyatnica.jpg"],
-  "status": "pending"
+  "media": [
+    "media/personal/story-31jul-pyatnica.jpg"
+  ],
+  "status": "done",
+  "published_at": "2026-07-31T18:02:37.520003+00:00",
+  "media_id": "18091881428412022"
 }
