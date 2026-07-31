@@ -3,6 +3,10 @@
   "account": "personal",
   "type": "story",
   "caption": "",
-  "media": ["media/personal/story-31jul-posledniy-den-iyulya.jpg"],
-  "status": "pending"
+  "media": [
+    "media/personal/story-31jul-posledniy-den-iyulya.jpg"
+  ],
+  "status": "done",
+  "published_at": "2026-07-31T07:52:16.266218+00:00",
+  "media_id": "17901964290525077"
 }
