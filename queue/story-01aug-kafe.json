@@ -4,6 +4,10 @@
   "type": "story",
   "publish_at": "2026-08-01T13:00:00+03:00",
   "caption": "",
-  "media": ["media/personal/story-01aug-kafe.jpg"],
-  "status": "pending"
+  "media": [
+    "media/personal/story-01aug-kafe.jpg"
+  ],
+  "status": "done",
+  "published_at": "2026-08-01T10:57:57.271219+00:00",
+  "media_id": "18325750576273481"
 }

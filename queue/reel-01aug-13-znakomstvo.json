@@ -4,8 +4,12 @@
   "type": "reel",
   "publish_at": "2026-08-01T13:00:00+03:00",
   "caption": "Ты меня не знаешь\n\nНо если тебе про честно, а не про идеально — оставайся.\n\nЗдесь про то, чего никто не видит: усталость, цену выбора, вещи, которые вслух не говорят.\n\n#никтоневидит #честно #осознанность #взросление #проживое",
-  "media": ["media/personal/reel-01aug-13-znakomstvo.mp4"],
+  "media": [
+    "media/personal/reel-01aug-13-znakomstvo.mp4"
+  ],
   "trial": true,
   "graduation_strategy": "MANUAL",
-  "status": "pending"
+  "status": "done",
+  "published_at": "2026-08-01T10:57:57.271219+00:00",
+  "media_id": "18160276846485566"
 }
