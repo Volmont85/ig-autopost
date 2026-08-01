@@ -4,8 +4,12 @@
   "type": "reel",
   "publish_at": "2026-08-01T09:00:00+03:00",
   "caption": "Сколько стоит казаться, что у тебя всё в порядке\n\nНикто не считает вслух. А платит каждый — и не всегда деньгами.\n\n#никтоневидит #деньги #честно #усталость #взросление",
-  "media": ["media/personal/reel-01aug-09-imidzh.mp4"],
+  "media": [
+    "media/personal/reel-01aug-09-imidzh.mp4"
+  ],
   "trial": true,
   "graduation_strategy": "MANUAL",
-  "status": "pending"
+  "status": "done",
+  "published_at": "2026-08-01T07:22:10.546964+00:00",
+  "media_id": "17918725749205497"
 }
