@@ -12,5 +12,7 @@
   ],
   "status": "done",
   "published_at": "2026-07-30T08:05:50.322027+00:00",
-  "media_id": "17938051035480180"
+  "media_id": "17938051035480180",
+  "media_deleted": true,
+  "media_deleted_at": "2026-08-01T06:30:47.796904+00:00"
 }
