@@ -4,8 +4,12 @@
   "type": "reel",
   "publish_at": "2026-08-02T17:00:00+03:00",
   "caption": "То, что бесит на работе, но вслух не скажешь\n\nНе задачи. А то, что решения принимают те, кто их не делает.\n\n#работа #выгорание #честно #никтоневидит #усталость",
-  "media": ["media/personal/reel-02aug-17-rabota.mp4"],
+  "media": [
+    "media/personal/reel-02aug-17-rabota.mp4"
+  ],
   "trial": true,
   "graduation_strategy": "MANUAL",
-  "status": "pending"
+  "status": "done",
+  "published_at": "2026-08-02T14:44:59.871681+00:00",
+  "media_id": "18082015451312291"
 }
