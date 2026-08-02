@@ -4,6 +4,9 @@
   "type": "story",
   "publish_at": "2026-08-02T13:00:00+03:00",
   "caption": "",
-  "media": ["media/personal/story-02aug-reka.jpg"],
-  "status": "pending"
+  "media": [
+    "media/personal/story-02aug-reka.jpg"
+  ],
+  "status": "failed",
+  "error": "Media ID is not available"
 }
