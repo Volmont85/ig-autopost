@@ -4,8 +4,12 @@
   "type": "reel",
   "publish_at": "2026-08-02T09:00:00+03:00",
   "caption": "Зависть — это когда сравниваешь свою жизнь целиком с чужим лучшим кадром\n\n#зависть #сравнение #осознанность #никтоневидит #взросление",
-  "media": ["media/personal/reel-02aug-09-zavist-8s.mp4"],
+  "media": [
+    "media/personal/reel-02aug-09-zavist-8s.mp4"
+  ],
   "trial": true,
   "graduation_strategy": "MANUAL",
-  "status": "pending"
+  "status": "done",
+  "published_at": "2026-08-02T07:25:27.392077+00:00",
+  "media_id": "18112571681070046"
 }
