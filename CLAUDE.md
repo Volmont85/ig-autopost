@@ -1,8 +1,10 @@
 # ig-autopost
 
 Автопостинг в два Instagram-аккаунта (`personal`, `goszakupki`) через официальный
-Instagram Graph API. Публикация идёт по расписанию через GitHub Actions
-(каждые 30 минут проверяет `queue/`), медиафайлы раздаются через GitHub Pages.
+Instagram Graph API. Публикация идёт через GitHub Actions — раз в 5 минут её
+запускает локальный heartbeat на Маке, плюс push-триггер (мгновенно) и
+резервный `schedule` на GitHub (см. «Автопуш и мгновенная публикация» ниже).
+Медиафайлы раздаются через GitHub Pages.
 
 Репозиторий публичный: github.com/Volmont85/ig-autopost. Токены и ID лежат
 только в GitHub Secrets, в коде и в файлах `queue/` их быть не должно.
