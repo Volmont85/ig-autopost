@@ -4,6 +4,10 @@
   "type": "story",
   "publish_at": "2026-08-02T21:00:00+03:00",
   "caption": "",
-  "media": ["media/personal/story-02aug-nochnoy-gorod.jpg"],
-  "status": "pending"
+  "media": [
+    "media/personal/story-02aug-nochnoy-gorod.jpg"
+  ],
+  "status": "done",
+  "published_at": "2026-08-02T18:12:57.317849+00:00",
+  "media_id": "18138486337598875"
 }
