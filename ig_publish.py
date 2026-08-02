@@ -108,6 +108,12 @@ class Account:
         # проверяется эмпирически реальным вызовом.
         return self._request("DELETE", media_id)
 
+    def media_fields(self, media_id, fields="like_count,comments_count,media_type,media_product_type,permalink,timestamp"):
+        return self._request("GET", media_id, fields=fields)
+
+    def media_insights(self, media_id, metrics):
+        return self._request("GET", f"{media_id}/insights", metric=",".join(metrics))
+
 
 def _main():
     if len(sys.argv) < 3:
