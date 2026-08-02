@@ -18,10 +18,10 @@ from ig_publish import Account, IGPublishError
 QUEUE_DIR = Path(__file__).resolve().parent / "queue"
 
 METRICS_BY_TYPE = {
-    "reel": ["plays", "reach", "likes", "comments", "shares", "saved", "total_interactions"],
+    "reel": ["views", "reach", "likes", "comments", "shares", "saved", "total_interactions"],
     "carousel": ["reach", "likes", "comments", "saved", "shares", "total_interactions"],
     "photo": ["reach", "likes", "comments", "saved", "shares", "total_interactions"],
-    "story": ["reach", "exits", "replies", "taps_forward", "taps_back"],
+    "story": ["reach", "replies", "navigation"],
 }
 
 
