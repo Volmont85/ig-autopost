@@ -4,6 +4,10 @@
   "type": "story",
   "publish_at": "2026-08-03T13:00:00+03:00",
   "caption": "",
-  "media": ["media/personal/story-02aug-reka.jpg"],
-  "status": "pending"
+  "media": [
+    "media/personal/story-02aug-reka.jpg"
+  ],
+  "status": "done",
+  "published_at": "2026-08-03T10:04:19.638231+00:00",
+  "media_id": "17898653388348636"
 }
