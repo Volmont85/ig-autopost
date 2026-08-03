@@ -2,10 +2,10 @@
   "id": "reel-03aug-09-mechta-hook-a",
   "account": "personal",
   "type": "reel",
-  "publish_at": "2026-08-03T09:00:00+03:00",
+  "publish_at": "2026-08-04T09:00:00+03:00",
   "caption": "Помнишь, от чего ты отказался ради стабильности\n\nОна никуда не ушла. Просто перестала о себе напоминать.\n\n#мечта #стабильность #выбор #никтоневидит #взросление",
   "media": ["media/personal/reel-03aug-09-mechta-hook-a.mp4"],
   "trial": true,
   "graduation_strategy": "MANUAL",
-  "status": "draft"
+  "status": "pending"
 }
