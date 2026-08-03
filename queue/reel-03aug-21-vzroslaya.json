@@ -4,8 +4,12 @@
   "type": "reel",
   "publish_at": "2026-08-03T21:00:00+03:00",
   "caption": "Взрослая жизнь — это когда половина сил уходит на то, чтобы не сорваться на людей, которые ни при чём\n\n#взрослаяжизнь #усталость #самоконтроль #никтоневидит #честно",
-  "media": ["media/personal/reel-03aug-21-vzroslaya.mp4"],
+  "media": [
+    "media/personal/reel-03aug-21-vzroslaya.mp4"
+  ],
   "trial": true,
   "graduation_strategy": "MANUAL",
-  "status": "pending"
+  "status": "done",
+  "published_at": "2026-08-03T18:06:07.497353+00:00",
+  "media_id": "18122969269840434"
 }
