@@ -11,5 +11,7 @@
   "graduation_strategy": "MANUAL",
   "status": "done",
   "published_at": "2026-08-02T10:57:32.994631+00:00",
-  "media_id": "18237612781312064"
+  "media_id": "18237612781312064",
+  "media_deleted": true,
+  "media_deleted_at": "2026-08-04T06:29:11.324238+00:00"
 }
