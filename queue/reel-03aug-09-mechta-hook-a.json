@@ -4,8 +4,12 @@
   "type": "reel",
   "publish_at": "2026-08-04T09:00:00+03:00",
   "caption": "Помнишь, от чего ты отказался ради стабильности\n\nОна никуда не ушла. Просто перестала о себе напоминать.\n\n#мечта #стабильность #выбор #никтоневидит #взросление",
-  "media": ["media/personal/reel-03aug-09-mechta-hook-a.mp4"],
+  "media": [
+    "media/personal/reel-03aug-09-mechta-hook-a.mp4"
+  ],
   "trial": true,
   "graduation_strategy": "MANUAL",
-  "status": "pending"
+  "status": "done",
+  "published_at": "2026-08-04T06:08:13.600167+00:00",
+  "media_id": "18211423573352754"
 }
