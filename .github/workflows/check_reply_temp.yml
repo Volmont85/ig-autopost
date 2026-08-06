@@ -1,0 +1,23 @@
+name: Check reply pipeline (temp)
+on:
+  workflow_dispatch:
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install -r requirements.txt
+      - name: Check decide()
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: |
+          python3 -c "
+          from ig_reply import _decide
+          d1 = _decide('realbuiltbyone', 'комментарий', 'Классный ролик! А сколько стоит доставка?', 'test_user')
+          print('ОБЫЧНЫЙ КОММЕНТАРИЙ:', d1)
+          d2 = _decide('realbuiltbyone', 'комментарий', 'скидки скидки переходи по ссылке в профиле заработок без вложений', 'spam_bot')
+          print('СПАМ:', d2)
+          "
