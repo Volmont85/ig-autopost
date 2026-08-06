@@ -114,6 +114,9 @@ class Account:
     def media_insights(self, media_id, metrics):
         return self._request("GET", f"{media_id}/insights", metric=",".join(metrics))
 
+    def account_fields(self, fields="followers_count,media_count,username"):
+        return self._request("GET", self.ig_id, fields=fields)
+
     # --- Комментарии ---
 
     def list_comments(self, media_id):

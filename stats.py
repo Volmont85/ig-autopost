@@ -27,6 +27,11 @@
 
 Поля `topic` и `hook` в queue/<id>.json необязательные, но если их заполнять,
 отчёт сможет сравнивать темы и формулировки хуков между собой.
+
+Отдельно от постов — подписчики (`stats/followers.jsonl`). Это другая
+гранулярность: не пост, а аккаунт, и мерить есть смысл при каждом прогоне
+(дешёвый вызов, никакого расписания как у постов не нужно). Замеряется для
+каждого аккаунта, у которого есть хоть одна запись в queue/.
 """
 import json
 import statistics
@@ -42,6 +47,7 @@ QUEUE_DIR = ROOT / "queue"
 STATS_DIR = ROOT / "stats"
 HISTORY_PATH = STATS_DIR / "history.jsonl"
 LATEST_PATH = STATS_DIR / "latest.json"
+FOLLOWERS_PATH = STATS_DIR / "followers.jsonl"
 REPORT_PATH = STATS_DIR / "report.md"
 
 MSK = timezone(timedelta(hours=3))
@@ -206,6 +212,86 @@ def collect(force=False):
     return len(new_rows)
 
 
+def _active_accounts():
+    return sorted({e["account"] for e in read_queue_entries() if e.get("account")})
+
+
+def collect_followers():
+    """Замерить подписчиков по каждому активному аккаунту. Дописать в followers.jsonl."""
+    now = datetime.now(timezone.utc)
+    rows = []
+    for account_name in _active_accounts():
+        try:
+            account = Account.from_env(account_name)
+            info = account.account_fields()
+        except IGPublishError as exc:
+            _log(f"[{account_name}] не удалось получить подписчиков: {exc}")
+            continue
+        row = {
+            "account": account_name,
+            "measured_at": now.isoformat(),
+            "followers_count": info.get("followers_count"),
+            "media_count": info.get("media_count"),
+        }
+        rows.append(row)
+        _log(f"[{account_name}] подписчиков: {row['followers_count']}")
+
+    if rows:
+        STATS_DIR.mkdir(exist_ok=True)
+        with open(FOLLOWERS_PATH, "a", encoding="utf-8") as f:
+            for row in rows:
+                f.write(json.dumps(row, ensure_ascii=False) + "\n")
+    return len(rows)
+
+
+def read_followers_history():
+    if not FOLLOWERS_PATH.exists():
+        return []
+    rows = []
+    with open(FOLLOWERS_PATH, "r", encoding="utf-8") as f:
+        for line in f:
+            line = line.strip()
+            if line:
+                try:
+                    rows.append(json.loads(line))
+                except json.JSONDecodeError:
+                    _log(f"пропущена битая строка followers: {line[:80]}")
+    return rows
+
+
+def _followers_table(followers_history):
+    by_account = defaultdict(list)
+    for row in followers_history:
+        if row.get("account") and row.get("followers_count") is not None:
+            by_account[row["account"]].append(row)
+    if not by_account:
+        return ""
+
+    def _delta_since(rows_sorted, current, hours_ago):
+        target = _parse_dt(rows_sorted[-1]["measured_at"]) - timedelta(hours=hours_ago)
+        candidates = [r for r in rows_sorted if _parse_dt(r["measured_at"]) <= target]
+        if not candidates:
+            return None
+        baseline = candidates[-1].get("followers_count")
+        return None if baseline is None else current - baseline
+
+    def _fmt(delta):
+        if delta is None:
+            return "—"
+        return f"+{delta}" if delta >= 0 else str(delta)
+
+    lines = ["### Подписчики", "",
+             "| Аккаунт | Сейчас | За 24ч | За 7 дней |", "|---|---:|---:|---:|"]
+    for account_name, rows in sorted(by_account.items()):
+        rows_sorted = sorted(rows, key=lambda r: r["measured_at"])
+        current = rows_sorted[-1]["followers_count"]
+        d1 = _delta_since(rows_sorted, current, 24)
+        d7 = _delta_since(rows_sorted, current, 24 * 7)
+        lines.append(f"| {account_name} | {current} | {_fmt(d1)} | {_fmt(d7)} |")
+    lines.append("")
+    return "\n".join(lines)
+
+
 def write_latest(history):
     latest = {}
     for row in history:
@@ -259,7 +345,7 @@ def _slice_table(rows, key_fn, label):
     return "\n".join(lines)
 
 
-def build_report(history):
+def build_report(history, followers_history=None):
     bench = benchmark_rows(history)
     now_msk = datetime.now(MSK).strftime("%Y-%m-%d %H:%M МСК")
 
@@ -269,6 +355,10 @@ def build_report(history):
            "Сравниваются просмотры (рилсы) и охват (фото, карусели, сторис) на "
            f"{BENCHMARK_AGE_H}-й час жизни поста, допуск ±{BENCHMARK_TOLERANCE_H} ч. "
            "Медиана надёжнее среднего: один залетевший ролик не перекашивает картину.", ""]
+
+    followers_table = _followers_table(followers_history or [])
+    if followers_table:
+        out.append(followers_table)
 
     if not bench:
         out.append("Пока нет ни одного поста с замером в нужном возрасте. "
@@ -325,9 +415,12 @@ def main():
     if "--report" not in args:
         count = collect(force="--all" in args)
         _log(f"новых замеров: {count}")
+        followers_count = collect_followers()
+        _log(f"замеров подписчиков: {followers_count}")
     history = read_history()
+    followers_history = read_followers_history()
     write_latest(history)
-    build_report(history)
+    build_report(history, followers_history)
     _log(f"отчёт обновлён: {REPORT_PATH.relative_to(ROOT)}")
 
 
