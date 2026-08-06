@@ -16,6 +16,13 @@ on:
 permissions:
   contents: write
 
+concurrency:
+  # Та же причина, что в publish.yml — heartbeat дёргает каждые 5 минут
+  # независимо от предыдущего прогона, при сбоях GitHub Actions это копит
+  # десятки queued-запусков, которые могут стартовать разом.
+  group: reply-queue
+  cancel-in-progress: false
+
 jobs:
   reply:
     runs-on: ubuntu-latest

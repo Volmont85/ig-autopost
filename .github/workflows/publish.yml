@@ -18,6 +18,17 @@ on:
 permissions:
   contents: write
 
+concurrency:
+  # Heartbeat дёргает workflow_dispatch каждые 5 минут независимо от того,
+  # закончился ли предыдущий прогон — при сбоях GitHub Actions (см. CLAUDE.md,
+  # инцидент с Major Outage 2026-08-06) это накапливает десятки queued-запусков.
+  # Без этой группы они могли бы стартовать разом и опубликовать одну и ту же
+  # запись очереди по нескольку раз (run_queue.py не имеет блокировки между
+  # параллельными процессами). cancel-in-progress: false — не отменяем, а
+  # выстраиваем в очередь, чтобы ни один тик публикации не потерялся.
+  group: publish-queue
+  cancel-in-progress: false
+
 jobs:
   publish:
     runs-on: ubuntu-latest
