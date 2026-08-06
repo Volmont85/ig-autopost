@@ -1,0 +1,21 @@
+name: Check quota (temp)
+on:
+  workflow_dispatch:
+    inputs:
+      account:
+        required: true
+        type: string
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install -r requirements.txt
+      - name: Check quota
+        env:
+          IG_REALBUILTBYONE_ID: ${{ secrets.IG_REALBUILTBYONE_ID }}
+          IG_REALBUILTBYONE_TOKEN: ${{ secrets.IG_REALBUILTBYONE_TOKEN }}
+        run: python ig_publish.py ${{ inputs.account }} quota
