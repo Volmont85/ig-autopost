@@ -1,6 +1,6 @@
 # ig-autopost
 
-Автопостинг в два Instagram-аккаунта (`personal`, `goszakupki`) через официальный
+Автопостинг в три Instagram-аккаунта (`personal`, `goszakupki`, `realbuiltbyone`) через официальный
 Instagram Graph API. Публикация идёт через GitHub Actions — раз в 5 минут её
 запускает локальный heartbeat на Маке, плюс push-триггер (мгновенно) и
 резервный `schedule` на GitHub (см. «Автопуш и мгновенная публикация» ниже).
