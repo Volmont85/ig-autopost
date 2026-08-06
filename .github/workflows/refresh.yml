@@ -36,3 +36,13 @@ jobs:
           if [ -n "$NEW_TOKEN" ]; then
             gh secret set IG_GOSZAKUPKI_TOKEN --body "$NEW_TOKEN"
           fi
+
+      - name: Refresh realbuiltbyone token
+        env:
+          IG_REALBUILTBYONE_TOKEN: ${{ secrets.IG_REALBUILTBYONE_TOKEN }}
+          GH_TOKEN: ${{ secrets.GH_PAT }}
+        run: |
+          NEW_TOKEN=$(python refresh_token.py realbuiltbyone)
+          if [ -n "$NEW_TOKEN" ]; then
+            gh secret set IG_REALBUILTBYONE_TOKEN --body "$NEW_TOKEN"
+          fi

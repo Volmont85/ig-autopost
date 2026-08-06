@@ -37,6 +37,8 @@ jobs:
           IG_PERSONAL_TOKEN: ${{ secrets.IG_PERSONAL_TOKEN }}
           IG_GOSZAKUPKI_ID: ${{ secrets.IG_GOSZAKUPKI_ID }}
           IG_GOSZAKUPKI_TOKEN: ${{ secrets.IG_GOSZAKUPKI_TOKEN }}
+          IG_REALBUILTBYONE_ID: ${{ secrets.IG_REALBUILTBYONE_ID }}
+          IG_REALBUILTBYONE_TOKEN: ${{ secrets.IG_REALBUILTBYONE_TOKEN }}
         run: python stats.py ${{ inputs.force && '--all' || '' }}
 
       - name: Commit stats
