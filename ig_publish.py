@@ -114,6 +114,41 @@ class Account:
     def media_insights(self, media_id, metrics):
         return self._request("GET", f"{media_id}/insights", metric=",".join(metrics))
 
+    # --- Комментарии ---
+
+    def list_comments(self, media_id):
+        data = self._request(
+            "GET", f"{media_id}/comments",
+            fields="id,text,username,timestamp,replies{id,text,username}",
+        )
+        return data.get("data", [])
+
+    def reply_to_comment(self, comment_id, message):
+        return self._request("POST", f"{comment_id}/replies", message=message)["id"]
+
+    # --- Личные сообщения ---
+
+    def list_conversations(self, limit=50):
+        data = self._request(
+            "GET", f"{self.ig_id}/conversations",
+            platform="instagram", fields="id,updated_time", limit=limit,
+        )
+        return data.get("data", [])
+
+    def list_messages(self, conversation_id, limit=25):
+        data = self._request(
+            "GET", conversation_id,
+            fields=f"messages.limit({limit}){{id,created_time,from,to,message}}",
+        )
+        return data.get("messages", {}).get("data", [])
+
+    def send_message(self, recipient_id, message):
+        return self._request(
+            "POST", f"{self.ig_id}/messages",
+            recipient=json.dumps({"id": recipient_id}),
+            message=json.dumps({"text": message}),
+        )
+
 
 def _main():
     if len(sys.argv) < 3:

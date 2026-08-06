@@ -1,0 +1,57 @@
+name: Auto-reply to comments and DMs
+
+on:
+  schedule:
+    # Тот же принцип смещения минуты, что в publish.yml/stats.yml — см.
+    # CLAUDE.md, инцидент про систематический дроп schedule-тиков GitHub.
+    # Резервный триггер: основную частоту даёт heartbeat на Маке.
+    - cron: "8,38 * * * *"
+  workflow_dispatch:
+    inputs:
+      account:
+        description: "Аккаунт (personal / goszakupki / realbuiltbyone)"
+        required: true
+        type: string
+
+permissions:
+  contents: write
+
+jobs:
+  reply:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - run: pip install -r requirements.txt
+
+      - name: Run auto-reply
+        env:
+          IG_REALBUILTBYONE_ID: ${{ secrets.IG_REALBUILTBYONE_ID }}
+          IG_REALBUILTBYONE_TOKEN: ${{ secrets.IG_REALBUILTBYONE_TOKEN }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: python ig_reply.py "${{ inputs.account || 'realbuiltbyone' }}"
+
+      - name: Commit reply state
+        run: |
+          if ! git diff --quiet -- replies/ || [ -n "$(git status --porcelain replies/)" ]; then
+            git config user.name "github-actions[bot]"
+            git config user.email "github-actions[bot]@users.noreply.github.com"
+            git add replies/
+            git commit -m "replies: state update $(date -u +%Y-%m-%dT%H:%MZ) [skip ci]"
+
+            # Тот же паттерн retry, что в publish.yml/stats.yml — см. CLAUDE.md.
+            for i in 1 2 3 4 5 6; do
+              if git push; then
+                exit 0
+              fi
+              git fetch origin main
+              git rebase origin/main
+              sleep 3
+            done
+            echo "::error::Не удалось запушить состояние ответов после нескольких попыток"
+            exit 1
+          fi
