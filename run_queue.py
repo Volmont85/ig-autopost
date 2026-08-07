@@ -7,6 +7,7 @@
 """
 import json
 import os
+import subprocess
 import sys
 import time
 from datetime import datetime, timezone
@@ -16,7 +17,13 @@ import requests
 
 from ig_publish import Account, IGPublishError
 
-QUEUE_DIR = Path(__file__).resolve().parent / "queue"
+REPO_DIR = Path(__file__).resolve().parent
+QUEUE_DIR = REPO_DIR / "queue"
+
+# Если прогон захватил запись (status: publishing), но не успел её завершить
+# за это время — считаем прогон умершим (упал/убит) и разрешаем перезахват.
+# С запасом больше самого длинного таймаута публикации (300с для видео/reels).
+CLAIM_STALE_SECONDS = 15 * 60
 
 
 def _log(message):
@@ -48,6 +55,87 @@ def _is_due(entry, now_utc):
     if publish_at.tzinfo is None:
         publish_at = publish_at.replace(tzinfo=timezone.utc)
     return publish_at.astimezone(timezone.utc) <= now_utc
+
+
+def _parse_dt(raw):
+    dt = datetime.fromisoformat(raw)
+    if dt.tzinfo is None:
+        dt = dt.replace(tzinfo=timezone.utc)
+    return dt.astimezone(timezone.utc)
+
+
+def _is_claimable(entry, now_utc):
+    status = entry.get("status")
+    if status == "pending":
+        return True
+    if status != "publishing":
+        return False
+    claimed_at_raw = entry.get("claimed_at")
+    if not claimed_at_raw:
+        return True
+    return (now_utc - _parse_dt(claimed_at_raw)).total_seconds() > CLAIM_STALE_SECONDS
+
+
+def _git(*args):
+    return subprocess.run(
+        ["git", *args], cwd=REPO_DIR, capture_output=True, text=True
+    )
+
+
+def _ensure_git_identity():
+    if not _git("config", "user.email").stdout.strip():
+        _git("config", "user.email", "github-actions[bot]@users.noreply.github.com")
+        _git("config", "user.name", "github-actions[bot]")
+
+
+def _commit_and_push(rel_path, message):
+    """Коммитит и пушит один файл очереди с ретраями fetch+rebase — тот же
+    паттерн, что раньше жил только в workflow YAML (см. CLAUDE.md, инцидент
+    2026-08-06). Возвращает True, если наш коммит доехал до origin/main.
+
+    На конфликте при rebase (кто-то другой запушил изменение того же файла)
+    сразу отступаем, не тратя оставшиеся попытки, — вызывающий код сам
+    решит, что делать, перечитав файл с диска."""
+    _ensure_git_identity()
+    for attempt in range(6):
+        _git("add", str(rel_path))
+        _git("commit", "-m", message)  # если уже закоммичено локально с прошлой попытки — просто no-op
+        if _git("push").returncode == 0:
+            return True
+        _git("fetch", "origin", "main")
+        if _git("rebase", "origin/main").returncode != 0:
+            _git("rebase", "--abort")
+            break
+        time.sleep(3)
+    # Синхронизируемся с origin/main перед выходом — иначе брошенный локальный
+    # коммит (наша проигранная заявка) может уехать в push следующей записи
+    # цикла и затереть чужой реальный статус (например, "done" победителя).
+    _git("reset", "--hard", "origin/main")
+    return False
+
+
+def _claim_entry(path, entry, now_utc):
+    """Помечает запись 'publishing' и пушит это в git ДО вызова Instagram API.
+
+    Если пуш проигран другому прогону — значит кто-то уже забрал эту запись,
+    и мы её пропускаем вместо повторной публикации. Раньше запись читалась
+    один раз в начале джобы, а коммит/пуш финального статуса происходил
+    только в самом конце workflow — при одновременном старте нескольких
+    прогонов (как случилось 2026-08-06 при выходе из Major Outage GitHub
+    Actions: скопилось ~20 отложенных запусков, стартовавших разом) каждый
+    из них видел status=pending и публиковал независимо — очередь ушла в
+    Instagram 9 раз подряд. Захват здесь закрывает именно эту гонку: кто
+    первым запушил 'publishing', тот и публикует.
+    """
+    rel_path = path.relative_to(REPO_DIR)
+    entry["status"] = "publishing"
+    entry["claimed_at"] = now_utc.isoformat()
+    _save_entry(path, entry)
+    entry_id = entry.get("id", path.stem)
+
+    if _commit_and_push(rel_path, f"queue: claim {entry_id} [skip ci]"):
+        return True
+    return False
 
 
 def _media_url(base_url, media_path):
@@ -117,12 +205,12 @@ def main():
     processed = 0
 
     for path, entry in entries:
-        if entry.get("status") != "pending" or not _is_due(entry, now_utc):
+        if not _is_claimable(entry, now_utc) or not _is_due(entry, now_utc):
             continue
 
         account_name = entry["account"]
         entry_id = entry.get("id", path.stem)
-        processed += 1
+        rel_path = path.relative_to(REPO_DIR)
 
         try:
             if account_name not in accounts:
@@ -139,6 +227,11 @@ def main():
                 _log(f"[{entry_id}] пропущено: суточная квота аккаунта '{account_name}' исчерпана")
                 continue
 
+            processed += 1
+            if not _claim_entry(path, entry, now_utc):
+                _log(f"[{entry_id}] пропущено: запись уже забрал другой прогон")
+                continue
+
             _log(f"[{entry_id}] публикация в '{account_name}' ({entry['type']})...")
             media_id = _publish_entry(account, entry, base_url)
 
@@ -146,12 +239,14 @@ def main():
             entry["published_at"] = now_utc.isoformat()
             entry["media_id"] = media_id
             _save_entry(path, entry)
+            _commit_and_push(rel_path, f"queue: published {entry_id} [skip ci]")
             _log(f"[{entry_id}] опубликовано, media_id={media_id}")
 
         except Exception as exc:
             entry["status"] = "failed"
             entry["error"] = str(exc)
             _save_entry(path, entry)
+            _commit_and_push(rel_path, f"queue: failed {entry_id} [skip ci]")
             _log(f"[{entry_id}] ошибка: {exc}")
 
     if processed == 0:
