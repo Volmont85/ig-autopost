@@ -4,7 +4,9 @@
   "type": "reel",
   "publish_at": "2026-08-07T11:30:00+03:00",
   "caption": "«Полковник Сандерс основал KFC в 65» — это самая пересказываемая версия, и она не сходится с датами.\n\nХарланд Сандерс родился 9 сентября 1890 года. Первую франшизу Kentucky Fried Chicken он продал в 1952 году — Питу Харману из Солт-Лейк-Сити. То есть на старте ему был 61 год, а не 65.\n\nЧто действительно случилось в 65: в 1955-1956 годах трассу пустили в обход его придорожного кафе в Корбине, и кафе пришлось продать. Это не начало бизнеса, а конец предыдущего.\n\nИсточники: Wikipedia (Colonel Sanders, History of KFC, Pete Harman), Britannica (Harland Sanders).\n\n#историибизнеса #фактчек #kfc #сандерс #мифы",
-  "media": ["media/personal/reel-07aug-sanders-61.mp4"],
+  "media": [
+    "media/personal/reel-07aug-sanders-61.mp4"
+  ],
   "share_to_feed": true,
   "topic": "сколько было лет когда",
   "hook": "Не в 65 он начал",
@@ -13,5 +15,6 @@
   "voice": "Александр (клон, elevenlabs)",
   "trial": true,
   "graduation_strategy": "MANUAL",
-  "status": "pending"
+  "status": "publishing",
+  "claimed_at": "2026-08-07T13:45:04.482069+00:00"
 }
