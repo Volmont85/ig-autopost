@@ -11,6 +11,8 @@
     "media/realbuiltbyone/bbo-02-slide-3.jpg",
     "media/realbuiltbyone/bbo-02-slide-4.jpg"
   ],
-  "status": "publishing",
-  "claimed_at": "2026-08-09T08:52:54.497346+00:00"
+  "status": "done",
+  "claimed_at": "2026-08-09T08:52:54.497346+00:00",
+  "published_at": "2026-08-09T08:52:54.497346+00:00",
+  "media_id": "18211456252343470"
 }
