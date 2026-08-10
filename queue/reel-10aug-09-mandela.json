@@ -7,7 +7,7 @@
   "media": [
     "media/personal/reel-10aug-09-mandela.mp4"
   ],
-  "status": "publishing",
+  "status": "done",
   "trial": true,
   "graduation_strategy": "MANUAL",
   "topic": "не он это сказал",
@@ -15,5 +15,7 @@
   "hook_type": "коллективная ошибка",
   "cta": null,
   "voice": "element:d635fbcb-f550-4602-83fb-f40a6eb75eef",
-  "claimed_at": "2026-08-10T09:22:33.616715+00:00"
+  "claimed_at": "2026-08-10T09:22:33.616715+00:00",
+  "published_at": "2026-08-10T09:22:33.616715+00:00",
+  "media_id": "18192755215378767"
 }
