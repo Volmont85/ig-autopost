@@ -14,5 +14,6 @@
     "media/goszakupki/gz-02-slide-6.jpg"
   ],
   "publish_at": "2026-08-10T12:00:00+03:00",
-  "status": "pending"
+  "status": "publishing",
+  "claimed_at": "2026-08-10T09:01:09.512247+00:00"
 }
