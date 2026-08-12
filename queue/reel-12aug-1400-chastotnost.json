@@ -7,7 +7,7 @@
   "media": [
     "media/personal/reel-12aug-1400-chastotnost.mp4"
   ],
-  "status": "publishing",
+  "status": "done",
   "trial": true,
   "graduation_strategy": "MANUAL",
   "topic": "как это устроено",
@@ -15,5 +15,7 @@
   "hook_type": "коллективная ошибка",
   "cta": "Подпишись, чтобы не пропустить",
   "voice": "element:d635fbcb-f550-4602-83fb-f40a6eb75eef",
-  "claimed_at": "2026-08-12T11:04:02.497822+00:00"
+  "claimed_at": "2026-08-12T11:04:02.497822+00:00",
+  "published_at": "2026-08-12T11:04:02.497822+00:00",
+  "media_id": "17986622826060778"
 }
