@@ -17,5 +17,7 @@
   "voice": "element:d635fbcb-f550-4602-83fb-f40a6eb75eef",
   "claimed_at": "2026-08-10T13:01:18.315391+00:00",
   "published_at": "2026-08-10T13:01:18.315391+00:00",
-  "media_id": "17902532826546557"
+  "media_id": "17902532826546557",
+  "media_deleted": true,
+  "media_deleted_at": "2026-08-12T05:38:08.139235+00:00"
 }
