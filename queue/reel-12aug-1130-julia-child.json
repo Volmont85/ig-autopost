@@ -7,7 +7,7 @@
   "media": [
     "media/personal/reel-12aug-1130-julia-child.mp4"
   ],
-  "status": "publishing",
+  "status": "done",
   "trial": true,
   "graduation_strategy": "MANUAL",
   "topic": "сколько было лет когда",
@@ -15,5 +15,7 @@
   "hook_type": "коллективная ошибка",
   "cta": "Оставайся здесь, дальше интереснее",
   "voice": "element:d635fbcb-f550-4602-83fb-f40a6eb75eef",
-  "claimed_at": "2026-08-12T08:30:41.628579+00:00"
+  "claimed_at": "2026-08-12T08:30:41.628579+00:00",
+  "published_at": "2026-08-12T08:30:41.628579+00:00",
+  "media_id": "18003395201781369"
 }
