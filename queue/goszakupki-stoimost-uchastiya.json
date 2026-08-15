@@ -13,6 +13,8 @@
     "media/goszakupki/gz-05-slide-5.jpg"
   ],
   "publish_at": "2026-08-15T12:00:00+03:00",
-  "status": "publishing",
-  "claimed_at": "2026-08-15T09:03:05.830975+00:00"
+  "status": "done",
+  "claimed_at": "2026-08-15T09:03:05.830975+00:00",
+  "published_at": "2026-08-15T09:03:05.830975+00:00",
+  "media_id": "18152595025448250"
 }
