@@ -7,12 +7,13 @@
   "media": [
     "media/personal/reel-15aug-vokzal.mp4"
   ],
-  "status": "pending",
+  "status": "publishing",
   "trial": true,
   "graduation_strategy": "MANUAL",
   "topic": "откуда слово",
   "hook": "Вокзал — это лондонский парк",
   "hook_type": "коллективная ошибка",
   "cta": null,
-  "voice": "element:d635fbcb-f550-4602-83fb-f40a6eb75eef"
+  "voice": "element:d635fbcb-f550-4602-83fb-f40a6eb75eef",
+  "claimed_at": "2026-08-15T17:30:22.087710+00:00"
 }
