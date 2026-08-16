@@ -7,12 +7,13 @@
   "media": [
     "media/personal/reel-15aug-ikea.mp4"
   ],
-  "status": "pending",
+  "status": "publishing",
   "trial": true,
   "graduation_strategy": "MANUAL",
   "topic": "как это устроено (когнитивное искажение)",
   "hook": "Кривая полка нравится больше ровной",
   "hook_type": "authority challenge / curiosity gap",
   "cta": null,
-  "voice": "element:d635fbcb-f550-4602-83fb-f40a6eb75eef"
+  "voice": "element:d635fbcb-f550-4602-83fb-f40a6eb75eef",
+  "claimed_at": "2026-08-16T13:03:06.842979+00:00"
 }
