@@ -9,6 +9,8 @@
     "media/goszakupki/gz-reel-do-torgov.mp4"
   ],
   "publish_at": "2026-08-17T12:00:00+03:00",
-  "status": "publishing",
-  "claimed_at": "2026-08-17T09:03:41.796952+00:00"
+  "status": "done",
+  "claimed_at": "2026-08-17T09:03:41.796952+00:00",
+  "published_at": "2026-08-17T09:03:41.796952+00:00",
+  "media_id": "18112523947992348"
 }
