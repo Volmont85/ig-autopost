@@ -15,5 +15,6 @@
   "trial": true,
   "graduation_strategy": "MANUAL",
   "share_to_feed": true,
-  "status": "pending"
+  "status": "publishing",
+  "claimed_at": "2026-08-17T06:01:44.937506+00:00"
 }
