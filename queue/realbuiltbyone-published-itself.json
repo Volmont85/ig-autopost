@@ -4,7 +4,7 @@
   "type": "reel",
   "topic": "automation",
   "hook": "This reel published itself",
-  "publish_at": "2026-08-19T19:00:00+03:00",
+  "publish_at": "2026-08-19T18:00:00+03:00",
   "caption": "This reel published itself.\n\nNot a figure of speech. The video file went into a folder, a queue entry described where and when it should go, and a scheduled workflow did the rest. Nobody opened the app. Nobody pressed publish.\n\nThe interesting part isn't the automation. It's what had to exist first: a fixed format for the entry, one file per post so two processes never fight over the same one, and a status field that works as a safety catch — nothing goes out until it's explicitly marked ready.\n\nThat's the boring infrastructure nobody posts about. It's also the only reason the fun part runs unattended.\n\nComment PIPELINE and I'll walk you through how it's wired.\n\n#automation #buildinpublic #solobusiness #workflow #ai",
   "media": ["media/realbuiltbyone/bbo-reel-published-itself.mp4"],
   "status": "pending"
