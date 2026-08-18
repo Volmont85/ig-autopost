@@ -6,6 +6,9 @@
   "hook": "The tool did nothing. It was waiting for me.",
   "publish_at": "2026-08-18T18:00:00+03:00",
   "caption": "The tool did nothing. It was waiting for me.\n\nMost software that gets bought and abandoned isn't broken. It's waiting — to be opened, told what to do, and checked afterwards. Every one of those is still my job.\n\nThat's the difference between a tool and a process. A tool sits until someone starts it. A process runs on its own schedule and only comes back when something needs a decision.\n\nThe question to ask before paying for anything isn't \"what can it do\". It's \"who starts it, and who checks the result\". If the answer to both is still me, I've bought a task, not a solution.\n\n#solobusiness #automation #aiagents #smallbusiness",
-  "media": ["media/realbuiltbyone/bbo-reel-tool-waiting.mp4"],
-  "status": "pending"
+  "media": [
+    "media/realbuiltbyone/bbo-reel-tool-waiting.mp4"
+  ],
+  "status": "publishing",
+  "claimed_at": "2026-08-18T15:02:38.577314+00:00"
 }
