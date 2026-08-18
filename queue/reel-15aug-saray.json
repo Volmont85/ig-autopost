@@ -7,7 +7,7 @@
   "media": [
     "media/personal/reel-15aug-saray.mp4"
   ],
-  "status": "publishing",
+  "status": "done",
   "trial": true,
   "graduation_strategy": "MANUAL",
   "topic": "откуда слово",
@@ -15,5 +15,7 @@
   "hook_type": "коллективная ошибка / curiosity gap",
   "cta": null,
   "voice": "element:d635fbcb-f550-4602-83fb-f40a6eb75eef",
-  "claimed_at": "2026-08-18T15:02:38.577314+00:00"
+  "claimed_at": "2026-08-18T15:02:38.577314+00:00",
+  "published_at": "2026-08-18T15:02:38.577314+00:00",
+  "media_id": "18123209437754850"
 }
