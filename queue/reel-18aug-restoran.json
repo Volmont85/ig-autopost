@@ -1,0 +1,19 @@
+{
+  "id": "reel-18aug-restoran",
+  "account": "personal",
+  "type": "reel",
+  "publish_at": "2026-08-18T14:00:00+03:00",
+  "caption": "Ресторан — это был суп.\n\nФранцузское restaurant образовано от глагола restaurer, «восстанавливать». Так называли крепкий мясной бульон, который считался восстанавливающим силы. В 1765 году парижанин Буланже открыл заведение, где подавали такие «bouillons restaurants», — и со временем название блюда перешло на само заведение. Над дверью у него висел латинский девиз: «Придите ко мне все, у кого болит желудок, и я вас восстановлю».\n\nИсточники: Merriam-Webster, «The History of Restaurant»; Britannica, статья A. Boulanger; The Conversation, «Revolutionary broth».\n\n#интересныефакты #этимология #фактыдня #история #ктознал",
+  "media": [
+    "media/personal/reel-18aug-restoran.mp4"
+  ],
+  "topic": "происхождение слова ресторан",
+  "hook": "Ресторан — это был суп",
+  "hook_type": "коллективная ошибка",
+  "cta": "Подпишись, если такие разборы заходят",
+  "voice": "Александр (ElevenLabs, клон)",
+  "trial": true,
+  "graduation_strategy": "MANUAL",
+  "share_to_feed": true,
+  "status": "draft"
+}
