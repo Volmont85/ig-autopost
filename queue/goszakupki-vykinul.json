@@ -9,6 +9,8 @@
     "media/goszakupki/gz-reel-vykinul.mp4"
   ],
   "publish_at": "2026-08-19T17:00:00+03:00",
-  "status": "publishing",
-  "claimed_at": "2026-08-19T14:01:20.180081+00:00"
+  "status": "done",
+  "claimed_at": "2026-08-19T14:01:20.180081+00:00",
+  "published_at": "2026-08-19T14:01:20.180081+00:00",
+  "media_id": "18113946068107578"
 }
