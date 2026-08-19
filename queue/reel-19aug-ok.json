@@ -15,6 +15,8 @@
   "trial": true,
   "graduation_strategy": "MANUAL",
   "share_to_feed": true,
-  "status": "publishing",
-  "claimed_at": "2026-08-19T13:03:18.877136+00:00"
+  "status": "done",
+  "claimed_at": "2026-08-19T13:03:18.877136+00:00",
+  "published_at": "2026-08-19T13:03:18.877136+00:00",
+  "media_id": "18106162481585261"
 }
