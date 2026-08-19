@@ -204,7 +204,21 @@ def main():
     quota_exhausted = {}
     processed = 0
 
-    for path, entry in entries:
+    for path, _stale_entry in entries:
+        # Перечитываем с диска, а не доверяем entries из _load_entries() в
+        # начале джобы: между стартом и этим моментом локальный git мог уйти
+        # вперёд — например, _commit_and_push() для ДРУГОЙ, более ранней по
+        # алфавиту записи мог проиграть гонку и сделать `git reset --hard
+        # origin/main`, который тихо обновил файл ЭТОЙ записи на диске тоже
+        # (см. инцидент 2026-08-18: reel-16aug-povtor опубликован дважды —
+        # второй прогон после такого reset увидел свежий "done" на диске, но
+        # продолжил работать со старым "pending" из памяти и затёр его).
+        try:
+            with open(path, "r", encoding="utf-8") as f:
+                entry = json.load(f)
+        except FileNotFoundError:
+            continue
+
         if not _is_claimable(entry, now_utc) or not _is_due(entry, now_utc):
             continue
 
