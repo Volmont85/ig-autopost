@@ -3,17 +3,17 @@
   "account": "personal",
   "type": "reel",
   "publish_at": "2026-08-19T16:00:00+03:00",
-  "caption": "OK родилось как шутка.\n\n23 марта 1839 года бостонская газета Morning Post в шутку написала «oll korrect» вместо «all correct» — тогда была мода на юмористические сокращения с нарочно исковерканными словами. Само по себе выражение почти не прижилось бы, но закрепилось случайно: на выборах 1840 года его связали с прозвищем кандидата Мартина Ван Бюрена — «Old Kinderhook». Остальные шутки-сокращения из той же газетной моды забылись, а OK осталось.\n\nИсточники: Merriam-Webster, «The Hilarious History of OK»; Allan Metcalf, «OK: The Improbable Story of America's Greatest Word»; Boston Magazine.\n\n#интересныефакты #этимология #фактыдня #история #ктознал",
+  "caption": "Это слово никто не изобретал специально.\n\nВ 1839 году бостонская газета пошутила: написала «OK» как сокращение от нарочно исковерканного «oll korrect» вместо «all correct». Похожая шутливая мода на «нарочно неправильные» сокращения была в ходу в редакциях того времени. Шутка прижилась и обогнала оригинал — сегодня OK понимают почти на любом языке мира.\n\nИсточник: Merriam-Webster, «The Hilarious History of 'OK'»; Allan Metcalf, «OK: The Improbable Story of America's Greatest Word».\n\n#интересныефакты #этимология #фактыдня #история #ктознал",
   "media": [
     "media/personal/reel-19aug-ok.mp4"
   ],
   "topic": "происхождение слова OK",
-  "hook": "OK родилось как шутка",
-  "hook_type": "коллективная ошибка",
+  "hook": "Это слово никто не изобретал специально",
+  "hook_type": "интрига без разгадки на экране",
   "cta": "Подпишись, если такие разборы заходят",
   "voice": "Александр (ElevenLabs, клон)",
   "trial": true,
   "graduation_strategy": "MANUAL",
   "share_to_feed": true,
-  "status": "draft"
+  "status": "pending"
 }
