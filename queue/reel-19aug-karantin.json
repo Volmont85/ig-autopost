@@ -1,0 +1,19 @@
+{
+  "id": "reel-19aug-karantin",
+  "account": "personal",
+  "type": "reel",
+  "publish_at": "2026-08-19T11:30:00+03:00",
+  "caption": "Карантин начинался с тридцати дней.\n\nВ 1377 году в Рагузе (сегодня Дубровник) ввели изоляцию прибывающих кораблей и путешественников на тридцать дней — trentina, от итальянского «тридцать». Позже, когда тридцати дней стало не хватать для проявления симптомов чумы, срок продлили до сорока — quarantina, «сорок». Именно это слово и осталось в языке.\n\nИсточники: CDC, «Etymologia: Quarantine» (PMC3559069); McGill Office for Science and Society; History Walks in Venice.\n\n#интересныефакты #этимология #фактыдня #история #ктознал",
+  "media": [
+    "media/personal/reel-19aug-karantin.mp4"
+  ],
+  "topic": "происхождение слова карантин",
+  "hook": "Карантин длился не 40 дней",
+  "hook_type": "коллективная ошибка",
+  "cta": "Подпишись, если такие разборы заходят",
+  "voice": "Александр (ElevenLabs, клон)",
+  "trial": true,
+  "graduation_strategy": "MANUAL",
+  "share_to_feed": true,
+  "status": "draft"
+}
