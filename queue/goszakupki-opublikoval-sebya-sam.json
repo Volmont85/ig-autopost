@@ -9,6 +9,8 @@
   "media": [
     "media/goszakupki/gz-reel-opublikoval-sebya-sam.mp4"
   ],
-  "status": "publishing",
-  "claimed_at": "2026-08-20T12:00:26.122640+00:00"
+  "status": "done",
+  "claimed_at": "2026-08-20T12:00:26.122640+00:00",
+  "published_at": "2026-08-20T12:00:26.122640+00:00",
+  "media_id": "17897540373585529"
 }
