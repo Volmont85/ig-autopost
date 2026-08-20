@@ -14,6 +14,8 @@
     "media/goszakupki/gz-06-slide-5.jpg",
     "media/goszakupki/gz-06-slide-6.jpg"
   ],
-  "status": "publishing",
-  "claimed_at": "2026-08-20T09:01:15.462975+00:00"
+  "status": "done",
+  "claimed_at": "2026-08-20T09:01:15.462975+00:00",
+  "published_at": "2026-08-20T09:01:15.462975+00:00",
+  "media_id": "18378943870224680"
 }
