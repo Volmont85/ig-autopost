@@ -9,6 +9,8 @@
     "media/goszakupki/gz-reel-ekonomika-resheniya.mp4"
   ],
   "publish_at": "2026-08-21T17:00:00+03:00",
-  "status": "publishing",
-  "claimed_at": "2026-08-21T14:03:30.248077+00:00"
+  "status": "done",
+  "claimed_at": "2026-08-21T14:03:30.248077+00:00",
+  "published_at": "2026-08-21T14:03:30.248077+00:00",
+  "media_id": "18128474632678208"
 }
