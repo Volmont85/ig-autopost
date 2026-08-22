@@ -9,5 +9,6 @@
     "media/goszakupki/gz-reel-nds-22aug.mp4"
   ],
   "publish_at": "2026-08-22T17:00:00+03:00",
-  "status": "pending"
+  "status": "publishing",
+  "claimed_at": "2026-08-22T14:04:25.100064+00:00"
 }
