@@ -34,6 +34,8 @@ from datetime import datetime, timezone
 import requests
 from flask import Flask, request
 
+from legal_pages import DATA_DELETION_HTML, PRIVACY_POLICY_HTML, TERMS_OF_SERVICE_HTML
+
 VERIFY_TOKEN = os.environ["META_VERIFY_TOKEN"]
 APP_SECRET = os.environ["META_APP_SECRET"].encode("utf-8")
 GITHUB_TOKEN = os.environ["GH_DISPATCH_TOKEN"]
@@ -185,6 +187,23 @@ if os.environ.get("DISABLE_HEARTBEAT") != "1":
 @app.get("/")
 def health():
     return {"status": "ok", "heartbeat": _heartbeat_status}, 200
+
+
+# Статичные страницы для App Dashboard → Basic Settings (Meta App Review) —
+# см. webhook/legal_pages.py, зачем именно они и что в них написано.
+@app.get("/privacy")
+def privacy():
+    return PRIVACY_POLICY_HTML, 200, {"Content-Type": "text/html; charset=utf-8"}
+
+
+@app.get("/terms")
+def terms():
+    return TERMS_OF_SERVICE_HTML, 200, {"Content-Type": "text/html; charset=utf-8"}
+
+
+@app.get("/data-deletion")
+def data_deletion():
+    return DATA_DELETION_HTML, 200, {"Content-Type": "text/html; charset=utf-8"}
 
 
 if __name__ == "__main__":
