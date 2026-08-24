@@ -101,6 +101,22 @@ def _handle_bare_start(message):
          text="Привет! Чтобы получить материал — напишите кодовое слово под постом в Instagram, оттуда придёт ссылка сюда.")
 
 
+def _answer_callback_safe(callback_id, **kwargs):
+    """answerCallbackQuery — чисто косметика (снимает "часики" на кнопке у
+    пользователя, показывает всплывашку), но у Telegram на неё жёсткий
+    таймаут — на практике единицы секунд. Наш поллинг раз в 5 минут почти
+    гарантированно его не успевает, и это НЕ ошибка обработки: подписка уже
+    проверена, материал (если положен) уже отправлен. Поэтому здесь всегда
+    best-effort — падение тут не должно прерывать функцию (см. инцидент
+    24.08.2026: необработанное исключение здесь роняло весь скрипт ДО
+    сохранения offset, из-за чего следующий прогон переспрашивал тот же
+    callback и повторно слал материал — бесконечный цикл дублей)."""
+    try:
+        _api("answerCallbackQuery", callback_query_id=callback_id, **kwargs)
+    except RuntimeError as exc:
+        _log(f"answerCallbackQuery не прошла (не критично): {exc}")
+
+
 def _handle_callback(callback_query):
     data = callback_query.get("data", "")
     if not data.startswith(CHECK_PREFIX):
@@ -115,7 +131,7 @@ def _handle_callback(callback_query):
         status = member.get("status")
     except RuntimeError as exc:
         _log(f"[{user_id}] ошибка getChatMember: {exc}")
-        _api("answerCallbackQuery", callback_query_id=callback_id, text="Не получилось проверить, попробуйте ещё раз")
+        _answer_callback_safe(callback_id, text="Не получилось проверить, попробуйте ещё раз")
         return
 
     if status in ("member", "creator", "administrator"):
@@ -123,10 +139,10 @@ def _handle_callback(callback_query):
         entry = content.get(code, {})
         text = entry.get("text") or "Материал скоро добавим — код принят, но текста пока нет."
         _api("sendMessage", chat_id=chat_id, text=text)
-        _api("answerCallbackQuery", callback_query_id=callback_id, text="Подписка подтверждена ✅")
+        _answer_callback_safe(callback_id, text="Подписка подтверждена ✅")
         _log(f"[{user_id}] подписка подтверждена ({status}), материал «{code}» выдан")
     else:
-        _api("answerCallbackQuery", callback_query_id=callback_id, text="Пока не вижу подписки", show_alert=True)
+        _answer_callback_safe(callback_id, text="Пока не вижу подписки", show_alert=True)
         _api(
             "sendMessage", chat_id=chat_id,
             text="Пока не вижу подписки на @goszakupki_help 🙂 Подпишитесь и нажмите ещё раз",
@@ -147,21 +163,28 @@ def main():
     for update in updates:
         state["offset"] = update["update_id"] + 1
 
-        message = update.get("message")
-        if message and message.get("text", "").startswith("/start"):
-            parts = message["text"].split(maxsplit=1)
-            if len(parts) == 2 and parts[1].strip():
-                _handle_start(message, parts[1].strip())
-            else:
-                _handle_bare_start(message)
-            processed += 1
-            continue
+        try:
+            message = update.get("message")
+            if message and message.get("text", "").startswith("/start"):
+                parts = message["text"].split(maxsplit=1)
+                if len(parts) == 2 and parts[1].strip():
+                    _handle_start(message, parts[1].strip())
+                else:
+                    _handle_bare_start(message)
+                processed += 1
+                continue
 
-        callback_query = update.get("callback_query")
-        if callback_query:
-            _handle_callback(callback_query)
-            processed += 1
-            continue
+            callback_query = update.get("callback_query")
+            if callback_query:
+                _handle_callback(callback_query)
+                processed += 1
+                continue
+        except Exception as exc:
+            # Один сломанный апдейт не должен ронять весь прогон и терять
+            # offset для остальных, уже успешно обработанных, в этом же
+            # батче — offset для ЭТОГО апдейта уже продвинут выше, значит
+            # его не переспросят повторно, ошибка просто логируется.
+            _log(f"[update_id={update['update_id']}] необработанная ошибка, пропускаю: {exc}")
 
     _save_state(state)
     _log(f"итого обработано апдейтов: {processed}")
