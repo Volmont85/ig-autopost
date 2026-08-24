@@ -12,25 +12,26 @@ jobs:
         with:
           python-version: "3.12"
       - run: pip install -r requirements.txt
-      - name: List comments
+      - name: List real account media + comments
         env:
           IG_GOSZAKUPKI_ID: ${{ secrets.IG_GOSZAKUPKI_ID }}
           IG_GOSZAKUPKI_TOKEN: ${{ secrets.IG_GOSZAKUPKI_TOKEN }}
         run: |
           python3 -c "
-          import json, glob
           from ig_publish import Account, IGPublishError
           acc = Account.from_env('goszakupki')
-          for f in sorted(glob.glob('queue/goszakupki-*.json')):
-              d = json.load(open(f))
-              if d.get('status') != 'done' or not d.get('media_id'):
-                  continue
+          data = acc._request('GET', f'{acc.ig_id}/media', fields='id,caption,timestamp,permalink', limit=25)
+          items = data.get('data', [])
+          print(f'ВСЕГО МЕДИА НА АККАУНТЕ: {len(items)}')
+          for m in items:
+              print(f\"--- {m['id']} | {m.get('timestamp')} | {m.get('permalink')}\")
+              print(f\"    caption: {(m.get('caption') or '')[:60]!r}\")
               try:
-                  comments = acc.list_comments(d['media_id'])
+                  comments = acc.list_comments(m['id'])
               except IGPublishError as exc:
-                  print(f\"{d['id']}: OSHIBKA {exc}\")
+                  print(f'    OSHIBKA comments: {exc}')
                   continue
-              print(f\"=== {d['id']} ({d['media_id']}): {len(comments)} comments ===\")
+              print(f'    comments: {len(comments)}')
               for c in comments:
-                  print(f\"   [{c.get('timestamp')}] {c.get('username')}: {c.get('text')!r}\")
+                  print(f\"       [{c.get('timestamp')}] {c.get('username')}: {c.get('text')!r}\")
           "
