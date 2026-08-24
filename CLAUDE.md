@@ -457,7 +457,7 @@ Telegram-бота `@goszakupkiinfo_bot`, где уже идёт настояща
 **Два независимых workflow, один и тот же `state.json` — общая
 concurrency-группа `leadmagnet-ig`:**
 
-- `leadmagnet_ig.yml` — поллинг (heartbeat раз в 5 минут + резервный
+- `leadmagnet_ig.yml` — поллинг (heartbeat на Railway раз в 2 минуты + резервный
   `schedule`): новые комментарии с кодовым словом (Private Reply + публичный
   ответ), новые ответы в уже открытых диалогах (→ кнопка «Да, пришли»).
 - `leadmagnet_ig_webhook.yml` — `repository_dispatch: types: [ig_quick_reply]`,
@@ -499,8 +499,8 @@ Private Reply содержит `recipient_id` (подтверждено офиц
 
 ## Telegram-бот лид-магнита (Часть Б, @goszakupkiinfo_bot)
 
-`tg_leadmagnet_bot.py` + `leadmagnet_tg.yml` (heartbeat + резервный `schedule`,
-своя concurrency-группа `leadmagnet-tg` — не пересекается с `leadmagnet-ig`,
+`tg_leadmagnet_bot.py` + `leadmagnet_tg.yml` (heartbeat на Railway раз в 2
+минуты + резервный `schedule`, своя concurrency-группа `leadmagnet-tg` — не пересекается с `leadmagnet-ig`,
 разные файлы состояния). **Не путать** с `telegram_work`/`telegram_personal`
 (MCP для личного/рабочего аккаунта Александра, MTProto/Telethon) — это
 отдельный полноценный бот через обычный Bot API, заведён в `@BotFather`.
