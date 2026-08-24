@@ -1,0 +1,31 @@
+name: TEMP - recheck comments right now
+
+on:
+  workflow_dispatch:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install -r requirements.txt
+      - name: Recheck
+        env:
+          IG_GOSZAKUPKI_ID: ${{ secrets.IG_GOSZAKUPKI_ID }}
+          IG_GOSZAKUPKI_TOKEN: ${{ secrets.IG_GOSZAKUPKI_TOKEN }}
+        run: |
+          python3 -c "
+          from ig_publish import Account, IGPublishError
+          acc = Account.from_env('goszakupki')
+          data = acc._request('GET', f'{acc.ig_id}/media', fields='id,caption,timestamp,permalink,comments_count', limit=25)
+          for m in data.get('data', []):
+              cc = m.get('comments_count')
+              print(f\"{m['id']} | comments_count={cc} | {m.get('permalink')}\")
+              print(f\"    caption: {(m.get('caption') or '')[:70]!r}\")
+              if cc:
+                  raw = acc._request('GET', f\"{m['id']}/comments\", fields='id,text,username,timestamp')
+                  print(f\"    RAW list_comments response: {raw}\")
+          "
