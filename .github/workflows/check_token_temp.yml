@@ -11,17 +11,4 @@ jobs:
         env:
           IG_GOSZAKUPKI_TOKEN: ${{ secrets.IG_GOSZAKUPKI_TOKEN }}
         run: |
-          curl -s "https://graph.instagram.com/debug_token?input_token=${IG_GOSZAKUPKI_TOKEN}&access_token=${IG_GOSZAKUPKI_TOKEN}" \
-            | python3 -c "
-import json, sys
-data = json.load(sys.stdin)
-info = data.get('data', data)
-print('is_valid:', info.get('is_valid'))
-print('scopes:', info.get('scopes'))
-print('expires_at:', info.get('expires_at'))
-print('type:', info.get('type'))
-print()
-print('RAW (без самого токена в выводе):')
-info.pop('access_token', None)
-print(json.dumps(info, indent=2, ensure_ascii=False))
-"
+          curl -s "https://graph.instagram.com/debug_token?input_token=${IG_GOSZAKUPKI_TOKEN}&access_token=${IG_GOSZAKUPKI_TOKEN}" | python3 -c "import json,sys; d=json.load(sys.stdin); info=d.get('data',d); info.pop('access_token',None); print(json.dumps(info, indent=2, ensure_ascii=False))"
