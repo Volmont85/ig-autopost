@@ -1,0 +1,35 @@
+name: TEMP - check DM visibility
+
+on:
+  workflow_dispatch:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install -r requirements.txt
+      - name: Check messages
+        env:
+          IG_GOSZAKUPKI_ID: ${{ secrets.IG_GOSZAKUPKI_ID }}
+          IG_GOSZAKUPKI_TOKEN: ${{ secrets.IG_GOSZAKUPKI_TOKEN }}
+        run: |
+          python3 -c "
+          from ig_publish import Account, IGPublishError
+          acc = Account.from_env('goszakupki')
+          convs = acc.list_conversations()
+          print(f'CONVERSATIONS: {len(convs)}')
+          for c in convs:
+              print(f\"--- conv {c['id']} updated_time={c.get('updated_time')}\")
+              try:
+                  msgs = acc.list_messages(c['id'])
+              except IGPublishError as exc:
+                  print(f'    OSHIBKA: {exc}')
+                  continue
+              print(f'    messages: {len(msgs)}')
+              for m in msgs:
+                  print(f\"       [{m.get('created_time')}] from={m.get('from')} : {m.get('message')!r}\")
+          "
