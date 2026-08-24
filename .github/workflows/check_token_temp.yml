@@ -7,8 +7,13 @@ jobs:
   check:
     runs-on: ubuntu-latest
     steps:
-      - name: debug_token scopes (goszakupki)
+      - name: conversations (manage_messages probe, read-only)
         env:
+          IG_GOSZAKUPKI_ID: ${{ secrets.IG_GOSZAKUPKI_ID }}
           IG_GOSZAKUPKI_TOKEN: ${{ secrets.IG_GOSZAKUPKI_TOKEN }}
         run: |
-          curl -s "https://graph.instagram.com/debug_token?input_token=${IG_GOSZAKUPKI_TOKEN}&access_token=${IG_GOSZAKUPKI_TOKEN}" | python3 -c "import json,sys; d=json.load(sys.stdin); info=d.get('data',d); info.pop('access_token',None); print(json.dumps(info, indent=2, ensure_ascii=False))"
+          echo "--- GET /{ig-id}/conversations (нужен instagram_business_manage_messages) ---"
+          curl -s "https://graph.instagram.com/v21.0/${IG_GOSZAKUPKI_ID}/conversations?platform=instagram&fields=id,updated_time&limit=5&access_token=${IG_GOSZAKUPKI_TOKEN}" | python3 -m json.tool
+          echo
+          echo "--- GET /{ig-id}?fields=followers_count,username (basic, для сравнения) ---"
+          curl -s "https://graph.instagram.com/v21.0/${IG_GOSZAKUPKI_ID}?fields=followers_count,username&access_token=${IG_GOSZAKUPKI_TOKEN}" | python3 -m json.tool
