@@ -477,12 +477,46 @@ Private Reply содержит `recipient_id` (подтверждено офиц
 после `done`, или payload без существующей записи) молча игнорируется, не
 трогает уже посчитанные `t0/t1/t2`.
 
-**`leadmagnets/goszakupki.json` — сейчас заглушки.** Восемь кодовых слов
-(`ВЫПИСКА`, `ПРОВАЛ`, `ЗАКАЗЧИК`, `СКИДКА`, `ПОРЯДОК`, `ШТРАФ`, `ОТКАЗ`,
-`ТЕНДЕР`) уже на месте, но `title`/`text` — плейсхолдеры `TODO: ...`.
-Реальные тексты лежали только в `lead-magnets-goszakupki.md` на Маке
-(вне этого репозитория) — если правишь этот файл, синхронизируй правку и
-сюда, как и раньше было условлено для черновика доки.
+**`leadmagnets/goszakupki.json` — заполняется постепенно.** Восемь кодовых
+слов (`ВЫПИСКА`, `ПРОВАЛ`, `ЗАКАЗЧИК`, `СКИДКА`, `ПОРЯДОК`, `ШТРАФ`, `ОТКАЗ`,
+`ТЕНДЕР`) на месте; Claude Desktop пишет туда реальные `title`/`text`
+напрямую через файловый мост (обычный Read/Write/Edit, без `git` — автопуш
+на Маке сам заберёт, `leadmagnets` уже в его `WatchPaths`). На 24.08.2026
+заполнены VYPISKA/PROVAL/OTKAZ, остальные ещё `TODO: ...`. `title` уходит в
+реальные сообщения Instagram сразу; `text` — то, что реально выдаёт
+`tg_leadmagnet_bot.py` после подтверждённой подписки (см. ниже) — раньше
+никуда не читалось, теперь читается.
+
+## Telegram-бот лид-магнита (Часть Б, @goszakupkiinfo_bot)
+
+`tg_leadmagnet_bot.py` + `leadmagnet_tg.yml` (heartbeat + резервный `schedule`,
+своя concurrency-группа `leadmagnet-tg` — не пересекается с `leadmagnet-ig`,
+разные файлы состояния). **Не путать** с `telegram_work`/`telegram_personal`
+(MCP для личного/рабочего аккаунта Александра, MTProto/Telethon) — это
+отдельный полноценный бот через обычный Bot API, заведён в `@BotFather`.
+
+Поток: `/start <CODE>` (переход по ссылке из Instagram) → предложение
+подписаться на `@goszakupki_help` + инлайн-кнопка «Проверить подписку»
+(`callback_data: "CHECK:<CODE>"`) → по нажатию `getChatMember(channel,
+user_id)` → `member`/`creator`/`administrator` — выдать `text` из
+`leadmagnets/goszakupki.json` по `CODE`; `left`/`kicked`/`restricted` —
+честно «пока не вижу подписки», та же кнопка, нажимать можно сколько
+угодно раз.
+
+**Без вебхука, в отличие от Instagram-стороны.** Telegram Bot API отдаёт
+нажатия инлайн-кнопок (`callback_query`) прямо в ответе `getUpdates` —
+поллинга достаточно, Railway тут не участвует вообще.
+
+Состояние — `leadmagnet_tg/state.json`, только `offset` для `getUpdates`
+(коммитится тем же паттерном, что остальные состояния в проекте — иначе
+каждый прогон переобрабатывал бы все апдейты заново).
+
+**Секреты**: `TG_LEADMAGNET_BOT_TOKEN` (из `@BotFather`), нужен бот
+администратором в `@goszakupki_help` (иначе `getChatMember` не сработает),
+`TG_GOSZAKUPKI_HELP_CHAT_ID` (chat_id канала, через `getChat` после того как
+бот стал админом). Плюс repo variable `TG_LEADMAGNET_BOT_USERNAME` (без
+`@`, уже проставлена: `goszakupkiinfo_bot`) — читает `ig_leadmagnet.py` для
+генерации ссылки `t.me/<username>?start=<CODE>` на шаге LM_CHECK_2.
 
 **Публичные ответы под комментарием** — 18 вариантов в
 `PUBLIC_REPLY_VARIANTS` внутри `ig_leadmagnet.py` (не в `leadmagnets/*.json`
