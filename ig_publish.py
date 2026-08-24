@@ -152,6 +152,35 @@ class Account:
             message=json.dumps({"text": message}),
         )
 
+    def reply_private(self, comment_id, message):
+        """Private Reply — первый текст в личку в ответ на конкретный
+        комментарий (`comment_id`). Только текст, кнопок здесь быть не
+        может — они появляются лишь в самой переписке, после того как
+        получатель сам что-то напишет в ответ (см. send_quick_replies)."""
+        return self._request(
+            "POST", f"{self.ig_id}/messages",
+            recipient=json.dumps({"comment_id": comment_id}),
+            message=json.dumps({"text": message}),
+        )
+
+    def send_quick_replies(self, recipient_id, text, quick_replies):
+        """quick_replies — список {"title": ..., "payload": ...}, максимум
+        13 штук, title до 20 символов (иначе Instagram обрежет). Нажатие
+        кнопки приходит ТОЛЬКО через вебхук (message.quick_reply.payload) —
+        обычный опрос .../messages его не отдаёт, сверено по официальному
+        Message Reference 24.08.2026."""
+        return self._request(
+            "POST", f"{self.ig_id}/messages",
+            recipient=json.dumps({"id": recipient_id}),
+            message=json.dumps({
+                "text": text,
+                "quick_replies": [
+                    {"content_type": "text", "title": qr["title"], "payload": qr["payload"]}
+                    for qr in quick_replies
+                ],
+            }),
+        )
+
 
 def _main():
     if len(sys.argv) < 3:

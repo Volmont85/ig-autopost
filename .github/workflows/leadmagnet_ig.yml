@@ -1,0 +1,66 @@
+name: Lead magnet - poll IG comments and replies
+
+on:
+  schedule:
+    # Тот же принцип смещения минуты, что в publish.yml/reply.yml/stats.yml —
+    # см. CLAUDE.md, инцидент про систематический дроп schedule-тиков GitHub.
+    # Резервный триггер: основную частоту даёт heartbeat на Маке.
+    - cron: "12,42 * * * *"
+  workflow_dispatch:
+    inputs:
+      account:
+        description: "Аккаунт (пока только goszakupki)"
+        required: false
+        default: "goszakupki"
+        type: string
+
+permissions:
+  contents: write
+
+concurrency:
+  # Общая группа с leadmagnet_ig_webhook.yml — оба трогают один и тот же
+  # leadmagnet/<account>/state.json, конкурентный запуск может привести к
+  # той же гонке, что уже один раз задвоила публикацию рилса (см. CLAUDE.md,
+  # инцидент 2026-08-19 в run_queue.py) — здесь дешевле не подпускать их
+  # друг к другу вообще, чем городить ту же claim-логику ради двух воркфлоу.
+  group: leadmagnet-ig
+  cancel-in-progress: false
+
+jobs:
+  poll:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - run: pip install -r requirements.txt
+
+      - name: Poll comments and first replies
+        env:
+          IG_GOSZAKUPKI_ID: ${{ secrets.IG_GOSZAKUPKI_ID }}
+          IG_GOSZAKUPKI_TOKEN: ${{ secrets.IG_GOSZAKUPKI_TOKEN }}
+        run: python ig_leadmagnet.py poll "${{ inputs.account || 'goszakupki' }}"
+
+      - name: Commit state
+        run: |
+          if [ -n "$(git status --porcelain -- leadmagnet replies stats 2>/dev/null)" ]; then
+            git config user.name "github-actions[bot]"
+            git config user.email "github-actions[bot]@users.noreply.github.com"
+            git add leadmagnet replies stats
+            git commit -m "leadmagnet: poll state update $(date -u +%Y-%m-%dT%H:%MZ) [skip ci]"
+
+            # Тот же retry-паттерн, что в publish.yml/reply.yml/stats.yml.
+            for i in 1 2 3 4 5 6; do
+              if git push; then
+                exit 0
+              fi
+              git fetch origin main
+              git rebase origin/main
+              sleep 3
+            done
+            echo "::error::Не удалось запушить состояние лид-магнита после нескольких попыток"
+            exit 1
+          fi
