@@ -15,9 +15,14 @@ everything else в проекте — сервис на Railway не храни�
   туда же, в поле "Verify Token" при подписке вебхука в Meta App Dashboard.
 - `META_APP_SECRET` — App Secret приложения в Meta for Developers (тот, что
   используется для обмена/продления токенов — не путать с самим IG-токеном).
-- `GH_DISPATCH_TOKEN` — GitHub PAT с правом `repository_dispatch` на
-  `Volmont85/ig-autopost` (для fine-grained PAT — доступ к репозиторию +
-  permission "Actions: Read and write"). Отдельный от `GH_PAT`, которым
+- `GH_DISPATCH_TOKEN` — GitHub PAT с правом дёрнуть `repository_dispatch` на
+  `Volmont85/ig-autopost`. Создаётся на
+  https://github.com/settings/personal-access-tokens/new — Resource owner
+  `Volmont85`, Repository access → Only select repositories → `ig-autopost`,
+  Permissions → Repository permissions → **Contents: Read and write**
+  (сверено по официальной таблице permissions для fine-grained токенов —
+  `POST /repos/{owner}/{repo}/dispatches` числится именно под Contents, не
+  под Actions, как можно было бы подумать). Отдельный от `GH_PAT`, которым
   пользуется `refresh.yml` — этому сервису не нужен доступ к секретам
   репозитория, только право дёрнуть dispatch, так что лучше не переиспользовать
   более широкий токен.
@@ -27,19 +32,24 @@ everything else в проекте — сервис на Railway не храни�
 
 ## Деплой
 
-1. В Railway: New Project → Deploy from GitHub repo → `Volmont85/ig-autopost`,
-   **Root Directory: `webhook`** (важно — иначе Railway попытается собрать
-   весь монорепозиторий целиком).
-2. Проставить переменные окружения выше.
-3. Railway сам подхватит `Procfile` (gunicorn) и `requirements.txt`.
-4. После первого деплоя Railway выдаст публичный URL вида
-   `https://<project>.up.railway.app`.
+Уже сделано (24.08.2026, через `railway up` из `webhook/` как корня —
+не через GitHub-интеграцию, чтобы не тащить в билд весь монорепозиторий):
+
+- Проект: `webhook` в `volmont85's Projects`.
+- Публичный URL: `https://webhook-production-3b88.up.railway.app`.
+- Билд/старт прошли (`SUCCESS`), сервис на момент деплоя падал на старте
+  с `KeyError` по каждой из трёх переменных выше — ожидаемо, они ещё не
+  заданы. Задать их в Railway → сервис `webhook` → Variables — сервис
+  передеплоится сам.
+
+Если нужно передеплоить заново из обновлённого кода — из `webhook/`:
+`railway up -y --detach`.
 
 ## Подписка вебхука в Meta App Dashboard
 
 1. Meta for Developers → приложение → Webhooks (или Products → Webhooks,
    если продукт ещё не добавлен).
-2. Callback URL: `https://<railway-url>/webhook`.
+2. Callback URL: `https://webhook-production-3b88.up.railway.app/webhook`.
 3. Verify Token: то же значение, что в `META_VERIFY_TOKEN`.
 4. Подписаться на поле `messages` для объекта Instagram.
 5. Meta сразу дёрнет `GET /webhook` с `hub.challenge` — если Railway отвечает
@@ -47,7 +57,7 @@ everything else в проекте — сервис на Railway не храни�
 
 ## Проверка
 
-- `GET https://<railway-url>/` → `ok` (health-check, без проверки подписи).
+- `GET https://webhook-production-3b88.up.railway.app/` → `ok` (health-check, без проверки подписи).
 - Локальный прогон тестов сигнатуры/парсинга — см. историю разработки,
   проверялись сценарии: валидная подпись + quick_reply → форвардится;
   неверная подпись → игнорируется молча (200, но без пересылки); обычный
