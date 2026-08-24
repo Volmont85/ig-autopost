@@ -1,0 +1,35 @@
+name: TEMP - list recent comments on all live goszakupki posts
+
+on:
+  workflow_dispatch:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install -r requirements.txt
+      - name: List comments
+        env:
+          IG_GOSZAKUPKI_TOKEN: ${{ secrets.IG_GOSZAKUPKI_TOKEN }}
+        run: |
+          python3 -c "
+          import json, glob
+          from ig_publish import Account, IGPublishError
+          acc = Account.from_env('goszakupki')
+          for f in sorted(glob.glob('queue/goszakupki-*.json')):
+              d = json.load(open(f))
+              if d.get('status') != 'done' or not d.get('media_id') or d.get('media_deleted'):
+                  continue
+              try:
+                  comments = acc.list_comments(d['media_id'])
+              except IGPublishError as exc:
+                  print(f\"{d['id']}: ОШИБКА {exc}\")
+                  continue
+              print(f\"{d['id']} ({d['media_id']}): {len(comments)} комментариев\")
+              for c in comments:
+                  print(f\"   [{c.get('timestamp')}] {c.get('username')}: {c.get('text')!r}\")
+          "
