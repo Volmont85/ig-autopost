@@ -1,0 +1,16 @@
+{
+  "id": "goszakupki-schitaem-vsluh-28aug",
+  "account": "goszakupki",
+  "type": "carousel",
+  "topic": "obespechenie-zayavki-raschet",
+  "hook": "Считаем вслух: сколько денег вы замораживаете на одну заявку",
+  "caption": "Считаем вслух: сколько денег вы замораживаете на одну заявку.\n\nНМЦК 3 000 000 ₽ × обеспечение 1% = 30 000 ₽ заморожено на спецсчёте (ч. 2 ст. 44 44-ФЗ: 0,5–1% при НМЦК до 20 млн, 0,5–5% выше).\n\nУчаствуете в 5 закупках одновременно? Это уже 150 000 ₽ вне оборота — деньги просто лежат, пока решается исход.\n\nСколько у вас заморожено прямо сейчас? Напишите в комментариях.\n\n#госзакупки #тендеры #44фз #223фз #тендерноесопровождение #среднийбизнес",
+  "media": [
+    "media/goszakupki/goszakupki-schitaem-vsluh-slide-1.jpg",
+    "media/goszakupki/goszakupki-schitaem-vsluh-slide-2.jpg",
+    "media/goszakupki/goszakupki-schitaem-vsluh-slide-3.jpg",
+    "media/goszakupki/goszakupki-schitaem-vsluh-slide-4.jpg"
+  ],
+  "publish_at": "2026-08-28T17:00:00+03:00",
+  "status": "draft"
+}
