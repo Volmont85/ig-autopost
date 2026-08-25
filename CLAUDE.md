@@ -1,6 +1,6 @@
 # ig-autopost
 
-Автопостинг в три Instagram-аккаунта (`personal`, `goszakupki`, `realbuiltbyone`) через официальный
+Автопостинг в три Instagram-аккаунта (`personal`, `goszakupki`, `neyrobyuro`) через официальный
 Instagram Graph API. Публикация идёт через GitHub Actions — раз в 2 минуты её
 запускает heartbeat на Railway (`webhook/app.py`, до 24.08.2026 это делал
 локальный процесс на Маке — см. «Автопуш и мгновенная публикация» ниже),
