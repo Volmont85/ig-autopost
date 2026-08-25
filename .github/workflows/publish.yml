@@ -48,6 +48,12 @@ jobs:
           IG_PERSONAL_TOKEN: ${{ secrets.IG_PERSONAL_TOKEN }}
           IG_GOSZAKUPKI_ID: ${{ secrets.IG_GOSZAKUPKI_ID }}
           IG_GOSZAKUPKI_TOKEN: ${{ secrets.IG_GOSZAKUPKI_TOKEN }}
+          IG_NEYROBYURO_ID: ${{ secrets.IG_NEYROBYURO_ID }}
+          IG_NEYROBYURO_TOKEN: ${{ secrets.IG_NEYROBYURO_TOKEN }}
+          # realbuiltbyone переименован в neyrobyuro 25.08.2026 (тот же
+          # IG-аккаунт, тот же ID/токен, см. CLAUDE.md) — секрет оставлен
+          # для уже опубликованных queue-записей со старым "account", если
+          # такие ещё остались необработанными.
           IG_REALBUILTBYONE_ID: ${{ secrets.IG_REALBUILTBYONE_ID }}
           IG_REALBUILTBYONE_TOKEN: ${{ secrets.IG_REALBUILTBYONE_TOKEN }}
           PAGES_BASE_URL: ${{ vars.PAGES_BASE_URL }}

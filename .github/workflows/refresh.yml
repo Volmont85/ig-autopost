@@ -37,12 +37,14 @@ jobs:
             gh secret set IG_GOSZAKUPKI_TOKEN --body "$NEW_TOKEN"
           fi
 
-      - name: Refresh realbuiltbyone token
+      - name: Refresh neyrobyuro token
+        # realbuiltbyone переименован в neyrobyuro 25.08.2026 (тот же
+        # IG-аккаунт/ID, секрет скопирован под новым именем) — см. CLAUDE.md.
         env:
-          IG_REALBUILTBYONE_TOKEN: ${{ secrets.IG_REALBUILTBYONE_TOKEN }}
+          IG_NEYROBYURO_TOKEN: ${{ secrets.IG_NEYROBYURO_TOKEN }}
           GH_TOKEN: ${{ secrets.GH_PAT }}
         run: |
-          NEW_TOKEN=$(python refresh_token.py realbuiltbyone)
+          NEW_TOKEN=$(python refresh_token.py neyrobyuro)
           if [ -n "$NEW_TOKEN" ]; then
-            gh secret set IG_REALBUILTBYONE_TOKEN --body "$NEW_TOKEN"
+            gh secret set IG_NEYROBYURO_TOKEN --body "$NEW_TOKEN"
           fi

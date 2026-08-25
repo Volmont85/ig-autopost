@@ -9,7 +9,7 @@ on:
   workflow_dispatch:
     inputs:
       account:
-        description: "Аккаунт (personal / goszakupki / realbuiltbyone)"
+        description: "Аккаунт (personal / goszakupki / neyrobyuro)"
         required: true
         type: string
 
@@ -37,10 +37,12 @@ jobs:
 
       - name: Run auto-reply
         env:
-          IG_REALBUILTBYONE_ID: ${{ secrets.IG_REALBUILTBYONE_ID }}
-          IG_REALBUILTBYONE_TOKEN: ${{ secrets.IG_REALBUILTBYONE_TOKEN }}
+          # realbuiltbyone переименован в neyrobyuro 25.08.2026 — тот же
+          # IG-аккаунт/ID/токен под новым именем секрета, см. CLAUDE.md.
+          IG_NEYROBYURO_ID: ${{ secrets.IG_NEYROBYURO_ID }}
+          IG_NEYROBYURO_TOKEN: ${{ secrets.IG_NEYROBYURO_TOKEN }}
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
-        run: python ig_reply.py "${{ inputs.account || 'realbuiltbyone' }}"
+        run: python ig_reply.py "${{ inputs.account || 'neyrobyuro' }}"
 
       - name: Commit reply state
         run: |

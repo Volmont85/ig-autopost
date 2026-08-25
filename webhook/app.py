@@ -48,7 +48,8 @@ HEARTBEAT_INTERVAL_SECONDS = int(os.environ.get("HEARTBEAT_INTERVAL_SECONDS", "1
 # ограничения, что уже были у ~/ig-autopost-heartbeat.sh на Маке.
 HEARTBEAT_WORKFLOWS = [
     {"workflow": "publish.yml"},
-    {"workflow": "reply.yml", "inputs": {"account": "realbuiltbyone"}},
+    # realbuiltbyone переименован в neyrobyuro 25.08.2026 — тот же аккаунт.
+    {"workflow": "reply.yml", "inputs": {"account": "neyrobyuro"}},
     {"workflow": "leadmagnet_ig.yml", "inputs": {"account": "goszakupki"}},
     {"workflow": "leadmagnet_tg.yml"},
 ]
