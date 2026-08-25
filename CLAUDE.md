@@ -10,6 +10,19 @@ Instagram Graph API. Публикация идёт через GitHub Actions —
 Репозиторий публичный: github.com/Volmont85/ig-autopost. Токены и ID лежат
 только в GitHub Secrets, в коде и в файлах `queue/` их быть не должно.
 
+**25.08.2026 — `realbuiltbyone` переименован в `neyrobyuro`.** Это тот же
+Instagram-аккаунт (тот же IG user_id, тот же access-токен) — сменился только
+публичный @handle, смена username в самом Instagram не требует ни нового
+токена, ни нового ID. Секреты `IG_REALBUILTBYONE_ID`/`_TOKEN` скопированы под
+новым именем `IG_NEYROBYURO_ID`/`_TOKEN` (значения идентичны на момент
+переименования; `refresh.yml` дальше продлевает уже `IG_NEYROBYURO_TOKEN`).
+Старые `IG_REALBUILTBYONE_*` не удалены — оставлены как есть, на случай
+необработанных queue-записей со старым `"account": "realbuiltbyone"`. Новые
+записи (`queue/`, медиа в `media/`) заводить с `"account": "neyrobyuro"` и в
+`media/neyrobyuro/`; старые файлы `media/realbuiltbyone/` и уже
+опубликованные queue-записи с `account: realbuiltbyone` не трогать —
+историческая точность (какой аккаунт реально принял конкретную публикацию).
+
 ## Формат очереди: один файл на запись (важно, изменилось)
 
 Очередь — это папка `queue/`, где **каждая запись — отдельный файл
