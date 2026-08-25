@@ -122,7 +122,7 @@ push-триггеру. Если нет — оставь как есть или �
 
 ## Как добавить публикацию (основной сценарий)
 
-1. Положить медиафайл в `media/<account>/` (`personal`, `goszakupki` или `realbuiltbyone`).
+1. Положить медиафайл в `media/<account>/` (`personal`, `goszakupki` или `neyrobyuro`).
    - Фото/карусель: **только JPEG**, соотношение сторон 4:5–1.91:1.
    - Reels/видео в Stories: mp4, 9:16, 5–90 сек, H.264/HEVC + AAC.
    - Фото в Stories: JPEG, обычно 9:16.
