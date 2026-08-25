@@ -1,0 +1,17 @@
+{
+  "id": "neyrobyuro-signal-26aug",
+  "account": "realbuiltbyone",
+  "type": "carousel",
+  "topic": "signal-poterya-zayavok",
+  "hook": "Сигнал, который не замечают: где бизнес теряет заявки",
+  "caption": "Сигнал, который не замечают: где бизнес теряет заявки.\n\nЧаще всего это не одна большая проблема, а три маленькие, каждая почти незаметная:\n\n1. Не ответили за час — клиент уже написал конкуренту.\n2. Забыли перезвонить — заявка просто исчезла из поля зрения.\n3. Данные потерялись между чатом и CRM — узнали о заявке, когда было поздно.\n\nПо отдельности каждая выглядит мелочью. Вместе — это и есть та самая утечка, которую не видно в отчётах, потому что там просто нет строки «заявка, которую никто не обработал».\n\nСохраните — проверьте, где теряете именно вы.\n\n#автоматизациябизнеса #нейробюро #ии #бизнеспроцессы #малыйбизнес #crm",
+  "media": [
+    "media/realbuiltbyone/neyrobyuro-signal-slide-1.jpg",
+    "media/realbuiltbyone/neyrobyuro-signal-slide-2.jpg",
+    "media/realbuiltbyone/neyrobyuro-signal-slide-3.jpg",
+    "media/realbuiltbyone/neyrobyuro-signal-slide-4.jpg",
+    "media/realbuiltbyone/neyrobyuro-signal-slide-5.jpg"
+  ],
+  "publish_at": "2026-08-26T18:00:00+03:00",
+  "status": "draft"
+}
