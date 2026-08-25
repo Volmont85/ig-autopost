@@ -9,5 +9,6 @@
     "media/goszakupki/gz-reel-obespechenie-25aug.mp4"
   ],
   "publish_at": "2026-08-25T17:00:00+03:00",
-  "status": "pending"
+  "status": "publishing",
+  "claimed_at": "2026-08-25T14:00:09.193511+00:00"
 }
