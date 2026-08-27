@@ -7,12 +7,13 @@
   "media": [
     "media/personal/reel-20aug-nemec.mp4"
   ],
-  "status": "pending",
+  "status": "publishing",
   "trial": true,
   "graduation_strategy": "MANUAL",
   "topic": "откуда слово",
   "hook": "Немцами звали не немцев",
   "hook_type": "коллективная ошибка",
   "cta": "",
-  "voice": "elevenlabs_clone_alexander"
+  "voice": "elevenlabs_clone_alexander",
+  "claimed_at": "2026-08-27T18:30:22.414046+00:00"
 }
