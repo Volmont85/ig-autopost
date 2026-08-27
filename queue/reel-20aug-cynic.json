@@ -7,12 +7,13 @@
   "media": [
     "media/personal/reel-20aug-cynic.mp4"
   ],
-  "status": "pending",
+  "status": "publishing",
   "trial": true,
   "graduation_strategy": "MANUAL",
   "topic": "откуда слово",
   "hook": "Циников называли собаками",
   "hook_type": "коллективная ошибка",
   "cta": "",
-  "voice": "elevenlabs_clone_alexander"
+  "voice": "elevenlabs_clone_alexander",
+  "claimed_at": "2026-08-27T13:01:17.749319+00:00"
 }
