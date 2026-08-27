@@ -12,6 +12,8 @@
     "media/goszakupki/goszakupki-sroki-slide-4.jpg"
   ],
   "publish_at": "2026-08-27T17:00:00+03:00",
-  "status": "publishing",
-  "claimed_at": "2026-08-27T14:04:29.503954+00:00"
+  "status": "done",
+  "claimed_at": "2026-08-27T14:04:29.503954+00:00",
+  "published_at": "2026-08-27T14:04:29.503954+00:00",
+  "media_id": "17942337189322788"
 }
