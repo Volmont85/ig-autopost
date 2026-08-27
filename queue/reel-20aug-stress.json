@@ -2,9 +2,11 @@
   "id": "reel-20aug-stress",
   "account": "personal",
   "type": "reel",
-  "publish_at": "2026-08-21T11:30:00+03:00",
+  "publish_at": "2026-08-28T09:30:00+03:00",
   "caption": "Мы говорим «стресс», когда имеем в виду психологическое состояние — а слово появилось совсем не для этого.\n\nДо XX века «стресс» — термин из физики: так называли механическое напряжение в металле и других материалах. В 1936 году канадский физиолог Ганс Селье в короткой заметке в журнале Nature позаимствовал это слово для описания реакции организма на нагрузку — так родилась современная теория стресса.\n\nИсточники: Nature (1936); «The History of Stress» — The American Institute of Stress; brainhq.com.\n\n#стресс #этимология #психология #фактодня #откудасловопошло",
-  "media": ["media/personal/reel-20aug-stress.mp4"],
+  "media": [
+    "media/personal/reel-20aug-stress.mp4"
+  ],
   "status": "draft",
   "trial": true,
   "graduation_strategy": "MANUAL",
