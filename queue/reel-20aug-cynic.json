@@ -7,7 +7,7 @@
   "media": [
     "media/personal/reel-20aug-cynic.mp4"
   ],
-  "status": "publishing",
+  "status": "done",
   "trial": true,
   "graduation_strategy": "MANUAL",
   "topic": "откуда слово",
@@ -15,5 +15,7 @@
   "hook_type": "коллективная ошибка",
   "cta": "",
   "voice": "elevenlabs_clone_alexander",
-  "claimed_at": "2026-08-27T13:01:17.749319+00:00"
+  "claimed_at": "2026-08-27T13:01:17.749319+00:00",
+  "published_at": "2026-08-27T13:01:17.749319+00:00",
+  "media_id": "18111808181101312"
 }
