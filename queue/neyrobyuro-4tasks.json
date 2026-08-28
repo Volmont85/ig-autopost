@@ -14,6 +14,8 @@
     "media/neyrobyuro/neyrobyuro-4tasks-slide-6.jpg"
   ],
   "publish_at": "2026-08-28T18:00:00+03:00",
-  "status": "publishing",
-  "claimed_at": "2026-08-28T15:01:56.488014+00:00"
+  "status": "done",
+  "claimed_at": "2026-08-28T15:01:56.488014+00:00",
+  "published_at": "2026-08-28T15:01:56.488014+00:00",
+  "media_id": "18091776452370553"
 }
