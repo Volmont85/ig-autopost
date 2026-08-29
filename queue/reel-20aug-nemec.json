@@ -17,5 +17,7 @@
   "voice": "elevenlabs_clone_alexander",
   "claimed_at": "2026-08-27T18:30:22.414046+00:00",
   "published_at": "2026-08-27T18:30:22.414046+00:00",
-  "media_id": "18108535804877389"
+  "media_id": "18108535804877389",
+  "media_deleted": true,
+  "media_deleted_at": "2026-08-29T10:53:41.963547+00:00"
 }
