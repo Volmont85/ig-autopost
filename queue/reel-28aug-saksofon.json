@@ -7,9 +7,10 @@
   "media": [
     "media/personal/reel-28aug-saksofon.mp4"
   ],
-  "status": "pending",
+  "status": "publishing",
   "trial": true,
   "graduation_strategy": "MANUAL",
   "topic": "откуда слово",
-  "hook": "У саксофона есть фамилия"
+  "hook": "У саксофона есть фамилия",
+  "claimed_at": "2026-08-30T11:00:32.043595+00:00"
 }
