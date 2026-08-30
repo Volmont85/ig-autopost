@@ -7,7 +7,7 @@
   "media": [
     "media/personal/reel-27aug-nikotin.mp4"
   ],
-  "status": "publishing",
+  "status": "done",
   "trial": true,
   "graduation_strategy": "MANUAL",
   "topic": "откуда слово",
@@ -16,5 +16,7 @@
   "cta": "нет (формат без CTA, короткий тест-формат)",
   "voice": "ElevenLabs (Николай, Eleven v3, Creative)",
   "production_note": "Собран 27.08: озвучка ElevenLabs с [pause]-тегами на границах фраз, тайминги смены титров/картинки взяты по середине пауз (silencedetect), 3 сцены (табак/письмо Нико/аптечная склянка), переходы dip-to-black, +1с хвост после озвучки.",
-  "claimed_at": "2026-08-30T08:30:16.934102+00:00"
+  "claimed_at": "2026-08-30T08:30:16.934102+00:00",
+  "published_at": "2026-08-30T08:30:16.934102+00:00",
+  "media_id": "18094606829155337"
 }
