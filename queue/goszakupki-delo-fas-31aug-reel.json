@@ -9,6 +9,7 @@
     "media/goszakupki/goszakupki-delo-fas-31aug-reel.mp4"
   ],
   "publish_at": "2026-08-31T17:00:00+03:00",
-  "status": "publishing",
-  "claimed_at": "2026-08-31T14:10:54.118873+00:00"
+  "status": "failed",
+  "claimed_at": "2026-08-31T14:10:54.118873+00:00",
+  "error": "Медиафайл недоступен: https://volmont85.github.io/ig-autopost/media/goszakupki/goszakupki-delo-fas-31aug-reel.mp4"
 }
