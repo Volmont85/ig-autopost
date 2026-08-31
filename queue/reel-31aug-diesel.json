@@ -7,12 +7,14 @@
   "media": [
     "media/personal/reel-31aug-diesel.mp4"
   ],
-  "status": "publishing",
+  "status": "done",
   "trial": true,
   "graduation_strategy": "MANUAL",
   "topic": "откуда слово",
   "hook": "Дизель — это фамилия",
   "production_note": "Пересобрано 31.08.2026: 4 картинки вместо 2 использованных сцен, адаптивный зум (build_reel2.py, скорость = (max_zoom-1)/frames — фикс зависания кадра), паузы по [pause]-тегам (4 окна, ffmpeg silencedetect). Устраняет дефект статичного кадра, обнаруженный в исходной версии.",
   "voice": "ElevenLabs (Николай, Eleven v3, Creative)",
-  "claimed_at": "2026-08-31T09:09:51.775621+00:00"
+  "claimed_at": "2026-08-31T09:09:51.775621+00:00",
+  "published_at": "2026-08-31T09:09:51.775621+00:00",
+  "media_id": "17900391963594247"
 }
