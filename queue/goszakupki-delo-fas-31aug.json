@@ -13,6 +13,8 @@
     "media/goszakupki/goszakupki-delo-fas-31aug-slide-5.jpg"
   ],
   "publish_at": "2026-08-31T17:00:00+03:00",
-  "status": "publishing",
-  "claimed_at": "2026-08-31T14:01:34.613698+00:00"
+  "status": "done",
+  "claimed_at": "2026-08-31T14:01:34.613698+00:00",
+  "published_at": "2026-08-31T14:01:34.613698+00:00",
+  "media_id": "17870644899593864"
 }
