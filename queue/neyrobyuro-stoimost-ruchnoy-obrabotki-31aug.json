@@ -13,6 +13,8 @@
     "media/neyrobyuro/neyrobyuro-stoimost-ruchnoy-obrabotki-31aug-slide-5.jpg"
   ],
   "publish_at": "2026-08-31T18:00:00+03:00",
-  "status": "publishing",
-  "claimed_at": "2026-08-31T15:00:26.347567+00:00"
+  "status": "done",
+  "claimed_at": "2026-08-31T15:00:26.347567+00:00",
+  "published_at": "2026-08-31T15:00:26.347567+00:00",
+  "media_id": "18106869305189322"
 }
