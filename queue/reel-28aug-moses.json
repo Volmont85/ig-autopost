@@ -7,10 +7,12 @@
   "media": [
     "media/personal/reel-28aug-moses.mp4"
   ],
-  "status": "publishing",
+  "status": "done",
   "trial": true,
   "graduation_strategy": "MANUAL",
   "topic": "сколько было лет когда",
   "hook": "Художницей она стала в 78",
-  "claimed_at": "2026-08-31T07:30:09.388100+00:00"
+  "claimed_at": "2026-08-31T07:30:09.388100+00:00",
+  "published_at": "2026-08-31T07:30:09.388100+00:00",
+  "media_id": "18113843521990049"
 }
