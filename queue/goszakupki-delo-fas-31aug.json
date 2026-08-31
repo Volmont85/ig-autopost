@@ -13,8 +13,9 @@
     "media/goszakupki/goszakupki-delo-fas-31aug-slide-5.jpg"
   ],
   "publish_at": "2026-08-31T17:00:00+03:00",
-  "status": "done",
+  "status": "cancelled",
   "claimed_at": "2026-08-31T14:01:34.613698+00:00",
   "published_at": "2026-08-31T14:01:34.613698+00:00",
-  "media_id": "17870644899593864"
+  "media_id": "17870644899593864",
+  "cancel_reason": "31.08: заменено рилсом на ту же тему по решению Александра — рилс важнее охватом"
 }
