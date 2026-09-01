@@ -15,7 +15,9 @@
     "media/neyrobyuro/neyrobyuro-os-v2-07-publisher-01sep.jpg",
     "media/neyrobyuro/neyrobyuro-os-v2-08-closing-01sep.jpg"
   ],
-  "status": "publishing",
+  "status": "done",
   "note": "Фотореал-версия карусели НейроБюро OS (стиль по образцу @krutsky_aicreator DcbEkYtjQtc, палитра НейроБюро — навy+циан-тил+оранжевый). Заменяет собой плоско-векторную версию neyrobyuro-os-carousel-01sep.json — реши, какую публиковать.",
-  "claimed_at": "2026-09-01T07:06:33.228250+00:00"
+  "claimed_at": "2026-09-01T07:06:33.228250+00:00",
+  "published_at": "2026-09-01T07:06:33.228250+00:00",
+  "media_id": "17894752500600068"
 }
