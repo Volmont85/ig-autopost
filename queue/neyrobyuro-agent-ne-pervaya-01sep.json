@@ -9,5 +9,6 @@
     "media/neyrobyuro/neyrobyuro-agent-ne-pervaya-01sep.mp4"
   ],
   "publish_at": "2026-09-01T18:00:00+03:00",
-  "status": "pending"
+  "status": "publishing",
+  "claimed_at": "2026-09-01T15:00:03.567893+00:00"
 }
