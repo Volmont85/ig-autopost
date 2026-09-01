@@ -7,11 +7,12 @@
   "media": [
     "media/personal/reel-01sep-mezmerizm.mp4"
   ],
-  "status": "pending",
+  "status": "publishing",
   "trial": true,
   "graduation_strategy": "MANUAL",
   "topic": "откуда слово",
   "hook": "Мезмеризм: это лженаука",
   "production_note": "Ночной автономный прогон 1 сентября. 3 кадра Nano Banana 2 (чат «ChatGPT 5 | Gemini 3 | Nano Banana»), все с первой попытки, без брака. Озвучка ElevenLabs (Nikolay, Eleven v3, Creative, Generation 2) — mp3 скачан через claude-in-chrome, доступ к ~/Downloads выдан пользователем через device_request_folder_access (Downloads не был подключён заранее). Сегменты синхронизированы по silencedetect (паузы теги [pause]): 0-3.0 / 3.0-11.08 / 11.08-16.42с. Аудио обработано по стандартной цепочке (highpass/afftdn/eq/compressor/loudnorm). Шрифт хука — Montserrat ExtraBold (доустановлен apt-get в этой сессии), тело — DejaVuSans-Bold. QA пройден: 1080x1920, нет белых/чёрных полей по краям, хук читается на 1 строке, 3 сцены визуально разные, титры синхронны со сменой кадра.",
-  "voice": "ElevenLabs (Николай, Eleven v3, Creative)"
+  "voice": "ElevenLabs (Николай, Eleven v3, Creative)",
+  "claimed_at": "2026-09-01T06:30:43.102864+00:00"
 }
