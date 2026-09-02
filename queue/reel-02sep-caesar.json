@@ -7,12 +7,14 @@
   "media": [
     "media/personal/reel-02sep-caesar.mp4"
   ],
-  "status": "publishing",
+  "status": "done",
   "trial": true,
   "graduation_strategy": "MANUAL",
   "topic": "откуда слово",
   "hook": "Салат Цезарь. Это не про Рим.",
   "production_note": "Ночной автономный прогон 2 сентября. 3 кадра Nano Banana 2 (чат «ChatGPT 5 | Gemini 3 | Nano Banana»), все с первой попытки, без брака. Озвучка ElevenLabs (Nikolay, Eleven v3, Creative) — mp3 скачан через claude-in-chrome в /Users/azimin/Downloads. Сегменты синхронизированы по silencedetect (паузы по тегам [pause]): 0-3.47 / 3.47-11.67 / 11.67-16.5с — второй разрыв тише и короче (0.44с), чем в остальных роликах этой ночи, но это единственный явный кандидат кроме хвостовой паузы, принят как граница сцен. Аудио обработано по стандартной цепочке (highpass/afftdn/eq/compressor/loudnorm/+1с хвост), mean_volume -17.0dB (реальная речь). Montserrat ExtraBold не установлен в этой облачной сессии — использован DejaVuSans-Bold. QA пройден: 1080x1920, хук читается полностью на 1-й секунде, 3 сцены визуально разные, ширина всех строк титров проверена PIL (максимум 765px < 880px безопасных), подписи синхронны со сменой сцены, плавный хвост +1с.",
   "voice": "ElevenLabs (Николай, Eleven v3, Creative)",
-  "claimed_at": "2026-09-02T11:00:09.166436+00:00"
+  "claimed_at": "2026-09-02T11:00:09.166436+00:00",
+  "published_at": "2026-09-02T11:00:09.166436+00:00",
+  "media_id": "18117948388936987"
 }
