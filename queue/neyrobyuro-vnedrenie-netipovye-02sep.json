@@ -9,6 +9,8 @@
     "media/neyrobyuro/neyrobyuro-vnedrenie-netipovye-02sep.mp4"
   ],
   "publish_at": "2026-09-02T18:00:00+03:00",
-  "status": "publishing",
-  "claimed_at": "2026-09-02T15:00:52.470030+00:00"
+  "status": "done",
+  "claimed_at": "2026-09-02T15:00:52.470030+00:00",
+  "published_at": "2026-09-02T15:00:52.470030+00:00",
+  "media_id": "18106165235034965"
 }
