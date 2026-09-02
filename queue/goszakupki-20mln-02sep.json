@@ -9,5 +9,6 @@
     "media/goszakupki/goszakupki-20mln-02sep.mp4"
   ],
   "publish_at": "2026-09-02T17:00:00+03:00",
-  "status": "pending"
+  "status": "publishing",
+  "claimed_at": "2026-09-02T14:01:35.419232+00:00"
 }
