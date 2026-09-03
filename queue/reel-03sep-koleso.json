@@ -7,11 +7,12 @@
   "media": [
     "media/personal/reel-03sep-koleso.mp4"
   ],
-  "status": "pending",
+  "status": "publishing",
   "trial": true,
   "graduation_strategy": "MANUAL",
   "topic": "откуда слово",
   "hook": "У колеса обозрения есть фамилия.",
   "production_note": "Ночной автономный прогон 3 сентября. 3 кадра Nano Banana 2 (чат «ChatGPT 5 | Gemini 3 | Nano Banana»), все с первой попытки, без брака, full-bleed без белых/чёрных полей (проверено numpy). Озвучка ElevenLabs (Nikolay, Eleven v3, Creative) через claude-in-chrome — ввод текста синтетическим paste-событием в ProseMirror, mp3 скачан в /Users/azimin/Downloads. Сегменты синхронизированы по silencedetect на границах [pause]-тегов: 0-3.35 / 3.35-12.71 / 12.71-17.04с (после atempo=0.88). Аудио обработано по стандартной цепочке (highpass/afftdn/deesser/eq/compressor/loudnorm), mean_volume -16.8dB, +1с хвост без -shortest. Montserrat ExtraBold установлен (apt, сеть была доступна) — хук в фирменном шрифте. QA: 1080x1920, хук читается целиком первые 2.4с, 3 сцены визуально разные (чертёж/колесо на закате/шестерёнка), ширина всех строк титров проверена PIL (максимум 872px < 880px безопасных, тело второго сегмента — 4 строки по 40pt из-за длины фразы), подписи синхронны со сменой сцены, кадры глазами проверены — брака нет.",
-  "voice": "ElevenLabs (Николай, Eleven v3, Creative)"
+  "voice": "ElevenLabs (Николай, Eleven v3, Creative)",
+  "claimed_at": "2026-09-03T06:31:10.975982+00:00"
 }
