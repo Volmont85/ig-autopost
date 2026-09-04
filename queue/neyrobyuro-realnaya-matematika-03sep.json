@@ -13,8 +13,6 @@
     "media/neyrobyuro/neyrobyuro-realnaya-matematika-03sep-slide-5.jpg",
     "media/neyrobyuro/neyrobyuro-realnaya-matematika-03sep-slide-6.jpg"
   ],
-  "publish_at": "2026-09-03T18:00:00+03:00",
-  "status": "failed",
-  "claimed_at": "2026-09-03T15:01:55.257871+00:00",
-  "error": "Application request limit reached"
+  "publish_at": "2026-09-04T13:00:00+03:00",
+  "status": "pending"
 }
