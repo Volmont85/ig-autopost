@@ -13,7 +13,7 @@
     "media/neyrobyuro/neyrobyuro-realnaya-matematika-03sep-slide-5.jpg",
     "media/neyrobyuro/neyrobyuro-realnaya-matematika-03sep-slide-6.jpg"
   ],
-  "publish_at": "2026-09-05T11:00:00+03:00",
-  "status": "pending",
-  "production_note": "Третья попытка публикации: 03.09 и 04.09 падала с ошибкой Instagram «Application request limit reached». Перенесена на 11:00 МСК 05.09, чтобы развести по времени с рилсом goszakupki (17:00) и каруселью НейроБюро (18:00). Медиа не переделывались."
+  "status": "done",
+  "production_note": "Публикация ФАКТИЧЕСКИ прошла 03.09, несмотря на ответ Instagram «Application request limit reached» — ошибка была ложной. 04.09 запись перезапустили, и пост задублировался в ленте; дубль Александр удалил вручную. Третий перезапуск на 05.09 11:00 МСК отменён по его сообщению — status переведён в done, publish_at снят, чтобы очередь не создала ещё один дубль. Медиа оставлены на месте.",
+  "published_at": "2026-09-03T13:00:00+03:00"
 }
