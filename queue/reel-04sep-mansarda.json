@@ -16,5 +16,7 @@
   "voice": "ElevenLabs (Николай, Eleven v3, Creative)",
   "claimed_at": "2026-09-04T08:30:57.280976+00:00",
   "published_at": "2026-09-04T08:30:57.280976+00:00",
-  "media_id": "18113320832081862"
+  "media_id": "18113320832081862",
+  "media_deleted": true,
+  "media_deleted_at": "2026-09-06T08:26:25.548874+00:00"
 }
