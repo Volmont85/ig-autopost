@@ -3,8 +3,11 @@
   "account": "personal",
   "type": "reel",
   "caption": "Нейлон - это не Нью-Йорк плюс Лондон.\nПросто совпадение звучания. Слово придумали в лаборатории Дюпон в тысяча девятьсот сороковом году.\n\nА какое слово ты был уверен, что знаешь, пока не узнал правду?\n\nПодписывайся, дальше будет ещё.\n\n#нейлон #этимология #фактыдня #москва #reels",
-  "media": ["media/personal/reel-07sep-nylon.mp4"],
+  "media": [
+    "media/personal/reel-07sep-nylon.mp4"
+  ],
   "trial": true,
   "graduation_strategy": "MANUAL",
-  "status": "pending"
+  "status": "publishing",
+  "claimed_at": "2026-09-07T00:33:03.929491+00:00"
 }
