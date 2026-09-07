@@ -8,6 +8,8 @@
   ],
   "trial": true,
   "graduation_strategy": "MANUAL",
-  "status": "publishing",
-  "claimed_at": "2026-09-07T00:33:03.929491+00:00"
+  "status": "done",
+  "claimed_at": "2026-09-07T00:33:03.929491+00:00",
+  "published_at": "2026-09-07T00:33:03.929491+00:00",
+  "media_id": "18079666199370559"
 }
