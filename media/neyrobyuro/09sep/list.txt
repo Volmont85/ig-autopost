@@ -1,0 +1,5 @@
+file '/sessions/rcw-012h58tvk5k5m1emhuvvdgq5/mnt/ig-autopost/media/neyrobyuro/09sep/seg0.mp4'
+file '/sessions/rcw-012h58tvk5k5m1emhuvvdgq5/mnt/ig-autopost/media/neyrobyuro/09sep/seg1.mp4'
+file '/sessions/rcw-012h58tvk5k5m1emhuvvdgq5/mnt/ig-autopost/media/neyrobyuro/09sep/seg2.mp4'
+file '/sessions/rcw-012h58tvk5k5m1emhuvvdgq5/mnt/ig-autopost/media/neyrobyuro/09sep/seg3.mp4'
+file '/sessions/rcw-012h58tvk5k5m1emhuvvdgq5/mnt/ig-autopost/media/neyrobyuro/09sep/seg4.mp4'
