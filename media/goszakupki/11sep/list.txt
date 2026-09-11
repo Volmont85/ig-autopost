@@ -1,0 +1,5 @@
+file '/sessions/rcw-01ftwxvmlx47bdvekj9yz7hy/mnt/ig-autopost/media/goszakupki/11sep/seg0.mp4'
+file '/sessions/rcw-01ftwxvmlx47bdvekj9yz7hy/mnt/ig-autopost/media/goszakupki/11sep/seg1.mp4'
+file '/sessions/rcw-01ftwxvmlx47bdvekj9yz7hy/mnt/ig-autopost/media/goszakupki/11sep/seg2.mp4'
+file '/sessions/rcw-01ftwxvmlx47bdvekj9yz7hy/mnt/ig-autopost/media/goszakupki/11sep/seg3.mp4'
+file '/sessions/rcw-01ftwxvmlx47bdvekj9yz7hy/mnt/ig-autopost/media/goszakupki/11sep/seg4.mp4'
