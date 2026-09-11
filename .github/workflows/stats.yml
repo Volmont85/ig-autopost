@@ -37,6 +37,15 @@ jobs:
           IG_PERSONAL_TOKEN: ${{ secrets.IG_PERSONAL_TOKEN }}
           IG_GOSZAKUPKI_ID: ${{ secrets.IG_GOSZAKUPKI_ID }}
           IG_GOSZAKUPKI_TOKEN: ${{ secrets.IG_GOSZAKUPKI_TOKEN }}
+          IG_NEYROBYURO_ID: ${{ secrets.IG_NEYROBYURO_ID }}
+          IG_NEYROBYURO_TOKEN: ${{ secrets.IG_NEYROBYURO_TOKEN }}
+          # realbuiltbyone -> neyrobyuro переименован 25.08.2026 (см. CLAUDE.md).
+          # Секрет оставлен для старых queue-записей с "account": "realbuiltbyone" —
+          # без него collect() падает на первом же таком посте и роняет ВЕСЬ
+          # прогон (счётчики остальных аккаунтов тоже не коммитятся). Этот
+          # секрет больше не продлевается refresh.yml (обновляется только
+          # IG_NEYROBYURO_TOKEN) — если понадобится после ~60 дней с 24.08.2026,
+          # его нужно будет продлить/скопировать заново вручную.
           IG_REALBUILTBYONE_ID: ${{ secrets.IG_REALBUILTBYONE_ID }}
           IG_REALBUILTBYONE_TOKEN: ${{ secrets.IG_REALBUILTBYONE_TOKEN }}
         run: python stats.py ${{ inputs.force && '--all' || '' }}
