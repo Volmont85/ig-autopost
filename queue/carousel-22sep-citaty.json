@@ -1,0 +1,28 @@
+{
+  "id": "carousel-22sep-citaty",
+  "account": "personal",
+  "type": "carousel",
+  "topic": "citaty-ne-tot-avtor",
+  "hook": "5 фраз, которые никто не говорил",
+  "caption": "5 фраз, которые никто не говорил\n\nВольтер, Мария-Антуанетта, Эйнштейн, Дарвин, Шерлок Холмс — этим известным именам приписывают цитаты, которые они на самом деле не говорили. Разбор в карусели: кто их придумал на самом деле и когда фраза впервые появилась.\n\nКакая из пяти удивила тебя больше всего? Напиши номер в комментариях.\n\n#цитаты #фактыдня #неправдалиинтересно #москва #карусель",
+  "media": [
+    "media/personal/carousel-22sep-citaty-1.jpg",
+    "media/personal/carousel-22sep-citaty-2.jpg",
+    "media/personal/carousel-22sep-citaty-3.jpg",
+    "media/personal/carousel-22sep-citaty-4.jpg",
+    "media/personal/carousel-22sep-citaty-5.jpg",
+    "media/personal/carousel-22sep-citaty-6.jpg",
+    "media/personal/carousel-22sep-citaty-7.jpg"
+  ],
+  "status": "draft",
+  "sources": [
+    "https://quoteinvestigator.com/2015/06/01/defend-say/",
+    "https://en.wikipedia.org/wiki/The_Friends_of_Voltaire",
+    "https://en.wikipedia.org/wiki/Let_them_eat_cake",
+    "https://www.britannica.com/story/did-marie-antoinette-really-say-let-them-eat-cake",
+    "https://quoteinvestigator.com/2017/03/23/same/",
+    "https://www.smithsonianmag.com/science-nature/herbert-spencer-survival-of-the-fittest-180974756/",
+    "https://quoteinvestigator.com/2016/07/14/watson/"
+  ],
+  "note": "Черновик автономного ночного прогона 22.09 — реелы личного блога заблокированы (ElevenLabs 9979/10000 кредитов, tts-test/cowork не подключена), карусель произведена как альтернатива, не требующая голоса. Не публиковать без явного 'да' Александра."
+}
