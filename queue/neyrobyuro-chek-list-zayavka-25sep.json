@@ -1,0 +1,19 @@
+{
+  "id": "neyrobyuro-chek-list-zayavka-25sep",
+  "account": "realbuiltbyone",
+  "type": "carousel",
+  "topic": "Чек-лист: что в обработке заявки можно не делать руками",
+  "hook": "ЧТО В ЗАЯВКЕ МОЖНО НЕ ДЕЛАТЬ РУКАМИ",
+  "caption": "Чек-лист: что в обработке заявки можно не делать руками.\n\nВозьмите одну заявку и выпишите всё, что с ней делает менеджер. Обычно это чтение письма, копирование данных в таблицу, ответ по шаблону, статус и напоминание.\n\nАгенту отдаются повторы: копирование, типовой ответ, статус и напоминание. Правило пишется один раз.\n\nЧеловеку остаётся то, где нужно решение: нестандартная заявка, скидка или спорная цена, жалоба клиента.\n\nСохраните чек-лист и напишите в комментариях, сколько действий на одну заявку у вас.\n\n#автоматизация #бизнеспроцессы #ии #чеклист #заявки",
+  "media": [
+    "media/neyrobyuro/25sep/neyrobyuro-chek-list-zayavka-slide-1.jpg",
+    "media/neyrobyuro/25sep/neyrobyuro-chek-list-zayavka-slide-2.jpg",
+    "media/neyrobyuro/25sep/neyrobyuro-chek-list-zayavka-slide-3.jpg",
+    "media/neyrobyuro/25sep/neyrobyuro-chek-list-zayavka-slide-4.jpg",
+    "media/neyrobyuro/25sep/neyrobyuro-chek-list-zayavka-slide-5.jpg"
+  ],
+  "publish_at": "2026-09-25T18:00:00+03:00",
+  "status": "draft",
+  "voice": "не требуется – карусель",
+  "production_note": "23.09.2026, первая карусель по стандарту neiro-vizual-standart. Nano Banana 2, 6 генераций на 5 слайдов (слайд 2 перегенерирован: заголовок «Четыре действия» не совпадал с тремя карточками). Слайд 5 (CTA) – новый тип, показан Александру до публикации. Исходники: Claude outputs/neyrobyuro_chek_list_zayavka_src/. Статус draft."
+}
