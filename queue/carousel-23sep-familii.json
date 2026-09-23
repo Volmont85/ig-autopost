@@ -1,0 +1,26 @@
+{
+  "id": "carousel-23sep-familii",
+  "account": "personal",
+  "type": "carousel",
+  "topic": "slova-s-familiey",
+  "hook": "5 слов, у которых есть фамилия",
+  "caption": "5 слов, у которых есть фамилия\n\nЧестерфилд, пастеризация, гуппи, сузафон, плюшевый мишка Тедди — за каждым словом стоит реальный человек, а истории совсем не такие, как кажется на первый взгляд. Разбор — в карусели.\n\nКакое слово удивило тебя больше всего? Напиши номер в комментариях.\n\n#фактыдня #этимология #неправдалиинтересно #москва #карусель",
+  "media": [
+    "media/personal/carousel-23sep-familii-1.jpg",
+    "media/personal/carousel-23sep-familii-2.jpg",
+    "media/personal/carousel-23sep-familii-3.jpg",
+    "media/personal/carousel-23sep-familii-4.jpg",
+    "media/personal/carousel-23sep-familii-5.jpg",
+    "media/personal/carousel-23sep-familii-6.jpg",
+    "media/personal/carousel-23sep-familii-7.jpg"
+  ],
+  "status": "draft",
+  "sources": [
+    "https://en.wikipedia.org/wiki/Chesterfield_(furniture)",
+    "https://en.wikipedia.org/wiki/Pasteurization",
+    "https://en.wikipedia.org/wiki/Guppy",
+    "https://en.wikipedia.org/wiki/Sousaphone",
+    "https://en.wikipedia.org/wiki/Teddy_bear"
+  ],
+  "note": "Ночной автономный прогон 23.09 — рилсы личного блога по-прежнему заблокированы (ElevenLabs 9979/10000, tts-test/cowork не подтверждена). Карусель произведена как альтернативный формат, не требующий голоса (второй по счёту, после carousel-22sep-citaty). Темы новые (эпонимы, не пересекаются с carousel-22sep-citaty про неправильно приписанные цитаты), факты из банка партий 6 и 12 (Контент-план/11_Ресёрч_проверенные_темы.md), источники — Wikipedia. Не публиковать без явного да Александра (карусель — не пробный рилс, автономный мандат не распространяется)."
+}
