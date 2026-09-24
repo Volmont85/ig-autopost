@@ -6,12 +6,14 @@
   "media": [
     "media/personal/reel-24sep-bloomers.mp4"
   ],
-  "status": "publishing",
+  "status": "done",
   "trial": true,
   "graduation_strategy": "MANUAL",
   "topic": "откуда слово",
   "hook": "Блумерс: назвали не в честь создательницы",
   "voice": "Локальный TTS (ESpeech-TTS, Николай), файловый протокол /Volumes/SSD 1Tb/tts-test/cowork/",
   "production_note": "Ночной автономный прогон 24 сентября. Тема из проверенного банка (файл 11, партия 11, источник Wikipedia). Кадры — Nano Banana 2 через telegram_work, все 3 с первой попытки. Озвучка — локальный TTS, 18.64с, verified_transcript сверен, искажений не найдено. QA пройден по чек-листу скилла generator-foto-i-video.",
-  "claimed_at": "2026-09-24T00:39:53.675143+00:00"
+  "claimed_at": "2026-09-24T00:39:53.675143+00:00",
+  "published_at": "2026-09-24T00:39:53.675143+00:00",
+  "media_id": "18068678510784491"
 }
