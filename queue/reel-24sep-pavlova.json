@@ -6,11 +6,12 @@
   "media": [
     "media/personal/reel-24sep-pavlova.mp4"
   ],
-  "status": "pending",
+  "status": "publishing",
   "trial": true,
   "graduation_strategy": "MANUAL",
   "topic": "откуда слово",
   "hook": "Десерт, из-за которого спорят страны",
   "voice": "Локальный TTS (ESpeech-TTS, Николай), файловый протокол /Volumes/SSD 1Tb/tts-test/cowork/",
-  "production_note": "Ночной автономный прогон 24 сентября. Тема из проверенного банка (файл 11, партия 10, источник Wikipedia). Кадры — Nano Banana 2 через telegram_work, все 3 с первой попытки. Озвучка — локальный TTS, 15.24с, verified_transcript сверен, искажений не найдено. QA пройден по чек-листу скилла generator-foto-i-video."
+  "production_note": "Ночной автономный прогон 24 сентября. Тема из проверенного банка (файл 11, партия 10, источник Wikipedia). Кадры — Nano Banana 2 через telegram_work, все 3 с первой попытки. Озвучка — локальный TTS, 15.24с, verified_transcript сверен, искажений не найдено. QA пройден по чек-листу скилла generator-foto-i-video.",
+  "claimed_at": "2026-09-24T00:29:52.704614+00:00"
 }
