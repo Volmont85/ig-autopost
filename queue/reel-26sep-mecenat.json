@@ -7,12 +7,14 @@
   "media": [
     "media/personal/reel-26sep-mecenat.mp4"
   ],
-  "status": "publishing",
+  "status": "done",
   "trial": true,
   "graduation_strategy": "MANUAL",
   "topic": "откуда слово",
   "hook": "Меценат — это не профессия, это был реальный человек.",
   "voice": "Локальный TTS (ESpeech-TTS, Николай), файловый протокол /Volumes/SSD 1Tb/tts-test/cowork/",
   "production_note": "Ночной автономный прогон 26 сентября. Новая тема (банк пуст) — ресёрч WebSearch/WebFetch (Wikipedia: Gaius Maecenas), гейт пройден (история/искусство, без стоп-тем). Кадры — Nano Banana 2 через telegram_work, 3/3 с первой попытки. Озвучка — локальный TTS, verified_transcript чистый, дефектов не найдено. QA по чек-листу generator-foto-i-video пройден полностью.",
-  "claimed_at": "2026-09-26T08:31:54.334827+00:00"
+  "claimed_at": "2026-09-26T08:31:54.334827+00:00",
+  "published_at": "2026-09-26T08:31:54.334827+00:00",
+  "media_id": "18093843269450900"
 }
