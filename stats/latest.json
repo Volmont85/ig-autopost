@@ -4883,8 +4883,8 @@
     "published_at": "2026-09-22T14:00:23.184961+00:00",
     "publish_hour_msk": 17,
     "weekday": 1,
-    "measured_at": "2026-10-04T17:41:19.108283+00:00",
-    "age_hours": 291.7,
+    "measured_at": "2026-10-10T22:38:21.451366+00:00",
+    "age_hours": 440.6,
     "fields_error": "Unsupported get request. Object with ID '18111693584014653' does not exist, cannot be loaded due to missing permissions, or does not support this operation",
     "insights_error": "Unsupported get request. Object with ID '18111693584014653' does not exist, cannot be loaded due to missing permissions, or does not support this operation"
   },
