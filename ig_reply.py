@@ -161,6 +161,21 @@ def _recent_media_ids(account):
     return ids
 
 
+def _reserved_for_verified_leadmagnet(account, text):
+    if account != "goszakupki":
+        return False
+    path = ROOT / "leadmagnets" / "composio.json"
+    if not path.exists():
+        return False
+    cfg = json.loads(path.read_text())
+    if cfg.get("enabled") is not True:
+        return False
+    import re
+    words = {w.casefold() for w in re.findall(r"[а-яА-ЯёЁa-zA-Z]+", text)}
+    keywords = {e["keyword"].casefold() for e in cfg["entries"]}
+    return bool(words & (keywords | {"получить", "готово", "проверить"}))
+
+
 def handle_comments(account_obj, account):
     state = _load_state(account, "comments")
     new_count = 0
@@ -180,6 +195,8 @@ def handle_comments(account_obj, account):
                 state[comment_id] = {"skipped": "already_has_reply"}
                 continue
             text = comment.get("text", "")
+            if _reserved_for_verified_leadmagnet(account, text):
+                continue
             author = comment.get("username")
             try:
                 decision = _decide(account, "комментарий", text, author)
@@ -227,6 +244,8 @@ def handle_messages(account_obj, account):
         if last_id in state:
             continue
         text = last.get("message", "")
+        if _reserved_for_verified_leadmagnet(account, text):
+            continue
         try:
             decision = _decide(account, "личное сообщение", text, last.get("from", {}).get("username"))
         except Exception as exc:

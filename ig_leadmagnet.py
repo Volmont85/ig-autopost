@@ -342,6 +342,12 @@ def main():
         sys.exit(1)
 
     mode, account = sys.argv[1], sys.argv[2]
+    # The Composio worker owns verified subscription delivery when enabled.
+    config_path = ROOT / "leadmagnets" / "composio.json"
+    if account == "goszakupki" and config_path.exists():
+        if json.loads(config_path.read_text()).get("enabled") is True:
+            _log("Legacy lead-magnet flow retired; verified Composio worker is active")
+            return
     account_obj = Account.from_env(account)
 
     if mode == "poll":
