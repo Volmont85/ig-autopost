@@ -1,15 +1,18 @@
 {
-  "enabled": false,
-  "enabled_since": null,
+  "enabled": true,
+  "enabled_since": "2026-10-28T18:35:54.713784+00:00",
   "poll_minutes": 10,
-  "media_ids": ["17982301209102749"],
+  "media_ids": [
+    "17982301209102749"
+  ],
   "entries": [
     {
       "code": "AVANS",
       "keyword": "АВАНС",
       "title": "Исполнение без аванса: рабочий лист до торгов",
       "url": "https://goszakupki.info/materialy/avans-checklist.html?utm_source=instagram&utm_medium=direct&utm_campaign=avans",
-      "page_marker": "Исполнение без аванса"
+      "page_marker": "Исполнение без аванса",
+      "telegram_url": "https://t.me/goszakupkiinfo_bot?start=AVANS"
     }
   ]
 }
