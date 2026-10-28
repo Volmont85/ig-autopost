@@ -57,9 +57,12 @@ class ConsumerMCP:
         self.key, self.opener, self.counter = key, opener, 0
         self.session_header = None
         self.tool_names = {}
+        self.http_requests = 0
+        self.tool_invocations = 0
 
     def rpc(self, method, params=None, notify=False):
         self.counter += 1
+        self.http_requests += 1
         payload = {'jsonrpc': '2.0', 'method': method}
         if not notify:
             payload['id'] = self.counter
@@ -106,6 +109,7 @@ class ConsumerMCP:
         names = [name for lower, name in self.tool_names.items() if lower.endswith(suffix.lower())]
         if len(names) != 1:
             raise TransportError('Required Composio tool not uniquely available')
+        self.tool_invocations += 1
         return unwrap(self.rpc('tools/call', {'name': names[0], 'arguments': arguments}))
 
 
@@ -115,6 +119,9 @@ class InstagramTransport:
         self.workflow_session = None
         self.account_id = None
         self.verified = False
+        self.instagram_operations_attempted = 0
+        self.proxy_calls = 0
+        self.conversation_cache = None
 
     def start(self):
         self.mcp.start()
@@ -137,6 +144,7 @@ class InstagramTransport:
     def native(self, slug, arguments, check=True):
         if check and not self.verified:
             raise TransportError('Instagram account has not been verified')
+        self.instagram_operations_attempted += 1
         result = self.mcp.call('COMPOSIO_MULTI_EXECUTE_TOOL', {
             'session_id': self.workflow_session, 'current_step': 'LEADMAGNET_INSTAGRAM',
             'sync_response_to_workbench': False,
@@ -151,6 +159,8 @@ class InstagramTransport:
             raise TransportError('Instagram account has not been verified')
         if method not in ('GET', 'POST') or not re.fullmatch(r'[A-Za-z0-9_:/=+.-]+', path):
             raise TransportError('Unsupported Instagram request')
+        self.instagram_operations_attempted += 1
+        self.proxy_calls += 1
         # JSON encoded as a Python string literal prevents script interpolation.
         args = json.dumps({'method': method, 'endpoint': 'https://graph.instagram.com/v21.0/' + path,
                            'toolkit': 'instagram', 'query_params': params, 'body': body})
@@ -218,12 +228,32 @@ class InstagramTransport:
         return all_comments
 
     def recent_incoming(self, uid, since):
-        page = self.native('INSTAGRAM_LIST_ALL_CONVERSATIONS', {
-            'ig_user_id': self.ig_id, 'platform': 'instagram', 'user_id': str(uid), 'fields': 'id,participants', 'limit': 25})
+        # One metadata-only inbox pass per run, shared by pending leads. Never
+        # fetch message contents from unrelated business conversations.
+        if self.conversation_cache is None:
+            self.conversation_cache = []
+            cursor, seen = None, set()
+            while True:
+                args = {'ig_user_id': self.ig_id, 'platform': 'instagram',
+                        'fields': 'id,updated_time,participants', 'limit': 200}
+                if cursor:
+                    args['after'] = cursor
+                page = self.native('INSTAGRAM_LIST_ALL_CONVERSATIONS', args)
+                self.conversation_cache.extend(page.get('data', []))
+                paging = page.get('paging', {})
+                cursor = paging.get('cursors', {}).get('after') if paging.get('next') else None
+                if not cursor:
+                    break
+                if cursor in seen:
+                    raise TransportError('Conversation pagination did not advance')
+                seen.add(cursor)
         rows = []
-        for conv in page.get('data', []):
+        for conv in self.conversation_cache:
             participants = conv.get('participants', {}).get('data', [])
             if not any(str(p.get('id')) == str(uid) for p in participants):
+                continue
+            updated = conv.get('updated_time')
+            if updated and datetime.fromisoformat(updated.replace('Z', '+00:00')) < since:
                 continue
             # Get only this pending user's conversation. Paginate until the time boundary.
             after, seen = None, set()

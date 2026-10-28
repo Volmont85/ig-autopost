@@ -122,6 +122,10 @@ def main():
         allowlisted_media_ids=frozenset(cfg['media_ids']), hash_key=env['LEADMAGNET_HASH_KEY'].encode()),
         transport, store)
     counters = engine.run(comments, now)
+    counters.update({'instagram_operations_attempted': transport.instagram_operations_attempted,
+                     'proxy_calls': transport.proxy_calls,
+                     'mcp_http_requests': transport.mcp.http_requests,
+                     'mcp_tool_invocations': transport.mcp.tool_invocations})
     print(json.dumps(counters))
     if counters['uncertain'] or counters['errors']:
         raise RuntimeError('Some deliveries need operator review; automatic resend is disabled')

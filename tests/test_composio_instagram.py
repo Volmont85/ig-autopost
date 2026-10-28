@@ -16,6 +16,22 @@ class Response:
 
 
 class TransportTests(unittest.TestCase):
+    def test_pending_users_share_metadata_scan_and_old_threads_skip_messages(self):
+        t=InstagramTransport(None)
+        calls=[]
+        def native(slug,args,**kwargs):
+            calls.append(slug)
+            if slug=='INSTAGRAM_LIST_ALL_CONVERSATIONS':
+                return {'data':[{'id':'old','updated_time':'2026-10-28T10:00:00Z','participants':{'data':[{'id':'1'}]}},
+                                {'id':'new','updated_time':'2026-10-28T12:05:00Z','participants':{'data':[{'id':'2'}]}}]}
+            return {'data':[]}
+        t.native=native
+        since=datetime(2026,10,28,12,tzinfo=timezone.utc)
+        t.recent_incoming('1',since)
+        t.recent_incoming('2',since)
+        self.assertEqual(calls.count('INSTAGRAM_LIST_ALL_CONVERSATIONS'),1)
+        self.assertEqual(calls.count('INSTAGRAM_LIST_ALL_MESSAGES'),1)
+
     def test_mcp_sse_and_nested_results(self):
         self.assertEqual(decode_rpc('event: message\ndata: {"jsonrpc":"2.0","id":1,"result":{"a":1}}\n\n')['result'], {'a':1})
         value={'content':[{'type':'text','text':json.dumps({'successful':True,'data':{'stdout':'done'}})}]}

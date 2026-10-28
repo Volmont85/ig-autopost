@@ -37,8 +37,10 @@ class FakeTransport:
         self.private_calls = []
         self.send_calls = []
         self.incoming_calls = []
+        self.follow_calls = 0
 
     def get_follow_status(self, uid):
+        self.follow_calls += 1
         if self.follow_error:
             raise self.follow_error
         return self.follows
@@ -71,6 +73,16 @@ def build(transport=None, store=None):
 
 
 class LeadMagnetTests(unittest.TestCase):
+    def test_processed_incoming_does_not_repeat_follow_query(self):
+        t,s=FakeTransport(False),MemoryStore()
+        e=build(t,s)
+        e.run([make_comment()],NOW)
+        t.incoming=[{'id':'processed','created_time':NOW+timedelta(minutes=1),'text':'ПОЛУЧИТЬ'}]
+        e.run([make_comment()],NOW+timedelta(minutes=2))
+        calls=t.follow_calls
+        e.run([make_comment()],NOW+timedelta(minutes=3))
+        self.assertEqual(t.follow_calls,calls)
+
     def test_refusal_after_request_prevents_delivery(self):
         t, s = FakeTransport(False), MemoryStore()
         e = build(t, s)
@@ -204,11 +216,12 @@ class LeadMagnetTests(unittest.TestCase):
         self.assertEqual(sum(ENTRY["url"] in text for _, text in t.send_calls), 1)
 
     def test_incoming_link_final_store_failure_keeps_delivery_claim(self):
-        # Initial state = 2 saves. Incoming event plus durable link claim is
-        # save 3; post-send status save 4 fails.
-        t, s = FakeTransport(False), MemoryStore(fail_at={4})
+        # Fail the second save in this incoming handling: after the durable
+        # claim, at the post-send checkpoint, regardless of poll bookkeeping.
+        t, s = FakeTransport(False), MemoryStore()
         e = build(t, s)
         e.run([make_comment()], NOW)
+        s.fail_at.add(s.saves + 2)
         t.follows = True
         t.incoming = [{"id": "reply-1", "created_time": NOW + timedelta(minutes=1), "text": "ГОТОВО"}]
         e.run([make_comment()], NOW + timedelta(minutes=2))

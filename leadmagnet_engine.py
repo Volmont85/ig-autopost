@@ -136,6 +136,8 @@ class LeadMagnetEngine:
                                "follow_status": value["follow_status"],
                                "delivery_status": value["delivery_status"],
                                "delivery_claim": delivery_claim}
+            if value.get('last_inbox_checked_at'):
+                users[str(key)]['last_inbox_checked_at'] = _stamp(_dt(value['last_inbox_checked_at']))
         dedupe = {}
         for key, value in (loaded.get("dedupe", {}) or {}).items():
             if not isinstance(value, Mapping):
@@ -169,6 +171,13 @@ class LeadMagnetEngine:
             if _has_word(str(text or ""), entry["keyword"]):
                 return entry
         return None
+
+    @staticmethod
+    def _material_text(entry):
+        text = f"Материал «{entry['title']}»: {entry['url']}"
+        if entry.get('telegram_url'):
+            text += '\n\nПодробный разбор и другие материалы — в Telegram: ' + entry['telegram_url']
+        return text
 
     @staticmethod
     def _fresh(timestamp: Any, now: datetime, since: datetime) -> bool:
@@ -249,7 +258,7 @@ class LeadMagnetEngine:
                 state["dedupe"][dedupe] = {"status": "claiming", "claim": claim, "code": entry["code"]}
                 self._save(state)
                 if follows is True:
-                    text = f"Материал «{entry['title']}»: {entry['url']}"
+                    text = self._material_text(entry)
                 elif follows is False:
                     text = "Подпишитесь на аккаунт и ответьте словом ПОЛУЧИТЬ — проверю подписку и пришлю материал."
                 else:
@@ -276,6 +285,7 @@ class LeadMagnetEngine:
 
         # Only users with a known code are queried. The adapter must return only
         # incoming messages in its supplied 24-hour window.
+        inbox_progress = False
         for dedupe, user in list(state["users"].items()):
             if user.get("status") != "awaiting_reply":
                 continue
@@ -290,6 +300,8 @@ class LeadMagnetEngine:
                 continue
             created_at = _dt(user["created_at"])
             window_start = max(created_at, now - timedelta(hours=24))
+            if user.get('last_inbox_checked_at'):
+                window_start = max(window_start, _dt(user['last_inbox_checked_at']))
             if now - created_at > timedelta(days=7):
                 continue
             try:
@@ -312,6 +324,8 @@ class LeadMagnetEngine:
                     if mt < window_start or mt > now:
                         continue
                     message_hash = _key(self.config.hash_key, "message", mid)
+                    if "incoming:" + message_hash in state["claims"]:
+                        continue
                     delivery = user.get("delivery_status")
                     if delivery == "sent":
                         break
@@ -326,7 +340,7 @@ class LeadMagnetEngine:
                         # ambiguous or partially persisted link delivery.
                         if user.get("delivery_status") != "pending":
                             continue
-                        text = f"Материал «{entry['title']}»: {entry['url']}"
+                        text = self._material_text(entry)
                         kind = "material_dm"
                     elif follows is False:
                         text = "Пока не вижу подписку. Подпишитесь и ответьте ГОТОВО — проверю ещё раз."
@@ -369,5 +383,11 @@ class LeadMagnetEngine:
                     result["messages_sent"] += 1
                 except Exception:
                     result["errors"] += 1
+            # Overlap by one minute for rounded provider timestamps. Claimed
+            # message IDs prevent duplicate handling in that overlap.
+            user['last_inbox_checked_at'] = _stamp(max(created_at, now-timedelta(minutes=1)))
+            inbox_progress = True
+        if inbox_progress:
+            self._save(state)
         return result
 
