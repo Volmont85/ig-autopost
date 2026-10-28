@@ -42,9 +42,8 @@ LEADMAGNETS_CONTENT_PATH = ROOT / "leadmagnets" / "goszakupki.json"
 STATS_DIR = ROOT / "stats"
 CONVERSION_LOG_PATH = STATS_DIR / "leadmagnet-conversion.jsonl"
 
-# Как долго считаем публикацию "недавней" для проверки новых комментариев —
-# тот же принцип и то же значение, что в ig_reply.py.
-MEDIA_LOOKBACK_DAYS = 14
+# Окно комментариев задаёт общий селектор ig_reply._recent_media_ids;
+# отдельного неиспользуемого лимита здесь нет.
 
 TELEGRAM_BOT_USERNAME = os.environ.get("TG_LEADMAGNET_BOT_USERNAME", "")
 

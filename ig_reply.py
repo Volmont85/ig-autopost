@@ -36,6 +36,9 @@ ANTHROPIC_API_URL = "https://api.anthropic.com/v1/messages"
 # Сколько дней назад считать публикации "недавними" для проверки комментариев —
 # старые посты почти не получают новых комментариев, не тратим на них вызовы API.
 MEDIA_LOOKBACK_DAYS = 14
+# Временный тест владельца 28.10.2026: окно только goszakupki расширено до 30 дней.
+# _recent_media_ids используется также обработчиком лид-магнитов.
+GOSZAKUPKI_LOOKBACK_DAYS = 30
 
 DECIDE_TOOL = {
     "name": "decide_reply",
@@ -135,7 +138,8 @@ def _decide(account, kind, text, author):
 
 
 def _recent_media_ids(account):
-    cutoff = datetime.now(timezone.utc) - timedelta(days=MEDIA_LOOKBACK_DAYS)
+    lookback_days = GOSZAKUPKI_LOOKBACK_DAYS if account == "goszakupki" else MEDIA_LOOKBACK_DAYS
+    cutoff = datetime.now(timezone.utc) - timedelta(days=lookback_days)
     ids = []
     for path in sorted(QUEUE_DIR.glob("*.json")):
         try:
