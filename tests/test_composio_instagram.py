@@ -38,6 +38,7 @@ class TransportTests(unittest.TestCase):
             calls.append(body)
             return {'message_id':'verified'}
         t.proxy=proxy
+        t.native=lambda slug, args, **kwargs: proxy('POST', '', body={'recipient':{'id':args['recipient_id']}})
         t.private_reply('comment','text')
         t.send_message('user','text')
         self.assertEqual(calls[0]['recipient'],{'comment_id':'comment'})
@@ -51,16 +52,16 @@ class TransportTests(unittest.TestCase):
     def test_follow_missing_or_non_boolean_is_unknown(self):
         t=InstagramTransport(None)
         for value, expected in [(True,True),(False,False),(None,None),('true',None),(1,None)]:
-            t.proxy=lambda *a,**k:{'is_user_follow_business':value}
+            t.native=lambda *a,**k:{'objects':{'123':{'is_user_follow_business':value}}}
             self.assertIs(t.get_follow_status('123'),expected)
 
     def test_wrong_default_account_prevents_writes(self):
         class MCP:
             def start(self): pass
             def call(self,*a):
-                return {'session':{'id':'s'},'toolkit_connection_statuses':[{'toolkit':'instagram','accounts':[{'status':'ACTIVE','user_info':{'username':'goszakupki.info'}}]}]}
+                return {'session':{'id':'s'},'toolkit_connection_statuses':[{'toolkit':'instagram','accounts':[{'id':'correct','status':'ACTIVE','user_info':{'username':'goszakupki.info'}}]}]}
         t=InstagramTransport(MCP())
-        t.proxy=lambda *a,**k:{'username':'volmont85','user_id':'wrong'}
+        t.native=lambda *a,**k:{'username':'volmont85','user_id':'wrong'}
         with self.assertRaises(TransportError):t.start()
         self.assertFalse(t.verified)
 
@@ -70,7 +71,7 @@ class TransportTests(unittest.TestCase):
                         {'id':'own','from':{'id':t.ig_id},'text':'АВАНС'}],
                 'paging':{'next':'not-followed-url','cursors':{'after':'cursor'}}},
                {'data':[{'id':'c2','from':{'id':'202'},'timestamp':'2026-10-28T12:00:00Z'}]}]
-        t.proxy=lambda *a,**k:pages.pop(0)
+        t.native=lambda *a,**k:pages.pop(0)
         self.assertEqual([c['id'] for c in t.comments(['media'])],['c1','c2'])
 
     def test_state_conflict_halts_subsequent_writes(self):

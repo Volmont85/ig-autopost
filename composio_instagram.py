@@ -113,6 +113,7 @@ class InstagramTransport:
     def __init__(self, mcp, expected_username='goszakupki.info', expected_id='17841410301724309'):
         self.mcp, self.expected_username, self.ig_id = mcp, expected_username, expected_id
         self.workflow_session = None
+        self.account_id = None
         self.verified = False
 
     def start(self):
@@ -124,12 +125,26 @@ class InstagramTransport:
         connections = discovery.get('toolkit_connection_statuses', [])
         accounts = [a for t in connections if t.get('toolkit') == 'instagram'
                     for a in t.get('accounts', []) if a.get('status') == 'ACTIVE']
-        if not any(a.get('user_info', {}).get('username') == self.expected_username for a in accounts):
+        selected = [a for a in accounts if a.get('user_info', {}).get('username') == self.expected_username]
+        if len(selected) != 1:
             raise TransportError('Expected Instagram connection is not active')
-        me = self.proxy('GET', 'me', {'fields': 'id,user_id,username'}, check=False)
+        self.account_id = selected[0]['id']
+        me = self.native('INSTAGRAM_GET_USER_INFO', {'ig_user_id': 'me', 'fields': 'id,user_id,username'}, check=False)
         if me.get('username') != self.expected_username or str(me.get('user_id')) != self.ig_id:
             raise TransportError('Composio default account does not match goszakupki.info')
         self.verified = True
+
+    def native(self, slug, arguments, check=True):
+        if check and not self.verified:
+            raise TransportError('Instagram account has not been verified')
+        result = self.mcp.call('COMPOSIO_MULTI_EXECUTE_TOOL', {
+            'session_id': self.workflow_session, 'current_step': 'LEADMAGNET_INSTAGRAM',
+            'sync_response_to_workbench': False,
+            'tools': [{'tool_slug': slug, 'account': self.account_id, 'arguments': arguments}]})
+        items = result.get('results', [])
+        if len(items) != 1:
+            raise TransportError('Instagram native operation outcome unavailable')
+        return unwrap(items[0]['response'])
 
     def proxy(self, method, path, params=None, body=None, check=True):
         if check and not self.verified:
@@ -158,8 +173,9 @@ class InstagramTransport:
     def get_follow_status(self, uid):
         if not str(uid).isdigit():
             raise TransportError('Invalid scoped user identifier')
-        result = self.proxy('GET', str(uid), {'fields': 'is_user_follow_business'})
-        value = result.get('is_user_follow_business')
+        result = self.native('INSTAGRAM_GET_MULTIPLE_NODES', {
+            'object_ids': [str(uid)], 'fields': 'is_user_follow_business'})
+        value = result.get('objects', {}).get(str(uid), {}).get('is_user_follow_business')
         return value if type(value) is bool else None
 
     def private_reply(self, comment_id, text):
@@ -170,8 +186,8 @@ class InstagramTransport:
         return result
 
     def send_message(self, uid, text):
-        result = self.proxy('POST', self.ig_id + '/messages', body={
-            'recipient': {'id': str(uid)}, 'message': {'text': text}})
+        result = self.native('INSTAGRAM_SEND_TEXT_MESSAGE', {
+            'ig_user_id': self.ig_id, 'recipient_id': str(uid), 'text': text})
         if not result.get('message_id'):
             raise TransportError('Message outcome unavailable')
         return result
@@ -185,7 +201,7 @@ class InstagramTransport:
                 params = {'fields': 'id,text,timestamp,from', 'limit': 100}
                 if after:
                     params['after'] = after
-                page = self.proxy('GET', str(media_id) + '/comments', params)
+                page = self.native('INSTAGRAM_GET_IG_MEDIA_COMMENTS', {'ig_media_id': str(media_id), **params})
                 for c in page.get('data', []):
                     uid = str(c.get('from', {}).get('id', ''))
                     if uid and uid != self.ig_id:
@@ -202,8 +218,8 @@ class InstagramTransport:
         return all_comments
 
     def recent_incoming(self, uid, since):
-        page = self.proxy('GET', self.ig_id + '/conversations', {
-            'platform': 'instagram', 'user_id': str(uid), 'fields': 'id,participants', 'limit': 25})
+        page = self.native('INSTAGRAM_LIST_ALL_CONVERSATIONS', {
+            'ig_user_id': self.ig_id, 'platform': 'instagram', 'user_id': str(uid), 'fields': 'id,participants', 'limit': 25})
         rows = []
         for conv in page.get('data', []):
             participants = conv.get('participants', {}).get('data', [])
@@ -215,7 +231,7 @@ class InstagramTransport:
                 params = {'fields': 'id,created_time,from,message', 'limit': 100}
                 if after:
                     params['after'] = after
-                messages = self.proxy('GET', conv['id'] + '/messages', params)
+                messages = self.native('INSTAGRAM_LIST_ALL_MESSAGES', {'conversation_id': conv['id'], **params})
                 reached_old = False
                 for m in messages.get('data', []):
                     stamp = datetime.fromisoformat(m['created_time'].replace('Z', '+00:00'))
