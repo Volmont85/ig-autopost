@@ -6,9 +6,18 @@
       "kind": "private_reply",
       "source_hash": "3fa039af8db2c52cd6f0d1ba462003f1505d2cf5ff04e52aa7bb05e1c471b80d",
       "status": "sent"
+    },
+    "incoming:6702c45937f0fe46e204ade6045e76ae8e157971cb1076d06c1808f24c613084": {
+      "at": "2026-10-29T06:39:41.693910+00:00",
+      "code": "AVANS",
+      "kind": "material_dm",
+      "source_hash": "6702c45937f0fe46e204ade6045e76ae8e157971cb1076d06c1808f24c613084",
+      "status": "claiming"
     }
   },
-  "consented_users": {},
+  "consented_users": {
+    "428c7946c931691b90b655ca23e3ec77fe5506663ebc5e68c5740d3021f3c0fa": "2026-10-29T06:39:21+00:00"
+  },
   "dedupe": {
     "428c7946c931691b90b655ca23e3ec77fe5506663ebc5e68c5740d3021f3c0fa:AVANS": {
       "claim": "comment:3fa039af8db2c52cd6f0d1ba462003f1505d2cf5ff04e52aa7bb05e1c471b80d",
@@ -23,8 +32,8 @@
       "code": "AVANS",
       "comment_claim": "comment:3fa039af8db2c52cd6f0d1ba462003f1505d2cf5ff04e52aa7bb05e1c471b80d",
       "created_at": "2026-10-29T06:30:25.427352+00:00",
-      "delivery_claim": null,
-      "delivery_status": "pending",
+      "delivery_claim": "incoming:6702c45937f0fe46e204ade6045e76ae8e157971cb1076d06c1808f24c613084",
+      "delivery_status": "claiming",
       "follow_status": "unknown",
       "last_inbox_checked_at": "2026-10-29T06:34:38.517613+00:00",
       "status": "awaiting_reply"
