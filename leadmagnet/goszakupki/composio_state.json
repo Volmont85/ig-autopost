@@ -5,7 +5,7 @@
       "code": "AVANS",
       "kind": "private_reply",
       "source_hash": "3fa039af8db2c52cd6f0d1ba462003f1505d2cf5ff04e52aa7bb05e1c471b80d",
-      "status": "claiming"
+      "status": "sent"
     }
   },
   "consented_users": {},
@@ -13,7 +13,7 @@
     "428c7946c931691b90b655ca23e3ec77fe5506663ebc5e68c5740d3021f3c0fa:AVANS": {
       "claim": "comment:3fa039af8db2c52cd6f0d1ba462003f1505d2cf5ff04e52aa7bb05e1c471b80d",
       "code": "AVANS",
-      "status": "claiming"
+      "status": "sent"
     }
   },
   "hash_key_id": "a1b5a8d6a1a34cbdb359c089f9c390c26e7627861666c2ff461eadf819771e55",
@@ -26,7 +26,7 @@
       "delivery_claim": null,
       "delivery_status": "pending",
       "follow_status": "unknown",
-      "status": "claiming"
+      "status": "awaiting_reply"
     }
   }
 }
