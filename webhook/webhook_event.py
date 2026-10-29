@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import base64
+import hashlib
 import json
 import math
 import re
@@ -113,6 +114,26 @@ def parse_events(data: Any, own_id: Any, allowed_media_ids: Iterable[Any],
             return
         add({"kind": "message", "id": mid, "user_id": uid, "text": text, "timestamp": stamp})
 
+    def messaging_event(item: Any, fallback: Any) -> None:
+        if not isinstance(item, Mapping) or 'postback' not in item:
+            message(item, fallback)
+            return
+        sender, recipient, postback = item.get('sender'), item.get('recipient'), item.get('postback')
+        if not all(isinstance(x, Mapping) for x in (sender, recipient, postback)):
+            return
+        uid = _id(sender.get('id'))
+        stamp = _timestamp(item.get('timestamp', fallback))
+        payload = postback.get('payload')
+        commands = {'LM_YES:AVANS':'ПОЛУЧИТЬ', 'LM_CHECK:AVANS':'ГОТОВО', 'LM_STOP:AVANS':'СТОП'}
+        if (not uid or uid == own or _id(recipient.get('id')) != own or not stamp or
+                not isinstance(payload, str) or payload not in commands or item.get('is_echo') is True):
+            return
+        mid = _message_id(postback.get('mid'))
+        if mid is None:
+            identity = json.dumps([own, uid, str(item.get('timestamp', fallback)), payload], separators=(',', ':'))
+            mid = 'postback:' + hashlib.sha256(identity.encode()).hexdigest()
+        add({'kind':'message', 'id':mid, 'user_id':uid, 'text':commands[payload], 'timestamp':stamp})
+
     for entry in entries:
         if not isinstance(entry, Mapping):
             continue
@@ -125,16 +146,16 @@ def parse_events(data: Any, own_id: Any, allowed_media_ids: Iterable[Any],
             for change in changes:
                 if isinstance(change, Mapping) and change.get("field") == "comments":
                     comment(change.get("value"), fallback)
-                elif isinstance(change, Mapping) and change.get('field') == 'messages':
-                    message(change.get('value'), fallback)
+                elif isinstance(change, Mapping) and change.get('field') in ('messages', 'messaging_postbacks', 'messaging_postback'):
+                    messaging_event(change.get('value'), fallback)
         if entry.get("field") == "comments":
             comment(entry.get("value"), fallback)
-        elif entry.get('field') == 'messages':
-            message(entry.get('value'), fallback)
+        elif entry.get('field') in ('messages', 'messaging_postbacks', 'messaging_postback'):
+            messaging_event(entry.get('value'), fallback)
         messaging = entry.get("messaging", [])
         if isinstance(messaging, list):
             for item in messaging:
-                message(item, fallback)
+                messaging_event(item, fallback)
     return events
 
 

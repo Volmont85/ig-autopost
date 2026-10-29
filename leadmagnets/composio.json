@@ -18,5 +18,6 @@
   "event_delivery_enabled": true,
   "event_account_id": "instagram_leuma-tile",
   "event_profile_id": "29719686410970814",
-  "webhook_only": false
+  "webhook_only": false,
+  "interactive_buttons": true
 }

@@ -110,6 +110,10 @@ class LazyEventTransport:
         self._start()
         return self.transport.send_message(uid, text)
 
+    def send_buttons(self, uid, text, buttons):
+        self._start()
+        return self.transport.send_buttons(uid, text, buttons)
+
 
 def process_event_queue(cfg, env, enabled, now, store):
     queue = EventQueue(env['GITHUB_REPOSITORY'], env['GITHUB_TOKEN'],
@@ -128,7 +132,8 @@ def process_event_queue(cfg, env, enabled, now, store):
     verify_material_urls(cfg['entries'])
     transport = LazyEventTransport(env['COMPOSIO_CONSUMER_API_KEY'], cfg)
     engine = LeadMagnetEngine(EngineConfig(entries=cfg['entries'], enabled_since=enabled,
-        allowlisted_media_ids=frozenset(cfg['media_ids']), hash_key=env['LEADMAGNET_HASH_KEY'].encode()),
+        allowlisted_media_ids=frozenset(cfg['media_ids']), hash_key=env['LEADMAGNET_HASH_KEY'].encode(),
+        interactive_buttons=cfg.get('interactive_buttons') is True),
         transport, store)
     counters = engine.run([e for e in events if e['kind'] == 'comment'], now,
                          incoming_events=[e for e in events if e['kind'] == 'message'])
@@ -187,7 +192,8 @@ def main():
     transport.start()
     comments = transport.comments(cfg['media_ids'])
     engine = LeadMagnetEngine(EngineConfig(entries=cfg['entries'], enabled_since=enabled,
-        allowlisted_media_ids=frozenset(cfg['media_ids']), hash_key=env['LEADMAGNET_HASH_KEY'].encode()),
+        allowlisted_media_ids=frozenset(cfg['media_ids']), hash_key=env['LEADMAGNET_HASH_KEY'].encode(),
+        interactive_buttons=cfg.get('interactive_buttons') is True),
         transport, store)
     counters = engine.run(comments, now)
     counters.update({'instagram_operations_attempted': transport.instagram_operations_attempted,

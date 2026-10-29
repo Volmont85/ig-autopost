@@ -57,6 +57,7 @@ class EngineConfig:
     enabled_since: datetime
     allowlisted_media_ids: frozenset[str]
     hash_key: bytes
+    interactive_buttons: bool = False
 
 
 class LeadMagnetEngine:
@@ -177,6 +178,23 @@ class LeadMagnetEngine:
             if _has_word(str(text or ""), entry["keyword"]):
                 return entry
         return None
+
+    def _send_incoming_response(self, uid, text, entry, kind):
+        if not self.config.interactive_buttons:
+            return self.transport.send_message(uid, text)
+        if kind == 'material_dm':
+            text = f"Готово! Материал «{entry['title']}» — по кнопке ниже."
+            buttons = [{'type':'web_url','title':'Открыть рабочий лист','url':entry['url']}]
+            if entry.get('telegram_url'):
+                text += '\nВ Telegram — подробный разбор и другие рабочие материалы.'
+                buttons.append({'type':'web_url','title':'Разбор в Telegram','url':entry['telegram_url']})
+        else:
+            buttons = []
+            if kind == 'follow_prompt':
+                buttons.append({'type':'web_url','title':'Открыть профиль','url':'https://www.instagram.com/goszakupki.info/'})
+            buttons.append({'type':'postback','title':'✅ Готово' if kind == 'follow_prompt' else 'Проверить ещё',
+                            'payload':'LM_CHECK:' + entry['code']})
+        return self.transport.send_buttons(uid, text, buttons)
 
     @staticmethod
     def _material_text(entry):
@@ -387,7 +405,7 @@ class LeadMagnetEngine:
                                          at=now, source_hash=message_hash):
                         continue
                     try:
-                        self.transport.send_message(uid, text)
+                        self._send_incoming_response(uid, text, entry, kind)
                     except Exception:
                         self._finish(state, claim, "uncertain")
                         user["status"] = "uncertain"

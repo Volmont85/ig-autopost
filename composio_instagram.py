@@ -5,6 +5,7 @@ No network writes are retried. Responses/credentials are never logged.
 """
 import json
 import re
+from urllib.parse import urlsplit
 from datetime import datetime, timezone
 from urllib.request import Request, urlopen
 from urllib.error import HTTPError
@@ -210,6 +211,57 @@ class InstagramTransport:
     def send_message(self, uid, text):
         result = self.native('INSTAGRAM_SEND_TEXT_MESSAGE', {
             'ig_user_id': self.ig_id, 'recipient_id': str(uid), 'text': text})
+        if not result.get('message_id'):
+            raise TransportError('Message outcome unavailable')
+        return result
+
+    def send_buttons(self, uid, text, buttons):
+        """Send a documented Instagram button template in a normal DM."""
+        if not str(uid).isdigit():
+            raise TransportError('Invalid scoped user identifier')
+        if not isinstance(text, str) or not text or len(text) > 640:
+            raise TransportError('Invalid button message text')
+        if not isinstance(buttons, list) or not 1 <= len(buttons) <= 3:
+            raise TransportError('Invalid button list')
+        normalized = []
+        allowed_hosts = {'goszakupki.info', 't.me', 'www.instagram.com', 'instagram.com'}
+        for button in buttons:
+            if not isinstance(button, dict) or 'type' not in button:
+                raise TransportError('Invalid button schema')
+            kind = button['type']
+            if kind == 'postback':
+                if set(button) != {'type', 'title', 'payload'}:
+                    raise TransportError('Invalid button schema')
+                payload = button['payload']
+                if (not isinstance(payload, str) or not re.fullmatch(r'[A-Za-z0-9_:-]{1,100}', payload)):
+                    raise TransportError('Invalid postback payload')
+                normalized.append({'type': kind, 'title': button.get('title'), 'payload': payload})
+            elif kind == 'web_url':
+                if set(button) != {'type', 'title', 'url'}:
+                    raise TransportError('Invalid button schema')
+                url = button['url']
+                if not isinstance(url, str):
+                    raise TransportError('Invalid button URL')
+                try:
+                    parsed = urlsplit(url)
+                    safe = (parsed.scheme == 'https' and parsed.hostname in allowed_hosts and
+                            parsed.username is None and parsed.password is None and
+                            parsed.port is None and not parsed.fragment)
+                except ValueError:
+                    safe = False
+                if not safe:
+                    raise TransportError('Invalid button URL')
+                normalized.append({'type': kind, 'title': button.get('title'), 'url': url})
+            else:
+                raise TransportError('Invalid button type')
+            title = button.get('title')
+            if not isinstance(title, str) or not title or len(title) > 20:
+                raise TransportError('Invalid button title')
+
+        result = self.proxy('POST', self.ig_id + '/messages', body={
+            'recipient': {'id': str(uid)},
+            'message': {'attachment': {'type': 'template', 'payload': {
+                'template_type': 'button', 'text': text, 'buttons': normalized}}}})
         if not result.get('message_id'):
             raise TransportError('Message outcome unavailable')
         return result
