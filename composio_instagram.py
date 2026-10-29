@@ -123,7 +123,7 @@ class InstagramTransport:
         self.proxy_calls = 0
         self.conversation_cache = None
 
-    def start(self):
+    def start(self, *, pinned_account=None, pinned_profile_id=None):
         self.mcp.start()
         discovery = self.mcp.call('COMPOSIO_SEARCH_TOOLS', {
             'session': {'generate_id': True}, 'search_strategy': 'tool_search',
@@ -136,6 +136,18 @@ class InstagramTransport:
         if len(selected) != 1:
             raise TransportError('Expected Instagram connection is not active')
         self.account_id = selected[0]['id']
+        if pinned_account is not None or pinned_profile_id is not None:
+            # Event adapter uses an identity binding verified during setup.
+            # Free discovery must still confirm the exact active DEFAULT
+            # connection, because proxy_execute uses the default connection.
+            # Any account/default change fails closed before sending.
+            account = selected[0]
+            if (not pinned_account or not pinned_profile_id or
+                    account['id'] != pinned_account or account.get('is_default') is not True or
+                    str(account.get('user_info', {}).get('id')) != pinned_profile_id):
+                raise TransportError('Pinned Instagram connection or default changed')
+            self.verified = True
+            return
         me = self.native('INSTAGRAM_GET_USER_INFO', {'ig_user_id': 'me', 'fields': 'id,user_id,username'}, check=False)
         if me.get('username') != self.expected_username or str(me.get('user_id')) != self.ig_id:
             raise TransportError('Composio default account does not match goszakupki.info')

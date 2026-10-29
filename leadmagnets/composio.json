@@ -14,5 +14,8 @@
       "page_marker": "Исполнение без аванса",
       "telegram_url": "https://t.me/goszakupkiinfo_bot?start=AVANS"
     }
-  ]
+  ],
+  "event_delivery_enabled": false,
+  "event_account_id": "instagram_leuma-tile",
+  "event_profile_id": "29719686410970814"
 }

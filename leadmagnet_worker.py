@@ -11,6 +11,7 @@ from urllib.request import Request, urlopen
 
 from composio_instagram import ConsumerMCP, InstagramTransport, TransportError
 from leadmagnet_engine import EngineConfig, LeadMagnetEngine
+from webhook.event_queue import EventQueue
 
 
 class GitHubStore:
@@ -79,6 +80,71 @@ def verify_material_urls(entries):
             raise RuntimeError('Wrong lead-magnet page content')
 
 
+class LazyEventTransport:
+    """No Composio calls for duplicates, echoes or unrelated messages."""
+    def __init__(self, key, cfg):
+        self.transport = InstagramTransport(ConsumerMCP(key))
+        self.cfg, self.started, self.failed = cfg, False, False
+
+    def _start(self):
+        if self.failed:
+            raise TransportError('Event transport initialization previously failed')
+        if not self.started:
+            try:
+                self.transport.start(pinned_account=self.cfg['event_account_id'],
+                                     pinned_profile_id=self.cfg['event_profile_id'])
+                self.started = True
+            except Exception:
+                self.failed = True
+                raise
+
+    def get_follow_status(self, uid):
+        self._start()
+        return self.transport.get_follow_status(uid)
+
+    def private_reply(self, cid, text):
+        self._start()
+        return self.transport.private_reply(cid, text)
+
+    def send_message(self, uid, text):
+        self._start()
+        return self.transport.send_message(uid, text)
+
+
+def process_event_queue(cfg, env, enabled, now, store):
+    queue = EventQueue(env['GITHUB_REPOSITORY'], env['GITHUB_TOKEN'],
+                       os.environ.get('IG_EVENT_ENCRYPTION_KEY', ''))
+    pending = queue.pending()
+    events = [event for _, _, batch in pending for event in batch]
+    if cfg.get('event_delivery_enabled') is not True:
+        print(json.dumps({'mode': 'event_shadow', 'queued_events': len(events),
+                          'comments': sum(e['kind'] == 'comment' for e in events),
+                          'messages': sum(e['kind'] == 'message' for e in events),
+                          'instagram_operations_attempted': 0}))
+        return 0
+    if not events:
+        print(json.dumps({'mode': 'event', 'queued_events': 0, 'instagram_operations_attempted': 0}))
+        return 0
+    verify_material_urls(cfg['entries'])
+    transport = LazyEventTransport(env['COMPOSIO_CONSUMER_API_KEY'], cfg)
+    engine = LeadMagnetEngine(EngineConfig(entries=cfg['entries'], enabled_since=enabled,
+        allowlisted_media_ids=frozenset(cfg['media_ids']), hash_key=env['LEADMAGNET_HASH_KEY'].encode()),
+        transport, store)
+    counters = engine.run([e for e in events if e['kind'] == 'comment'], now,
+                         incoming_events=[e for e in events if e['kind'] == 'message'])
+    t = transport.transport
+    counters.update({'mode': 'event', 'queued_events': len(events),
+                     'instagram_operations_attempted': t.instagram_operations_attempted,
+                     'proxy_calls': t.proxy_calls, 'mcp_http_requests': t.mcp.http_requests,
+                     'mcp_tool_invocations': t.mcp.tool_invocations})
+    print(json.dumps(counters))
+    if counters['uncertain'] or counters['errors'] or transport.failed:
+        raise RuntimeError('Event deliveries require review; spool retained, no blind retries')
+    for path, sha, _ in pending:
+        queue.acknowledge(path, sha)
+    return 0
+
+
 def main():
     config_path = Path(os.environ.get('LEADMAGNET_CONFIG', 'leadmagnets/composio.json'))
     cfg = json.loads(config_path.read_text())
@@ -105,6 +171,8 @@ def main():
         raise RuntimeError('State hash key is too short')
     key_id = hashlib.sha256(env['LEADMAGNET_HASH_KEY'].encode()).hexdigest()
     store = GitHubStore(env['GITHUB_REPOSITORY'], env['GITHUB_TOKEN'], hash_key_id=key_id)
+    if os.environ.get('LEADMAGNET_EVENT_DRIVEN') == 'true':
+        return process_event_queue(cfg, env, enabled, now, store)
     # Existing Railway heartbeat calls this workflow every two minutes. Throttle
     # before Composio initialization to keep a free pilot within a bounded cadence.
     snapshot = store.load()

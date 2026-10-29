@@ -154,7 +154,13 @@ class LeadMagnetEngine:
             if not isinstance(claim, str) or not re.fullmatch(r"comment:[0-9a-f]{64}", claim):
                 raise ValueError("Invalid durable record; reconciliation required")
             dedupe[str(key)] = {"status": value["status"], "claim": claim, "code": code}
-        state = {"claims": claims, "users": users, "dedupe": dedupe}
+        consented = {}
+        for key, value in (loaded.get('consented_users', {}) or {}).items():
+            if not re.fullmatch(r'[0-9a-f]{64}', str(key)):
+                raise ValueError('Invalid consent record')
+            consented[key] = _stamp(_dt(value))
+        state = {"claims": claims, "users": users, "dedupe": dedupe,
+                 "consented_users": consented}
         # Shared EngineStore metadata used by the worker's poll throttle.
         # Preserve only a valid timezone-aware ISO timestamp.
         try:
@@ -199,7 +205,8 @@ class LeadMagnetEngine:
     def _finish(state: dict[str, Any], claim_key: str, status: str) -> None:
         state["claims"][claim_key]["status"] = status
 
-    def run(self, comments: Sequence[Mapping[str, Any]], now: datetime) -> dict[str, int]:
+    def run(self, comments: Sequence[Mapping[str, Any]], now: datetime, *,
+            incoming_events: Optional[Sequence[Mapping[str, Any]]] = None) -> dict[str, int]:
         """Handle supplied recent comments and poll messages for known users.
 
         Comment fields: id,user_id,media_id,text,timestamp. Incoming-message
@@ -208,6 +215,10 @@ class LeadMagnetEngine:
         now = _dt(now)
         since = _dt(self.config.enabled_since)
         state = self._load()
+        # None preserves the established poll adapter. A supplied list switches
+        # to authenticated push events: never read comments or the inbox again.
+        event_mode = incoming_events is not None
+        incoming_events = incoming_events or []
         result = {"comments_seen": 0, "private_replies_sent": 0,
                   "messages_sent": 0, "skipped": 0, "uncertain": 0,
                   "errors": 0}
@@ -233,7 +244,10 @@ class LeadMagnetEngine:
                     result["skipped"] += 1
                     continue
                 try:
-                    follows = self.transport.get_follow_status(uid)
+                    # A comment alone is not User Profile API consent. For new
+                    # event leads, ask for a reply without wasting a failed read.
+                    follows = (self.transport.get_follow_status(uid)
+                               if not event_mode or user_hash in state['consented_users'] else None)
                     if follows is not True and follows is not False:
                         follows = None
                 except Exception:
@@ -262,7 +276,8 @@ class LeadMagnetEngine:
                 elif follows is False:
                     text = "Подпишитесь на аккаунт и ответьте словом ПОЛУЧИТЬ — проверю подписку и пришлю материал."
                 else:
-                    text = "Не получилось проверить подписку. Ответьте словом ПОЛУЧИТЬ — попробую ещё раз."
+                    text = ("Чтобы получить рабочий материал, подпишитесь на аккаунт и ответьте словом ПОЛУЧИТЬ. После ответа проверю подписку и пришлю ссылку."
+                            if event_mode else "Не получилось проверить подписку. Ответьте словом ПОЛУЧИТЬ — попробую ещё раз.")
                 try:
                     self.transport.private_reply(cid, text)
                 except Exception:
@@ -296,6 +311,9 @@ class LeadMagnetEngine:
             # comment; raw identifiers are never persisted.
             uid = next((str(c.get("user_id")) for c in comments
                         if _key(self.config.hash_key, "user", str(c.get("user_id", ""))) == dedupe.split(":", 1)[0]), None)
+            if uid is None and event_mode:
+                uid = next((str(m.get('user_id')) for m in incoming_events
+                            if _key(self.config.hash_key, 'user', str(m.get('user_id', ''))) == dedupe.split(':', 1)[0]), None)
             if uid is None:
                 continue
             created_at = _dt(user["created_at"])
@@ -305,7 +323,9 @@ class LeadMagnetEngine:
             if now - created_at > timedelta(days=7):
                 continue
             try:
-                incoming = self.transport.recent_incoming(uid, window_start)
+                incoming = ([{'id': m['id'], 'created_time': m['timestamp'], 'text': m.get('text', '')}
+                             for m in incoming_events if str(m.get('user_id')) == uid]
+                            if event_mode else self.transport.recent_incoming(uid, window_start))
             except Exception:
                 result["errors"] += 1
                 continue
@@ -329,6 +349,8 @@ class LeadMagnetEngine:
                     delivery = user.get("delivery_status")
                     if delivery == "sent":
                         break
+                    if event_mode:
+                        state['consented_users'][_key(self.config.hash_key, 'user', uid)] = _stamp(mt)
                     # A new user reply is the basis for checking and, only on
                     # true, an ordinary DM inside the open 24-hour window.
                     try:

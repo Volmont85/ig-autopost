@@ -35,6 +35,8 @@ import requests
 from flask import Flask, request
 
 from legal_pages import DATA_DELETION_HTML, PRIVACY_POLICY_HTML, TERMS_OF_SERVICE_HTML
+from webhook_event import parse_events
+from event_queue import EventQueue
 
 VERIFY_TOKEN = os.environ["META_VERIFY_TOKEN"]
 APP_SECRET = os.environ["META_APP_SECRET"].encode("utf-8")
@@ -55,7 +57,49 @@ HEARTBEAT_WORKFLOWS = [
 ]
 
 app = Flask(__name__)
+app.config['MAX_CONTENT_LENGTH'] = 1024 * 1024
 _heartbeat_status = {"last_tick_at": None, "last_errors": []}
+_event_status = {'accepted': 0, 'errors': 0}
+
+
+@app.get('/instagram-events')
+def verify_instagram_events():
+    if (request.args.get('hub.mode') == 'subscribe' and
+            hmac.compare_digest(request.args.get('hub.verify_token', ''), VERIFY_TOKEN)):
+        return request.args.get('hub.challenge', ''), 200
+    return 'forbidden', 403
+
+
+@app.post('/instagram-events')
+def receive_instagram_events():
+    # Distinct route; keep the legacy quick-reply receiver unchanged.
+    secret = os.environ.get('META_IG_APP_SECRET', '').encode() or APP_SECRET
+    key = os.environ.get('IG_EVENT_ENCRYPTION_KEY', '')
+    if not secret or not key or os.environ.get('IG_EVENTS_ENABLED') != '1':
+        return 'not configured', 503
+    raw = request.get_data()
+    expected = 'sha256=' + hmac.new(secret, raw, hashlib.sha256).hexdigest()
+    if not hmac.compare_digest(request.headers.get('X-Hub-Signature-256', ''), expected):
+        return 'forbidden', 403
+    try:
+        data = json.loads(raw)
+        events = parse_events(data, '17841410301724309',
+                              json.loads(os.environ.get('IG_EVENT_MEDIA_IDS', '[]')),
+                              json.loads(os.environ.get('IG_EVENT_KEYWORDS', '["АВАНС"]')))
+        if not events:
+            return 'ok', 200
+        queue = EventQueue(GITHUB_REPO, GITHUB_TOKEN, key)
+        for event in events:
+            queue.enqueue(event)
+        # No private text or identifiers in workflow inputs. Pending runs may
+        # coalesce, but all events are already durable in the encrypted spool.
+        _dispatch_workflow('leadmagnet_ig.yml', {'account': 'goszakupki', 'event_driven': 'true'})
+        _event_status['accepted'] += len(events)
+        return 'ok', 200
+    except Exception:
+        _event_status['errors'] += 1
+        app.logger.error('Instagram event persistence/dispatch failed; provider may retry')
+        return 'retry later', 503
 
 
 @app.get("/webhook")
@@ -187,7 +231,9 @@ if os.environ.get("DISABLE_HEARTBEAT") != "1":
 
 @app.get("/")
 def health():
-    return {"status": "ok", "heartbeat": _heartbeat_status}, 200
+    return {"status": "ok", "heartbeat": _heartbeat_status,
+            "instagram_events": {**_event_status, 'enabled': os.environ.get('IG_EVENTS_ENABLED') == '1'},
+            "version": "ig-events-v1"}, 200
 
 
 # Статичные страницы для App Dashboard → Basic Settings (Meta App Review) —
