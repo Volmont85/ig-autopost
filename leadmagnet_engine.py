@@ -265,7 +265,8 @@ class LeadMagnetEngine:
                     # A comment alone is not User Profile API consent. For new
                     # event leads, ask for a reply without wasting a failed read.
                     follows = (self.transport.get_follow_status(uid)
-                               if not event_mode or user_hash in state['consented_users'] else None)
+                               if not self.config.interactive_buttons and
+                               (not event_mode or user_hash in state['consented_users']) else None)
                     if follows is not True and follows is not False:
                         follows = None
                 except Exception:
@@ -296,6 +297,11 @@ class LeadMagnetEngine:
                 else:
                     text = ("Чтобы получить рабочий материал, подпишитесь на аккаунт и ответьте словом ПОЛУЧИТЬ. После ответа проверю подписку и пришлю ссылку."
                             if event_mode else "Не получилось проверить подписку. Ответьте словом ПОЛУЧИТЬ — попробую ещё раз.")
+                if self.config.interactive_buttons:
+                    # First comment reply is a documented text Private Reply.
+                    # A fresh human reply opens the 24-hour normal-DM window;
+                    # only then send the button template, even for known users.
+                    text = f"Подготовили материал «{entry['title']}». Прислать? Ответьте ПОЛУЧИТЬ — проверю подписку и пришлю рабочий лист."
                 try:
                     self.transport.private_reply(cid, text)
                 except Exception:

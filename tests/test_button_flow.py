@@ -16,6 +16,14 @@ class ButtonTransport(FakeTransport):
 
 
 class ButtonFlowTests(unittest.TestCase):
+    def test_known_consent_still_requires_fresh_reply_before_normal_button_dm(self):
+        import hashlib,hmac
+        t,s=ButtonTransport(),MemoryStore()
+        s.state['consented_users']={hmac.new(b'test-only-secret',b'user\0user-1',hashlib.sha256).hexdigest():NOW.isoformat()}
+        self.engine(t,s).run([make_comment()],NOW,incoming_events=[])
+        self.assertEqual((t.follow_calls,len(t.private_calls),len(t.buttons)),(0,1,0))
+        self.assertIn('Прислать?',t.private_calls[0][1])
+
     def engine(self,t,s):
         e=build(t,s);e.config=replace(e.config,interactive_buttons=True)
         return e
