@@ -27,6 +27,7 @@ import hashlib
 import hmac
 import json
 import os
+import re
 import threading
 import time
 from datetime import datetime, timezone
@@ -62,6 +63,27 @@ _heartbeat_status = {"last_tick_at": None, "last_errors": []}
 _event_status = {'accepted': 0, 'errors': 0}
 
 
+def _pilot_events(events):
+    """Keep only the requested material code and explicit bot commands.
+
+    Meta sends account-wide messages. Unrelated business conversation text
+    must not enter even the encrypted spool. Keep only normalized commands.
+    """
+    selected = []
+    for event in events:
+        text = event['text']
+        if event['kind'] == 'comment':
+            selected.append({**event, 'text': 'АВАНС'})
+            continue
+        if re.search(r'(?<!\w)(стоп|stop|отмена|отписка|не присылай(?:те)?|не нужно|не надо)(?!\w)', text, re.I):
+            selected.append({**event, 'text': 'СТОП'})
+        else:
+            command = re.search(r'(?<!\w)(ПОЛУЧИТЬ|ГОТОВО|ПРОВЕРИТЬ)(?!\w)', text, re.I)
+            if command:
+                selected.append({**event, 'text': command.group(1).upper()})
+    return selected
+
+
 @app.get('/instagram-events')
 def verify_instagram_events():
     if (request.args.get('hub.mode') == 'subscribe' and
@@ -83,9 +105,9 @@ def receive_instagram_events():
         return 'forbidden', 403
     try:
         data = json.loads(raw)
-        events = parse_events(data, '17841410301724309',
+        events = _pilot_events(parse_events(data, '17841410301724309',
                               json.loads(os.environ.get('IG_EVENT_MEDIA_IDS', '[]')),
-                              json.loads(os.environ.get('IG_EVENT_KEYWORDS', '["АВАНС"]')))
+                              json.loads(os.environ.get('IG_EVENT_KEYWORDS', '["АВАНС"]'))))
         if not events:
             return 'ok', 200
         queue = EventQueue(GITHUB_REPO, GITHUB_TOKEN, key)

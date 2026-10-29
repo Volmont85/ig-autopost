@@ -135,3 +135,19 @@ class ReceiverTests(unittest.TestCase):
         sig = 'sha256=' + hmac.new(b'synthetic-secret', raw, hashlib.sha256).hexdigest()
         with patch.object(self.module, 'EventQueue'), patch.object(self.module, '_dispatch_workflow', side_effect=RuntimeError()):
             self.assertEqual(self.client.post('/instagram-events', data=raw, headers={'X-Hub-Signature-256': sig}).status_code, 503)
+
+    def test_unrelated_business_message_never_enters_spool(self):
+        raw = json.dumps({'entry':[{'id':'17841410301724309','time':int(NOW.timestamp()),
+            'messaging':[{'sender':{'id':'222'},'recipient':{'id':'17841410301724309'},
+                'timestamp':int(NOW.timestamp()*1000),'message':{'mid':'mid:opaque','text':'Обсудим другую рабочую задачу'}}]}]}).encode()
+        sig='sha256='+hmac.new(b'synthetic-secret',raw,hashlib.sha256).hexdigest()
+        with patch.object(self.module,'EventQueue') as q, patch.object(self.module,'_dispatch_workflow') as dispatch:
+            self.assertEqual(self.client.post('/instagram-events',data=raw,headers={'X-Hub-Signature-256':sig}).status_code,200)
+            q.assert_not_called()
+            dispatch.assert_not_called()
+
+    def test_command_payload_discards_incidental_message_content(self):
+        events=[{'kind':'message','text':'ПОЛУЧИТЬ. Здесь лишние личные сведения'},
+                {'kind':'comment','text':'АВАНС и дополнительный текст'},
+                {'kind':'message','text':'Не надо, отменяю'}]
+        self.assertEqual([e['text'] for e in self.module._pilot_events(events)],['ПОЛУЧИТЬ','АВАНС','СТОП'])
