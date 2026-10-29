@@ -171,7 +171,7 @@ def main():
         raise RuntimeError('State hash key is too short')
     key_id = hashlib.sha256(env['LEADMAGNET_HASH_KEY'].encode()).hexdigest()
     store = GitHubStore(env['GITHUB_REPOSITORY'], env['GITHUB_TOKEN'], hash_key_id=key_id)
-    if os.environ.get('LEADMAGNET_EVENT_DRIVEN') == 'true':
+    if os.environ.get('LEADMAGNET_EVENT_DRIVEN') == 'true' or cfg.get('webhook_only') is True:
         return process_event_queue(cfg, env, enabled, now, store)
     # Existing Railway heartbeat calls this workflow every two minutes. Throttle
     # before Composio initialization to keep a free pilot within a bounded cadence.

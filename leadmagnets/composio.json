@@ -15,7 +15,8 @@
       "telegram_url": "https://t.me/goszakupkiinfo_bot?start=AVANS"
     }
   ],
-  "event_delivery_enabled": false,
+  "event_delivery_enabled": true,
   "event_account_id": "instagram_leuma-tile",
-  "event_profile_id": "29719686410970814"
+  "event_profile_id": "29719686410970814",
+  "webhook_only": false
 }
