@@ -59,13 +59,27 @@ def main():
   with urlopen('https://t.me/s/goszakupki_help',timeout=30) as r:html=r.read().decode()
   posts=re.findall(r'data-post="(goszakupki_help/[0-9]+)"',html)
   print(json.dumps({'public_latest_posts':posts[-12:],'contains_avans_publication':'Аванс в проекте — ещё не деньги на поставку.' in html,'existing_receipt':json.loads(base64.b64decode(prev['content'])) if prev else None},ensure_ascii=False));return
- if prev:raise RuntimeError('Publication receipt/claim already exists; inspect before any resend')
+ previous_attempt=None
+ if prev:
+  old=json.loads(base64.b64decode(prev['content']))
+  assert old.get('status')=='uncertain_do_not_retry' and old.get('run_id')=='40867442320','Existing claim is not the inspected rejected attempt'
+  with urlopen('https://t.me/s/goszakupki_help',timeout=30) as r:html=r.read().decode()
+  assert 'Аванс в проекте — ещё не деньги на поставку.' not in html,'Publication already visible'
+  assert re.findall(r'data-post="(goszakupki_help/[0-9]+)"',html)[-1]=='goszakupki_help/71','Channel changed; inspect before sending'
+  previous_attempt=old
+ files={}
+ for i,url in enumerate(p['photos']):
+  with urlopen(url,timeout=30) as r:data=r.read()
+  assert data.startswith(b'\xff\xd8') and 10000<len(data)<10000000,'Invalid JPEG'
+  assert hashlib.sha256(data).hexdigest()==p['photo_sha256'][i],'Photo checksum mismatch'
+  files['photo'+str(i)]=data
  if os.environ.get('PUBLISH_MODE')!='publish':
   print(json.dumps({'mode':'preflight','channel':chat['username'],'bot_can_post':True,'photos':4,'existing_claim':False}));return
  state={'status':'claimed_before_send','channel':'goszakupki_help','run_id':os.environ.get('GITHUB_RUN_ID'),'payload_sha256':hashlib.sha256(json.dumps(p,ensure_ascii=False,sort_keys=True).encode()).hexdigest(),'claimed_at':datetime.now(timezone.utc).isoformat()}
- prev=put_state(state)
- media=[{'type':'photo','media':u} for u in p['photos']];media[0].update(caption=p['caption'],parse_mode='HTML')
- try:result=tg('sendMediaGroup',{'chat_id':chat['id'],'media':media})
+ state['previous_attempt']=previous_attempt
+ prev=put_state(state,prev)
+ media=[{'type':'photo','media':'attach://photo'+str(i)} for i in range(len(p['photos']))];media[0].update(caption=p['caption'],parse_mode='HTML')
+ try:result=tg('sendMediaGroup',{'chat_id':str(chat['id']),'media':json.dumps(media,ensure_ascii=False)},files)
  except Exception:
   state['status']='uncertain_do_not_retry';put_state(state,prev);raise
  state.update(status='published',message_ids=[x['message_id'] for x in result],links=['https://t.me/goszakupki_help/'+str(x['message_id']) for x in result],published_at=datetime.now(timezone.utc).isoformat());put_state(state,prev)
