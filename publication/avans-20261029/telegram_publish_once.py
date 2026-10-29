@@ -1,5 +1,5 @@
 """Scoped one-off AVANS channel publication; claims before send, never retries writes."""
-import base64,hashlib,json,os,re,sys
+import base64,hashlib,json,os,re,sys,uuid
 from urllib.request import Request,urlopen
 from urllib.error import HTTPError,URLError
 from datetime import datetime,timezone
@@ -22,14 +22,26 @@ def put_state(value,previous=None):
  gh('contents/'+STATE_PATH,body,'PUT')
  return gh('contents/'+STATE_PATH)
 
-def tg(method,payload):
+def tg(method,payload,files=None):
  # No retry: an uncertain outcome must be inspected using saved claim/run evidence.
  try:
-  req=Request('https://api.telegram.org/bot'+os.environ['TG_LEADMAGNET_BOT_TOKEN']+'/'+method,data=json.dumps(payload).encode(),headers={'Content-Type':'application/json'})
+  data=json.dumps(payload).encode();ctype='application/json'
+  if files:
+   boundary='Avans'+uuid.uuid4().hex;parts=[]
+   for key,value in payload.items():
+    parts.append(('--'+boundary+'\r\nContent-Disposition: form-data; name="'+key+'"\r\n\r\n'+str(value)+'\r\n').encode())
+   for key,value in files.items():
+    parts.append(('--'+boundary+'\r\nContent-Disposition: form-data; name="'+key+'"; filename="'+key+'.jpg"\r\nContent-Type: image/jpeg\r\n\r\n').encode()+value+b'\r\n')
+   data=b''.join(parts)+('--'+boundary+'--\r\n').encode();ctype='multipart/form-data; boundary='+boundary
+  req=Request('https://api.telegram.org/bot'+os.environ['TG_LEADMAGNET_BOT_TOKEN']+'/'+method,data=data,headers={'Content-Type':ctype})
   with urlopen(req,timeout=60) as r:d=json.load(r)
   if not d.get('ok'):raise RuntimeError('Telegram API rejected '+method)
   return d['result']
- except (HTTPError,URLError,TimeoutError) as e:raise RuntimeError('Telegram '+method+' uncertain or rejected; no retry; '+type(e).__name__) from None
+ except HTTPError as e:
+  try:detail=json.loads(e.read());message=re.sub(r'bot[0-9]+:[A-Za-z0-9_-]+','[redacted]',str(detail.get('description','')))[:250]
+  except Exception:message='No JSON description'
+  raise RuntimeError('Telegram '+method+' rejected HTTP '+str(e.code)+': '+message) from None
+ except (URLError,TimeoutError) as e:raise RuntimeError('Telegram '+method+' uncertain or rejected; no retry; '+type(e).__name__) from None
 
 def main():
  raw=gh('contents/'+PAYLOAD_PATH);p=json.loads(base64.b64decode(raw['content']))
@@ -43,6 +55,10 @@ def main():
   assert url.startswith(('https://goszakupki.info/media/releases/avans-20261029/','https://raw.githubusercontent.com/Volmont85/ig-autopost/'))
   with urlopen(Request(url,method='HEAD'),timeout=30) as r:assert r.status==200
  prev=gh('contents/'+STATE_PATH,missing=True)
+ if os.environ.get('PUBLISH_MODE')=='preflight':
+  with urlopen('https://t.me/s/goszakupki_help',timeout=30) as r:html=r.read().decode()
+  posts=re.findall(r'data-post="(goszakupki_help/[0-9]+)"',html)
+  print(json.dumps({'public_latest_posts':posts[-12:],'contains_avans_publication':'Аванс в проекте — ещё не деньги на поставку.' in html,'existing_receipt':json.loads(base64.b64decode(prev['content'])) if prev else None},ensure_ascii=False));return
  if prev:raise RuntimeError('Publication receipt/claim already exists; inspect before any resend')
  if os.environ.get('PUBLISH_MODE')!='publish':
   print(json.dumps({'mode':'preflight','channel':chat['username'],'bot_can_post':True,'photos':4,'existing_claim':False}));return
