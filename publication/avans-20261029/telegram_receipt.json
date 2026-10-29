@@ -1,5 +1,5 @@
 {
-  "status": "claimed_before_send",
+  "status": "uncertain_do_not_retry",
   "channel": "goszakupki_help",
   "run_id": "40867442320",
   "payload_sha256": "a61af4bc4a7e49aa499e450467d2c68dc846c0a1476d17b983b5658894978b28",
