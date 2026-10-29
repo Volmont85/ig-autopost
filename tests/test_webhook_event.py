@@ -10,6 +10,17 @@ KEY = base64.urlsafe_b64encode(b"k" * 32).decode().rstrip("=")
 
 
 class ParseEventsTests(unittest.TestCase):
+    def test_instagram_login_field_value_message_shapes(self):
+        value={'sender':{'id':'300'},'recipient':{'id':'100'},'timestamp':'1793210400',
+               'message':{'mid':'random_mid','text':'ПОЛУЧИТЬ'}}
+        for entry in ({'id':'100','field':'messages','value':value},
+                      {'id':'100','changes':[{'field':'messages','value':value}]}):
+            with self.subTest(shape=list(entry)):
+                events=parse_events({'entry':[entry]},'100',{'400'},['АВАНС'])
+                self.assertEqual(len(events),1)
+                self.assertEqual(events[0]['kind'],'message')
+                self.assertEqual(events[0]['id'],'random_mid')
+
     def setUp(self):
         self.data = {"id": "100", "entry": [{"id": "100", "time": 1793210400,
             "changes": [{"field": "comments", "value": {"id": "200", "from_id": "300",

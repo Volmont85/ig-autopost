@@ -125,8 +125,12 @@ def parse_events(data: Any, own_id: Any, allowed_media_ids: Iterable[Any],
             for change in changes:
                 if isinstance(change, Mapping) and change.get("field") == "comments":
                     comment(change.get("value"), fallback)
+                elif isinstance(change, Mapping) and change.get('field') == 'messages':
+                    message(change.get('value'), fallback)
         if entry.get("field") == "comments":
             comment(entry.get("value"), fallback)
+        elif entry.get('field') == 'messages':
+            message(entry.get('value'), fallback)
         messaging = entry.get("messaging", [])
         if isinstance(messaging, list):
             for item in messaging:

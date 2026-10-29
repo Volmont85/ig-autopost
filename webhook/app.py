@@ -60,7 +60,7 @@ HEARTBEAT_WORKFLOWS = [
 app = Flask(__name__)
 app.config['MAX_CONTENT_LENGTH'] = 1024 * 1024
 _heartbeat_status = {"last_tick_at": None, "last_errors": []}
-_event_status = {'accepted': 0, 'errors': 0}
+_event_status = {'received': 0, 'accepted': 0, 'errors': 0}
 
 
 def _pilot_events(events):
@@ -103,6 +103,7 @@ def receive_instagram_events():
     expected = 'sha256=' + hmac.new(secret, raw, hashlib.sha256).hexdigest()
     if not hmac.compare_digest(request.headers.get('X-Hub-Signature-256', ''), expected):
         return 'forbidden', 403
+    _event_status['received'] += 1
     try:
         data = json.loads(raw)
         events = _pilot_events(parse_events(data, '17841410301724309',
