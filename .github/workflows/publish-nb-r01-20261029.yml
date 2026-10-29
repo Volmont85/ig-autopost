@@ -1,0 +1,32 @@
+name: Publish approved NeyroByuro R01
+on:
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: Exact approved Reel only
+        required: true
+        type: choice
+        options: [preflight, publish]
+        default: preflight
+permissions:
+  contents: write
+concurrency:
+  group: approved-nb-r01-20261029
+  cancel-in-progress: false
+jobs:
+  approved-reel:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Verify target and publish once
+        env:
+          IG_NEYROBYURO_ID: ${{ secrets.IG_NEYROBYURO_ID }}
+          IG_NEYROBYURO_TOKEN: ${{ secrets.IG_NEYROBYURO_TOKEN }}
+          GITHUB_TOKEN: ${{ github.token }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          GITHUB_RUN_ID: ${{ github.run_id }}
+          PUBLISH_MODE: ${{ inputs.mode }}
+        run: python publication/nb-r01-dashboard-20261029/publish_once.py
