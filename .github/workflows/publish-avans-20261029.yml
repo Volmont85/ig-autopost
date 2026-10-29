@@ -1,0 +1,32 @@
+name: Publish approved AVANS Telegram package 2026-10-29
+on:
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: Scoped preflight or approved publication
+        required: true
+        type: choice
+        options: [preflight, publish]
+        default: preflight
+permissions:
+  contents: write
+concurrency:
+  group: publish-avans-20261029
+  cancel-in-progress: false
+jobs:
+  approved-package:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Verify exact destination and publish at most once
+        env:
+          TG_LEADMAGNET_BOT_TOKEN: ${{ secrets.TG_LEADMAGNET_BOT_TOKEN }}
+          TG_GOSZAKUPKI_HELP_CHAT_ID: ${{ secrets.TG_GOSZAKUPKI_HELP_CHAT_ID }}
+          GITHUB_TOKEN: ${{ github.token }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          GITHUB_RUN_ID: ${{ github.run_id }}
+          PUBLISH_MODE: ${{ inputs.mode }}
+        run: python publication/avans-20261029/telegram_publish_once.py
