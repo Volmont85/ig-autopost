@@ -1,0 +1,19 @@
+{
+  "id": "stroy-v6-volmont85-trial-20261102",
+  "account": "personal",
+  "type": "reel",
+  "publish_at": "2026-11-02T18:00:00+03:00",
+  "caption": "Что происходит с вашим бизнесом прямо сейчас?\n\nЧтобы узнать, где задержались работы и когда придут деньги, приходится собирать картину из звонков, переписок и таблиц?\n\n«Стройконтроль» помогает видеть работу по госконтрактам в одном приложении:\n• что уже принято и оплачено, а что ещё ждёт оплаты;\n• ожидаемые и фактические поступления по неделям;\n• готовность работ по контрактам и адресам;\n• фотографии, связанные с конкретной работой;\n• сроки работ и документов в календаре.\n\nОткрываете приложение — и видите, что требует внимания.\n\nХотите так же видеть свой бизнес? Напишите нам — расскажем о решении и обсудим вашу задачу.\n\n#бизнес #предпринимательство #развитиебизнеса #управлениебизнесом #автоматизациябизнеса",
+  "media": [
+    "media/personal/stroy-v6-volmont85-trial-20261102.mp4"
+  ],
+  "status": "pending",
+  "trial": true,
+  "graduation_strategy": "MANUAL",
+  "share_to_feed": false,
+  "approved_sha256": "c75190d0f83120a4844087f03a9d3369cdf79a959ecfa22ad950acfdb2d8205d",
+  "caption_sha256": "0bfe9269ab94d3dbf0cbf78b295f4ba308685b56076ec47f7df7363f37d5d6d2",
+  "source_publication": "https://www.instagram.com/reel/DfNRd1ovYf1/",
+  "owner_authorization": "Owner explicitly chose first62sReel forTrial@volmont85 and requested existing old publishing method without code modifications.",
+  "publication_note": "Only this trial; no automatic graduation. Verify AI disclosure after publication in native app if not applied automatically by Meta."
+}
