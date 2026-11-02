@@ -5594,5 +5594,35 @@
     "shares": 0,
     "saved": 0,
     "total_interactions": 0
+  },
+  {
+    "id": "stroy-v6-volmont85-trial-20261102",
+    "account": "personal",
+    "type": "reel",
+    "trial": true,
+    "topic": "бизнес",
+    "hook": "Что происходит с вашим бизнесом прямо сейчас?",
+    "hashtags": [
+      "#бизнес",
+      "#предпринимательство",
+      "#развитиебизнеса",
+      "#управлениебизнесом",
+      "#автоматизациябизнеса"
+    ],
+    "published_at": "2026-11-02T15:01:57.577607+00:00",
+    "publish_hour_msk": 18,
+    "weekday": 0,
+    "measured_at": "2026-11-02T22:21:32.073395+00:00",
+    "age_hours": 7.3,
+    "like_count": 1,
+    "comments_count": 0,
+    "permalink": "https://www.instagram.com/reel/DfPlQH4FYJX/",
+    "views": 117,
+    "reach": 111,
+    "likes": 1,
+    "comments": 0,
+    "shares": 0,
+    "saved": 1,
+    "total_interactions": 2
   }
 ]
