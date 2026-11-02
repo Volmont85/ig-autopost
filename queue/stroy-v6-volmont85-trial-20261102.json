@@ -7,7 +7,7 @@
   "media": [
     "media/personal/stroy-v6-volmont85-trial-20261102.mp4"
   ],
-  "status": "pending",
+  "status": "publishing",
   "trial": true,
   "graduation_strategy": "MANUAL",
   "share_to_feed": false,
@@ -15,5 +15,6 @@
   "caption_sha256": "0bfe9269ab94d3dbf0cbf78b295f4ba308685b56076ec47f7df7363f37d5d6d2",
   "source_publication": "https://www.instagram.com/reel/DfNRd1ovYf1/",
   "owner_authorization": "Owner explicitly chose first62sReel forTrial@volmont85 and requested existing old publishing method without code modifications.",
-  "publication_note": "Only this trial; no automatic graduation. Verify AI disclosure after publication in native app if not applied automatically by Meta."
+  "publication_note": "Only this trial; no automatic graduation. Verify AI disclosure after publication in native app if not applied automatically by Meta.",
+  "claimed_at": "2026-11-02T15:01:57.577607+00:00"
 }
