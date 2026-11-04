@@ -18,5 +18,7 @@
   "publication_note": "Only this trial; no automatic graduation. Verify AI disclosure after publication in native app if not applied automatically by Meta.",
   "claimed_at": "2026-11-02T15:01:57.577607+00:00",
   "published_at": "2026-11-02T15:01:57.577607+00:00",
-  "media_id": "18157831036522800"
+  "media_id": "18157831036522800",
+  "media_deleted": true,
+  "media_deleted_at": "2026-11-04T11:54:57.022645+00:00"
 }
